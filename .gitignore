@@ -1,0 +1,7 @@
+*
+
+!*.txt
+!*.sh
+!*.md
+!.gitignore
+changelog.txt
