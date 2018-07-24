@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#./make-sprites.sh
+
 name=hellscape-navigator
 
 rm -f $name.pk3 \
@@ -16,6 +18,7 @@ git log --date=short --pretty=format:"-%d %ad %s%n" | \
 zip $name.pk3 \
     *.txt \
     *.md \
+    sprites/*.png \
 && \
 cp $name.pk3 $name-$(git describe --abbrev=0 --tags).pk3 \
 && \
