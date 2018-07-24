@@ -171,6 +171,7 @@ class m8f_hn_WoodenSign : Actor
       +SHOOTABLE;
       +SOLID;
       +NOBLOOD;
+      +NOTONAUTOMAP;
     }
 
   string note;
@@ -178,8 +179,10 @@ class m8f_hn_WoodenSign : Actor
 
   override void BeginPlay()
   {
-    note = CVar.GetCVar("m8f_hn_sign_note").GetString();
+    note      = CVar.GetCVar("m8f_hn_sign_note").GetString();
     spawnTime = level.time;
+
+    Spawn("m8f_hn_WoodenSignMarker", pos);
   }
 
   override bool Used(Actor user)
@@ -191,6 +194,22 @@ class m8f_hn_WoodenSign : Actor
     user.A_Print(text);
     return true;
   }
+
+  States
+    {
+    Spawn:
+      HNWS A -1;
+      Stop;
+    }
+}
+
+class m8f_hn_WoodenSignMarker : MapMarker
+{
+  Default
+    {
+      XScale 0.2;
+      YScale 0.2;
+    }
 
   States
     {

@@ -10,4 +10,7 @@ OptionMenu "m8f_hn_SignNoteMenu"
   StaticText "Options", "Blue"
   Option "Clear note on Done", "m8f_hn_sign_clear_after_make", "OnOff"
   Option "Add level time to note", "m8f_hn_sign_add_time", "OnOff"
+
+  StaticText ""
+  StaticText "Shoot below sign to remove it.", "Black"
 }
