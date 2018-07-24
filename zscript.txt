@@ -65,6 +65,8 @@ class m8f_hn_FadingRightE : m8f_hn_FadingMarker {States{ Spawn: HNRE A -1; Stop;
 class m8f_hn_FadingRightF : m8f_hn_FadingMarker {States{ Spawn: HNRF A -1; Stop; }}
 class m8f_hn_FadingRightG : m8f_hn_FadingMarker {States{ Spawn: HNRG A -1; Stop; }}
 
+class m8f_hn_FadingCircle : m8f_hn_FadingMarker {States{ Spawn: HNCR A -1; Stop; }}
+
 class m8f_hn_EventHandler : EventHandler
 {
   int     frequency;
@@ -93,9 +95,10 @@ class m8f_hn_EventHandler : EventHandler
 
     oldPos = pos;
     float  angle       = playerActor.angle;
-    string letter      = AngleLetter(angle);
-    string markerClass = left ? "m8f_hn_FadingLeft" : "m8f_hn_FadingRight";
-    markerClass.AppendFormat(letter);
+    //string letter      = AngleLetter(angle);
+    //string markerClass = left ? "m8f_hn_FadingLeft" : "m8f_hn_FadingRight";
+    //markerClass.AppendFormat(letter);
+    string markerClass = "m8f_hn_FadingCircle";
     let    marker = Actor.Spawn(markerClass, pos);
     m8f_hn_FadingMarker(marker).init(60 * 35);
     left = !left;

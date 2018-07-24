@@ -36,4 +36,4 @@ convert sprites/hnr1a0.png $params 337.5 sprites/hnrGa0.png
 
 optipng sprites/*
 
-wine ~/Programs/doomcrap-0.1.4/util/grabpng.exe -grab "w*0.5" "h*0.5" sprites/hn*
+wine ~/Programs/doomcrap-0.1.4/util/grabpng.exe -grab "w*0.5" "h*0.5" sprites/*

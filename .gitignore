@@ -5,3 +5,7 @@
 !*.md
 !.gitignore
 changelog.txt
+
+!sprites
+sprites/*
+!sprites/*.png
