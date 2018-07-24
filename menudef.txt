@@ -1,0 +1,13 @@
+OptionMenu "m8f_hn_SignNoteMenu"
+{
+  TextField "Note:", "m8f_hn_sign_note"
+  StaticText ""
+  Command "Done", "m8f_hn_make_sign_close"
+  Command "Cancel", "m8f_hn_make_sign_cancel"
+  Command "Clear note now", "m8f_hn_sign_note \"\""
+
+  StaticText ""
+  StaticText "Options", "Blue"
+  Option "Clear note on Done", "m8f_hn_sign_clear_after_make", "OnOff"
+  Option "Add level time to note", "m8f_hn_sign_add_time", "OnOff"
+}

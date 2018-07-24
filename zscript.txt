@@ -160,3 +160,42 @@ class m8f_hn_EventHandler : EventHandler
     return letters[angle / 22.5];
   }
 }
+
+class m8f_hn_WoodenSign : Actor
+{
+
+  Default
+    {
+      Health 30;
+      Height 10;
+      +SHOOTABLE;
+      +SOLID;
+      +NOBLOOD;
+    }
+
+  string note;
+  int    spawnTime;
+
+  override void BeginPlay()
+  {
+    note = CVar.GetCVar("m8f_hn_sign_note").GetString();
+    spawnTime = level.time;
+  }
+
+  override bool Used(Actor user)
+  {
+    string text = note;
+    int    sec  = Thinker.Tics2Seconds(spawnTime);
+    text.AppendFormat("\n\n        %02d:%02d:%02d",
+                      sec / 3600, (sec % 3600) / 60, sec % 60);
+    user.A_Print(text);
+    return true;
+  }
+
+  States
+    {
+    Spawn:
+      HNWS A -1;
+      Stop;
+    }
+}
