@@ -1,4 +1,5 @@
 gameinfo
 {
   AddEventHandlers = "m8f_hn_EventHandler"
+  MapArrow         = "marrow", "ddtmarr"
 }
