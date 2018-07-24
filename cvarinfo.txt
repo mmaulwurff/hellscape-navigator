@@ -1,0 +1,8 @@
+// 0 - footsteps
+// 1 - circle
+// 2 - arrow
+// 3 - off
+server int m8f_hn_marker_type = 0;
+
+server int m8f_hn_marker_spawn_period = 20;
+server int m8f_hn_marker_lifetime     = 3500;
