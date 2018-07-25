@@ -7,6 +7,8 @@ server int m8f_hn_marker_type = 0;
 server int m8f_hn_marker_spawn_period = 20;
 server int m8f_hn_marker_lifetime     = 3500;
 
-server string m8f_hn_sign_note;
+server string m8f_hn_sign_note1;
+server string m8f_hn_sign_note2;
+server string m8f_hn_sign_note3;
 server bool   m8f_hn_sign_clear_after_make = false;
 server bool   m8f_hn_sign_add_time         = true;

@@ -1,10 +1,16 @@
 OptionMenu "m8f_hn_SignNoteMenu"
 {
-  TextField "Note:", "m8f_hn_sign_note"
+  Title "New sign"
+
   StaticText ""
-  Command "Done", "m8f_hn_make_sign_close"
-  Command "Cancel", "m8f_hn_make_sign_cancel"
-  Command "Clear note now", "m8f_hn_sign_note \"\""
+  TextField "Note:" , "m8f_hn_sign_note1"
+  TextField ":"     , "m8f_hn_sign_note2"
+  TextField ":"     , "m8f_hn_sign_note3"
+
+  StaticText ""
+  Command "Done"           , "m8f_hn_make_sign_close"
+  Command "Cancel"         , "m8f_hn_make_sign_cancel"
+  Command "Clear note now" , "m8f_hn_make_sign_clear"
 
   StaticText ""
   StaticText "Options", "Blue"

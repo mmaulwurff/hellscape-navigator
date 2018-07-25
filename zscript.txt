@@ -180,7 +180,14 @@ class m8f_hn_WoodenSign : Actor
 
   override void BeginPlay()
   {
-    note      = CVar.GetCVar("m8f_hn_sign_note").GetString();
+    string line1 = CVar.GetCVar("m8f_hn_sign_note1").GetString();
+    string line2 = CVar.GetCVar("m8f_hn_sign_note2").GetString();
+    string line3 = CVar.GetCVar("m8f_hn_sign_note3").GetString();
+
+    note = line1;
+    if (line2.Length() != 0) { note.AppendFormat("\n%s", line2); }
+    if (line3.Length() != 0) { note.AppendFormat("\n%s", line3); }
+
     spawnTime = level.time;
     marker    = Spawn("m8f_hn_WoodenSignMarker", pos);
   }
@@ -189,8 +196,12 @@ class m8f_hn_WoodenSign : Actor
   {
     string text = note;
     int    sec  = Thinker.Tics2Seconds(spawnTime);
-    text.AppendFormat("\n\n        %02d:%02d:%02d",
-                      sec / 3600, (sec % 3600) / 60, sec % 60);
+    bool   addTime = CVar.GetCVar("m8f_hn_sign_add_time").GetInt();
+    if (addTime)
+      {
+        text.AppendFormat("\n\n        %02d:%02d:%02d",
+                          sec / 3600, (sec % 3600) / 60, sec % 60);
+      }
     user.A_Print(text);
     return true;
   }
