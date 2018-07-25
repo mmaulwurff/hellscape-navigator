@@ -176,13 +176,13 @@ class m8f_hn_WoodenSign : Actor
 
   string note;
   int    spawnTime;
+  Actor  marker;
 
   override void BeginPlay()
   {
     note      = CVar.GetCVar("m8f_hn_sign_note").GetString();
     spawnTime = level.time;
-
-    Spawn("m8f_hn_WoodenSignMarker", pos);
+    marker    = Spawn("m8f_hn_WoodenSignMarker", pos);
   }
 
   override bool Used(Actor user)
@@ -193,6 +193,12 @@ class m8f_hn_WoodenSign : Actor
                       sec / 3600, (sec % 3600) / 60, sec % 60);
     user.A_Print(text);
     return true;
+  }
+
+  override void Die(Actor source, Actor inflictor, int dmgflags = 0)
+  {
+    marker.Destroy();
+    super.Die(source, inflictor, dmgflags);
   }
 
   States
