@@ -1,0 +1,13 @@
+flickerlight2 m8f_hn_sign_candle_light
+{
+    color 1.0 1.0 0.0
+    offset 0 10 0
+    size 4
+    secondarySize 5
+    interval 0.01
+}
+
+object m8f_hn_WoodenSign
+{
+  frame HNWSA { light m8f_hn_sign_candle_light }
+}
