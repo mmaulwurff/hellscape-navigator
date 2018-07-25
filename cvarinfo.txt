@@ -12,3 +12,4 @@ server string m8f_hn_sign_note2;
 server string m8f_hn_sign_note3;
 server bool   m8f_hn_sign_clear_after_make = false;
 server bool   m8f_hn_sign_add_time         = true;
+server bool   m8f_hn_sign_shootable        = true;

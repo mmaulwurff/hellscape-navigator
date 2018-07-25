@@ -14,8 +14,12 @@ OptionMenu "m8f_hn_SignNoteMenu"
 
   StaticText ""
   StaticText "Options", "Blue"
-  Option "Clear note on Done", "m8f_hn_sign_clear_after_make", "OnOff"
-  Option "Add level time to note", "m8f_hn_sign_add_time", "OnOff"
+  Option "Clear note on Done"       , "m8f_hn_sign_clear_after_make" , "OnOff"
+  Option "Add level time to note"   , "m8f_hn_sign_add_time"         , "OnOff"
+  Option "Make this sign shootable" , "m8f_hn_sign_shootable"        , "OnOff"
+
+  StaticText ""
+  SafeCommand "Remove all signs" , "netevent m8f_hn_remove_signs"
 
   StaticText ""
   StaticText "Shoot below sign to remove it.", "Black"

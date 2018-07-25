@@ -150,6 +150,19 @@ class m8f_hn_EventHandler : EventHandler
     m8f_hn_FadingMarker(marker).init(lifetime);
   }
 
+  override void NetworkProcess(ConsoleEvent event)
+  {
+    if (event.name == "m8f_hn_remove_signs")
+      {
+        let iterator = ThinkerIterator.Create("m8f_hn_Sign");
+        Actor sign;
+        while (sign = Actor(iterator.Next()))
+          {
+            sign.Destroy();
+          }
+      }
+  }
+
   static string AngleLetter(float angle)
   {
     static const string letters[] = { "3", "A", "2", "9", "1", "G", "8", "F", "7", "E", "6", "D", "5", "C", "4", "B" };
@@ -161,14 +174,13 @@ class m8f_hn_EventHandler : EventHandler
   }
 }
 
-class m8f_hn_WoodenSign : Actor
+class m8f_hn_Sign : Actor
 {
 
   Default
     {
       Health 30;
       Height 10;
-      +SHOOTABLE;
       +SOLID;
       +NOBLOOD;
       +NOTONAUTOMAP;
@@ -190,6 +202,9 @@ class m8f_hn_WoodenSign : Actor
 
     spawnTime = level.time;
     marker    = Spawn("m8f_hn_WoodenSignMarker", pos);
+
+    bool shootable = CVar.GetCVar("m8f_hn_sign_shootable").GetInt();
+    bSHOOTABLE = shootable;
   }
 
   override bool Used(Actor user)
@@ -211,7 +226,10 @@ class m8f_hn_WoodenSign : Actor
     marker.Destroy();
     super.Die(source, inflictor, dmgflags);
   }
+}
 
+class m8f_hn_WoodenSign : m8f_hn_Sign
+{
   States
     {
     Spawn:
