@@ -1,0 +1,16 @@
+decal m8f_hn_RedDeadDecal
+{
+  pic hn0red
+}
+
+slider m8f_hn_BloodSlider
+{
+   DistY -3
+   SlideTime 10
+}
+
+decal m8f_hn_RedDeadDecalFlow
+{
+  pic hn0res
+  animator m8f_hn_BloodSlider
+}
