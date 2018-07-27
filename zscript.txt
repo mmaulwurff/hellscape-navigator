@@ -154,11 +154,20 @@ class m8f_hn_EventHandler : EventHandler
   {
     if (event.name == "m8f_hn_remove_signs")
       {
-        let iterator = ThinkerIterator.Create("m8f_hn_Sign");
+        let   iterator = ThinkerIterator.Create("m8f_hn_Sign");
         Actor sign;
         while (sign = Actor(iterator.Next()))
           {
             sign.Destroy();
+          }
+      }
+    else if (event.name == "m8f_hn_remove_decals")
+      {
+        let     iterator = ThinkerIterator.Create("Thinker", Thinker.STAT_DECAL);
+        Thinker dec;
+        while (dec = iterator.Next())
+          {
+            dec.Destroy();
           }
       }
   }
@@ -221,7 +230,7 @@ class m8f_hn_Sign : Actor
     return true;
   }
 
-  override void Die(Actor source, Actor inflictor, int dmgflags = 0)
+  override void Die(Actor source, Actor inflictor, int dmgflags)
   {
     marker.Destroy();
     super.Die(source, inflictor, dmgflags);

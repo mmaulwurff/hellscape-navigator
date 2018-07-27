@@ -4,6 +4,8 @@
 
 name=hellscape-navigator
 
+acc source/$name.acs acs/$name.o \
+&& \
 rm -f $name.pk3 \
 && \
 git log --date=short --pretty=format:"-%d %ad %s%n" | \
@@ -19,6 +21,8 @@ zip $name.pk3 \
     *.txt \
     *.md \
     sprites/*.png \
+    source/*.acs \
+    acs/*.o \
 && \
 cp $name.pk3 $name-$(git describe --abbrev=0 --tags).pk3 \
 && \

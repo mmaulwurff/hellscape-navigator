@@ -1,7 +1,16 @@
 AddKeySection "Hellscape Navigator Keys" "HellscapeNavitagor"
 AddMenuKey "Make a sign" "m8f_hn_make_sign_open"
+AddMenuKey "Wall Spray"  "m8f_hn_wall_spray_open"
+
+// Sign section ////////////////////////////////////////////////////////////////
 
 alias m8f_hn_make_sign_open   "openmenu m8f_hn_SignNoteMenu"
 alias m8f_hn_make_sign_close  "closemenu; summon m8f_hn_WoodenSign; test $m8f_hn_sign_clear_after_make m8f_hn_make_sign_clear"
 alias m8f_hn_make_sign_cancel "closemenu"
 alias m8f_hn_make_sign_clear  "m8f_hn_sign_note1 \"\"; m8f_hn_sign_note2 \"\"; m8f_hn_sign_note3 \"\""
+
+// Wall prints section /////////////////////////////////////////////////////////
+
+alias m8f_hn_print_red_dead "closemenu; m8f_hn_decal_name m8f_hn_reddeaddecal; pukename m8f_hn_SprayPermanentDecal; wait 1; m8f_hn_decal_name m8f_hn_reddeaddecalflow; pukename m8f_hn_SprayPermanentDecal"
+
+alias m8f_hn_wall_spray_open "openmenu m8f_hn_WallPrintMenu"

@@ -24,3 +24,23 @@ OptionMenu "m8f_hn_SignNoteMenu"
   StaticText ""
   StaticText "Shoot below sign to remove it.", "Black"
 }
+
+OptionValue "m8f_hn_print_color_values"
+{
+  0, "\cgBlood"
+  1, "\cdGlow"
+  2, "\cvNeon"
+}
+
+OptionMenu "m8f_hn_WallPrintMenu"
+{
+  Title "New wall print"
+
+  StaticText ""
+  Option "Print type", "m8f_hn_print_color", "m8f_hn_print_color_values"
+  Command "Dead", "m8f_hn_print_red_dead"
+
+  StaticText ""
+  StaticText "Commands", "Blue"
+  SafeCommand "Clear walls", "netevent m8f_hn_remove_decals; closemenu"
+}
