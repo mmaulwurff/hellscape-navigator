@@ -89,11 +89,14 @@ class m8f_hn_EventHandler : EventHandler
   int     period;
   vector3 oldPos;
   bool    left;
+  Array<m8f_hn_BaseAreaNameSource> areaNameSources;
 
   override void OnRegister()
   {
     period = CVar.GetCVar("m8f_hn_marker_spawn_period").GetInt();
     left   = false;
+    areaNameSources.push(new("m8f_hn_SectorAreaNameSource"));
+    areaNameSources.push(new("m8f_hn_BaseAreaNameSource"));
   }
 
   override void WorldTick()
@@ -172,6 +175,29 @@ class m8f_hn_EventHandler : EventHandler
       }
   }
 
+  ui string GetAreaName()
+  {
+    int size = areaNameSources.size();
+    string areaName = "no area name sources found";
+    for (int i = 0; i < size; ++i)
+      {
+        areaName = areaNameSources[i].GetAreaName();
+        if (areaName.Length() != 0) { break; }
+      }
+    return areaName;
+  }
+
+  override void RenderOverlay(RenderEvent e)
+  {
+    string areaName = GetAreaName();
+
+    Font font = Font.GetFont("SMALLFONT");
+    int normalcolor = Font.CR_GOLD;
+    double x = Screen.GetWidth() / 2;
+    double y = 30;
+    Screen.DrawText(font, normalcolor, x, y, areaName);
+  }
+
   static string AngleLetter(float angle)
   {
     static const string letters[] = { "3", "A", "2", "9", "1", "G", "8", "F", "7", "E", "6", "D", "5", "C", "4", "B" };
@@ -180,6 +206,36 @@ class m8f_hn_EventHandler : EventHandler
     while (angle <   0.0) { angle += 360.0; }
     while (angle > 360.0) { angle -= 360.0; }
     return letters[angle / 22.5];
+  }
+}
+
+class m8f_hn_BaseAreaNameSource
+{
+  play virtual string GetAreaName() const
+  {
+    return "---";
+  }
+}
+
+class m8f_hn_SectorAreaNameSource : m8f_hn_BaseAreaNameSource
+{
+  override string GetAreaName()
+  {
+    PlayerInfo player = players[consolePlayer];
+    if (player == null) { return ""; }
+
+    Actor playerActor = player.mo;
+    if (playerActor == null) { return ""; }
+
+    Sector currentSector = playerActor.curSector;
+    if (currentSector == null) { return ""; }
+
+    bool isSecret = (currentSector.Flags & (Sector.SECF_SECRET | Sector.SECF_WASSECRET));
+    if (isSecret) { return "Secret"; }
+
+    bool isSky = (currentSector.GetTexture(1) == skyflatnum);
+    if (isSky) { return "Outdoors"; }
+    return "";
   }
 }
 
