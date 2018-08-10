@@ -96,6 +96,9 @@ class m8f_hn_EventHandler : EventHandler
   bool    left;
   Array<m8f_hn_BaseAreaNameSource> areaNameSources;
   m8f_hn_Data data;
+  int    renderUpdatePeriod;
+  int    renderCounter;
+  string areaName;
 
   override void OnRegister()
   {
@@ -105,6 +108,10 @@ class m8f_hn_EventHandler : EventHandler
     areaNameSources.push(new("m8f_hn_BaseAreaNameSource"));
 
     data = new("m8f_hn_Data");
+
+    renderUpdatePeriod = 20;
+    renderCounter      =  0;
+    areaName           = "";
   }
 
   override void WorldLoaded(WorldEvent e)
@@ -186,6 +193,7 @@ class m8f_hn_EventHandler : EventHandler
             sign.Destroy();
           }
       }
+
     else if (event.name == "m8f_hn_remove_decals")
       {
         let     iterator = ThinkerIterator.Create("Thinker", Thinker.STAT_DECAL);
@@ -209,13 +217,29 @@ class m8f_hn_EventHandler : EventHandler
     return areaName;
   }
 
+  play void SetRenderCounter(int value) const
+  {
+    renderCounter = value;
+  }
+
+  play void SetAreaName(string name) const
+  {
+    areaName = name;
+  }
+
   override void RenderOverlay(RenderEvent e)
   {
+    if (renderCounter >= renderUpdatePeriod)
+      {
+        SetAreaName(GetAreaName(data));
+        SetRenderCounter(0);
+      }
+    else { SetRenderCounter(renderCounter + 1); }
+
     Font   font        = Font.GetFont("SMALLFONT");
     int    normalcolor = Font.CR_GOLD;
     double x           = Screen.GetWidth() / 2;
     double y           = 30;
-    string areaName    = GetAreaName(data);
     Screen.DrawText(font, normalcolor, x, y, areaName);
   }
 
