@@ -104,6 +104,7 @@ class m8f_hn_EventHandler : EventHandler
   {
     period = CVar.GetCVar("m8f_hn_marker_spawn_period").GetInt();
     left   = false;
+    areaNameSources.push(new("m8f_hn_PlayerStartNameSource"));
     areaNameSources.push(new("m8f_hn_SectorAreaNameSource"));
     areaNameSources.push(new("m8f_hn_BaseAreaNameSource"));
 
@@ -263,6 +264,24 @@ class m8f_hn_BaseAreaNameSource
   play virtual string GetAreaName(m8f_hn_Data data) const
   {
     return "---";
+  }
+}
+
+class m8f_hn_PlayerStartNameSource : m8f_hn_BaseAreaNameSource
+{
+  override string GetAreaName(m8f_hn_Data data)
+  {
+    vector3    playerStart;
+    int        angle;
+    [playerStart, angle]      = Object.G_PickPlayerStart(consolePlayer);
+    vector3    playerPos      = players[consolePlayer].mo.pos;
+    double     dx             = playerStart.x - playerPos.x;
+    double     dy             = playerStart.y - playerPos.y;
+    double     dz             = playerStart.z - playerPos.z;
+    double     distance       = dx * dx + dy * dy + dz * dz;
+    bool       isCloseToStart = (distance < 20000);
+
+    return isCloseToStart ? "Entrance" : "";
   }
 }
 
