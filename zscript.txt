@@ -200,7 +200,11 @@ class m8f_hn_EventHandler : EventHandler
 
   static string AngleLetter(float angle)
   {
-    static const string letters[] = { "3", "A", "2", "9", "1", "G", "8", "F", "7", "E", "6", "D", "5", "C", "4", "B" };
+    static const string letters[] =
+      {
+        "3", "A", "2", "9", "1", "G", "8", "F",
+        "7", "E", "6", "D", "5", "C", "4", "B"
+      };
 
     angle += 45.0 / 4;
     while (angle <   0.0) { angle += 360.0; }
@@ -235,6 +239,18 @@ class m8f_hn_SectorAreaNameSource : m8f_hn_BaseAreaNameSource
 
     bool isSky = (currentSector.GetTexture(1) == skyflatnum);
     if (isSky) { return "Outdoors"; }
+
+    int nLines = currentSector.lines.size();
+    for (int i = 0; i < nLines; ++i)
+      {
+        Line l = currentSector.lines[i];
+        int  s = l.special;
+        if (s == 74 || s == 75 || s == 243 || s == 244)
+          {
+            return "Exit";
+          }
+      }
+
     return "";
   }
 }
