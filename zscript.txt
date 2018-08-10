@@ -84,12 +84,18 @@ class m8f_hn_FadingArrowG : m8f_hn_FadingMarker {States{ Spawn: HNAG A -1; Stop;
 
 class m8f_hn_FadingCircle : m8f_hn_FadingMarker {States{ Spawn: HNCR A -1; Stop; }}
 
+class m8f_hn_Data
+{
+  Array<Sector> secretSectors;
+}
+
 class m8f_hn_EventHandler : EventHandler
 {
   int     period;
   vector3 oldPos;
   bool    left;
   Array<m8f_hn_BaseAreaNameSource> areaNameSources;
+  m8f_hn_Data data;
 
   override void OnRegister()
   {
@@ -97,6 +103,22 @@ class m8f_hn_EventHandler : EventHandler
     left   = false;
     areaNameSources.push(new("m8f_hn_SectorAreaNameSource"));
     areaNameSources.push(new("m8f_hn_BaseAreaNameSource"));
+
+    data = new("m8f_hn_Data");
+  }
+
+  override void WorldLoaded(WorldEvent e)
+  {
+    int nSectors = level.sectors.size();
+    for (int i = 0; i < nSectors; ++i)
+      {
+        Sector s        = level.sectors[i];
+        bool   isSecret = (s.Flags & (Sector.SECF_SECRET | Sector.SECF_WASSECRET));
+        if (isSecret)
+          {
+            data.secretSectors.push(s);
+          }
+      }
   }
 
   override void WorldTick()
@@ -175,13 +197,13 @@ class m8f_hn_EventHandler : EventHandler
       }
   }
 
-  ui string GetAreaName()
+  ui string GetAreaName(m8f_hn_Data data)
   {
     int size = areaNameSources.size();
     string areaName = "no area name sources found";
     for (int i = 0; i < size; ++i)
       {
-        areaName = areaNameSources[i].GetAreaName();
+        areaName = areaNameSources[i].GetAreaName(data);
         if (areaName.Length() != 0) { break; }
       }
     return areaName;
@@ -189,12 +211,11 @@ class m8f_hn_EventHandler : EventHandler
 
   override void RenderOverlay(RenderEvent e)
   {
-    string areaName = GetAreaName();
-
-    Font font = Font.GetFont("SMALLFONT");
-    int normalcolor = Font.CR_GOLD;
-    double x = Screen.GetWidth() / 2;
-    double y = 30;
+    Font   font        = Font.GetFont("SMALLFONT");
+    int    normalcolor = Font.CR_GOLD;
+    double x           = Screen.GetWidth() / 2;
+    double y           = 30;
+    string areaName    = GetAreaName(data);
     Screen.DrawText(font, normalcolor, x, y, areaName);
   }
 
@@ -215,7 +236,7 @@ class m8f_hn_EventHandler : EventHandler
 
 class m8f_hn_BaseAreaNameSource
 {
-  play virtual string GetAreaName() const
+  play virtual string GetAreaName(m8f_hn_Data data) const
   {
     return "---";
   }
@@ -223,7 +244,7 @@ class m8f_hn_BaseAreaNameSource
 
 class m8f_hn_SectorAreaNameSource : m8f_hn_BaseAreaNameSource
 {
-  override string GetAreaName()
+  override string GetAreaName(m8f_hn_Data data)
   {
     PlayerInfo player = players[consolePlayer];
     if (player == null) { return ""; }
@@ -235,7 +256,16 @@ class m8f_hn_SectorAreaNameSource : m8f_hn_BaseAreaNameSource
     if (currentSector == null) { return ""; }
 
     bool isSecret = (currentSector.Flags & (Sector.SECF_SECRET | Sector.SECF_WASSECRET));
-    if (isSecret) { return "Secret"; }
+    if (isSecret)
+      {
+        int nSecretSectors = data.secretSectors.size();
+        int i = 0;
+        for (; i < nSecretSectors; ++i)
+          {
+            if (currentSector == data.secretSectors[i]) { break; }
+          }
+        return StringStruct.Format("Secret #%d", i + 1);
+      }
 
     bool isSky = (currentSector.GetTexture(1) == skyflatnum);
     if (isSky) { return "Outdoors"; }
