@@ -104,6 +104,7 @@ class m8f_hn_EventHandler : EventHandler
   {
     period = CVar.GetCVar("m8f_hn_marker_spawn_period").GetInt();
     left   = false;
+    areaNameSources.push(new("m8f_hn_SignAreaNameSource"));
     areaNameSources.push(new("m8f_hn_PlayerStartNameSource"));
     areaNameSources.push(new("m8f_hn_SectorAreaNameSource"));
     areaNameSources.push(new("m8f_hn_BaseAreaNameSource"));
@@ -285,6 +286,38 @@ class m8f_hn_PlayerStartNameSource : m8f_hn_BaseAreaNameSource
   }
 }
 
+class m8f_hn_SignAreaNameSource : m8f_hn_BaseAreaNameSource
+{
+  override string GetAreaName(m8f_hn_Data data)
+  {
+    vector3     playerPos = players[consolePlayer].mo.pos;
+    let         iterator  = ThinkerIterator.Create("m8f_hn_Sign");
+    m8f_hn_Sign sign;
+    double      minDistance = -1;
+    m8f_hn_Sign closestSign = null;
+
+    while (sign = m8f_hn_Sign(iterator.Next()))
+      {
+        if (sign.areaName.length() == 0) { continue; }
+
+        vector3 signPos       = sign.pos;
+        double  dx            = signPos.x - playerPos.x;
+        double  dy            = signPos.y - playerPos.y;
+        double  dz            = signPos.z - playerPos.z;
+        double  distance      = dx * dx + dy * dy + dz * dz;
+
+        if ((distance < minDistance || minDistance < 0.0)
+            && distance < sign.areaRadius)
+          {
+            minDistance = distance;
+            closestSign = sign;
+          }
+      }
+
+    return closestSign ? closestSign.areaName : "";
+  }
+}
+
 class m8f_hn_SectorAreaNameSource : m8f_hn_BaseAreaNameSource
 {
   override string GetAreaName(m8f_hn_Data data)
@@ -343,6 +376,8 @@ class m8f_hn_Sign : Actor
   string note;
   int    spawnTime;
   Actor  marker;
+  string areaName;
+  double areaRadius;
 
   override void BeginPlay()
   {
@@ -359,6 +394,13 @@ class m8f_hn_Sign : Actor
 
     bool shootable = CVar.GetCVar("m8f_hn_sign_shootable").GetInt();
     bSHOOTABLE = shootable;
+
+    CVar areaNameCVar = CVar.GetCVar("m8f_hn_area_name");
+    areaName          = areaNameCVar.GetString();
+    areaNameCVar.setString("");
+
+    areaRadius = CVar.GetCVar("m8f_hn_area_radius").GetFloat();
+    areaRadius *= areaRadius;
   }
 
   override bool Used(Actor user)

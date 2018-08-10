@@ -8,6 +8,10 @@ OptionMenu "m8f_hn_SignNoteMenu"
   TextField ":"     , "m8f_hn_sign_note3"
 
   StaticText ""
+  TextField "Area name"   , "m8f_hn_area_name"
+  Slider    "Area radius" , "m8f_hn_area_radius", 100.0, 10000.0, 100.0, 0
+
+  StaticText ""
   Command "Done"           , "m8f_hn_make_sign_close"
   Command "Cancel"         , "m8f_hn_make_sign_cancel"
   Command "Clear note now" , "m8f_hn_make_sign_clear"
