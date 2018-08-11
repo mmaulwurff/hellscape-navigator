@@ -55,3 +55,33 @@ OptionMenu "m8f_hn_WallPrintMenu"
   StaticText "Commands", "Blue"
   SafeCommand "Clear walls", "netevent m8f_hn_remove_decals; closemenu"
 }
+
+OptionMenu "m8f_hn_Options"
+{
+  Title "Hellscape Navigator Options"
+
+  StaticText ""
+  StaticText "Controls", "Blue"
+  Control "Make a sign" , "m8f_hn_make_sign_open"
+  Control "Wall Spray"  , "m8f_hn_wall_spray_open"
+
+  StaticText ""
+  StaticText "Sign Options", "Blue"
+  Option "Sign Type"                , "m8f_hn_sign_type", "m8f_hn_sign_type_values"
+  Option "Clear note on Done"       , "m8f_hn_sign_clear_after_make" , "OnOff"
+  Option "Add level time to note"   , "m8f_hn_sign_add_time"         , "OnOff"
+  Option "Make this sign shootable" , "m8f_hn_sign_shootable"        , "OnOff"
+
+  StaticText ""
+  StaticText "Commands", "Blue"
+  SafeCommand "Remove all signs" , "netevent m8f_hn_remove_signs"
+  SafeCommand "Clear walls"      , "netevent m8f_hn_remove_decals; closemenu"
+
+  StaticText ""
+}
+
+AddOptionMenu "OptionsMenu"
+{
+  StaticText ""
+  Submenu "Hellscape Navigator Options", "m8f_hn_Options"
+}
