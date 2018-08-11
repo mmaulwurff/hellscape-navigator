@@ -239,18 +239,35 @@ class m8f_hn_EventHandler : EventHandler
     else { SetRenderCounter(renderCounter + 1); }
 
     Font   font        = Font.GetFont("SMALLFONT");
-    int    normalcolor = Font.CR_GOLD;
+    int    normalcolor = Font.CR_GRAY;
     double x           = Screen.GetWidth() / 2;
-    double y           = 30;
-    Screen.DrawText(font, normalcolor, x, y, areaName);
+    double y           = 10;
+    drawTextCenter(areaName, normalColor, 1.0, y + 20, font);
 
-    double angle       = players[consolePlayer].mo.angle % 360.0;
-    TextureID texture  = TexMan.CheckForTexture("compass", TexMan.Type_Any);
-    int xCompassStart = (270.0 - angle) * 150.0 / 270.0 + 56;
-    string angleText   = StringStruct.Format("%f %d", angle, -xCompassStart);
-    Screen.DrawText(font, normalcolor, x, y + 50, angleText);
-    Screen.SetClipRect(0, 0, 100, 15);
-    Screen.DrawTexture(texture, false, -xCompassStart, 0);
+    double    angle     = players[consolePlayer].mo.angle % 360.0;
+    TextureID eswn      = TexMan.CheckForTexture("compass",  TexMan.Type_Any);
+    TextureID border    = TexMan.CheckForTexture("compassb", TexMan.Type_Any);
+    int       xStart    = (270.0 - angle) * 150.0 / 270.0 + 56;
+    double    compX     = x - 102 / 2;
+    Screen.SetClipRect(compX + 1, y + 1, 100, 15);
+    Screen.DrawTexture(eswn, false, compX - xStart + 1, y + 1);
+    Screen.ClearClipRect();
+    Screen.DrawTexture(border, false, compX, y);
+  }
+
+  ui void drawTextCenter(string text, int color, double scale, double y,
+                         Font font, int xAdjustment = 0)
+  {
+    int width    = scale * Screen.GetWidth();
+    int height   = scale * (Screen.GetHeight() - font.GetHeight());
+    int position = width - font.StringWidth(text);
+
+    double x = position * 0.5 + xAdjustment;
+
+    Screen.DrawText(font, color, x, y, text,
+                    DTA_KeepRatio,     true,
+                    DTA_VirtualWidth,  width,
+                    DTA_VirtualHeight, height);
   }
 
   static string AngleLetter(float angle)
@@ -262,8 +279,7 @@ class m8f_hn_EventHandler : EventHandler
       };
 
     angle += 45.0 / 4;
-    while (angle <   0.0) { angle += 360.0; }
-    while (angle > 360.0) { angle -= 360.0; }
+    angle %= 360.0;
     return letters[angle / 22.5];
   }
 
@@ -274,7 +290,7 @@ class m8f_hn_BaseAreaNameSource
 
   play virtual string GetAreaName(m8f_hn_Data data) const
   {
-    return "---";
+    return "";
   }
 
 } // m8f_hn_BaseAreaNameSource
