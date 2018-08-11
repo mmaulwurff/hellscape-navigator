@@ -1,0 +1,27 @@
+// Wooden Sign with offset
+sprite hnwsa0, 52, 61
+{
+  sprite hnwsa0, 0, 0
+  Offset 26, 61
+}
+
+// Wooden Sign map marker with offset
+sprite hnwsm0, 52, 31
+{
+  sprite hnwsa0, 0, 0
+  Offset 26, 15
+}
+
+// Transparent Sign with offset
+sprite hntsa0, 52, 61
+{
+  sprite hntsa0, 0, 0
+  Offset 26, 61
+}
+
+// Transparent Sign map marker with offset
+sprite hntsm0, 52, 31
+{
+  sprite hntsa0, 0, 0
+  Offset 26, 15
+}

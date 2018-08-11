@@ -18,6 +18,7 @@ OptionMenu "m8f_hn_SignNoteMenu"
 
   StaticText ""
   StaticText "Options", "Blue"
+  Option "Sign Type"                , "m8f_hn_sign_type", "m8f_hn_sign_type_values"
   Option "Clear note on Done"       , "m8f_hn_sign_clear_after_make" , "OnOff"
   Option "Add level time to note"   , "m8f_hn_sign_add_time"         , "OnOff"
   Option "Make this sign shootable" , "m8f_hn_sign_shootable"        , "OnOff"
@@ -34,6 +35,12 @@ OptionValue "m8f_hn_print_color_values"
   0, "\cgBlood"
   1, "\cdGlow"
   2, "\cvNeon"
+}
+
+OptionValue "m8f_hn_sign_type_values"
+{
+  0, "Wooden"
+  1, "Transparent"
 }
 
 OptionMenu "m8f_hn_WallPrintMenu"

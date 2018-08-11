@@ -209,8 +209,8 @@ class m8f_hn_EventHandler : EventHandler
 
   ui string GetAreaName(m8f_hn_Data data)
   {
-    int size = areaNameSources.size();
     string areaName = "no area name sources found";
+    int    size     = areaNameSources.size();
     for (int i = 0; i < size; ++i)
       {
         areaName = areaNameSources[i].GetAreaName(data);
@@ -255,8 +255,8 @@ class m8f_hn_EventHandler : EventHandler
     Screen.DrawTexture(border, false, compX, y);
   }
 
-  ui void drawTextCenter(string text, int color, double scale, double y,
-                         Font font, int xAdjustment = 0)
+  ui static void drawTextCenter(string text, int color, double scale, double y,
+                                Font font, int xAdjustment = 0)
   {
     int width    = scale * Screen.GetWidth();
     int height   = scale * (Screen.GetHeight() - font.GetHeight());
@@ -395,9 +395,11 @@ class m8f_hn_Sign : Actor
     {
       Health 30;
       Height 10;
+      Radius  3;
       +SOLID;
       +NOBLOOD;
       +NOTONAUTOMAP;
+      +DONTTHRUST;
     }
 
   string note;
@@ -417,7 +419,6 @@ class m8f_hn_Sign : Actor
     if (line3.Length() != 0) { note.AppendFormat("\n%s", line3); }
 
     spawnTime = level.time;
-    marker    = Spawn("m8f_hn_WoodenSignMarker", pos);
 
     bool shootable = CVar.GetCVar("m8f_hn_sign_shootable").GetInt();
     bSHOOTABLE = shootable;
@@ -462,9 +463,31 @@ class m8f_hn_WoodenSign : m8f_hn_Sign
       Stop;
     }
 
+  override void BeginPlay()
+  {
+    marker = Spawn("m8f_hn_WoodenSignMarker", pos);
+  }
+
 } // class m8f_hn_WoodenSign
 
-class m8f_hn_WoodenSignMarker : MapMarker
+class m8f_hn_TransparentSign : m8f_hn_Sign
+{
+
+  States
+    {
+    Spawn:
+      HNTS A -1;
+      Stop;
+    }
+
+  override void BeginPlay()
+  {
+    marker = Spawn("m8f_hn_TransparentSignMarker", pos);
+  }
+
+} // class m8f_hn_TransparentSign
+
+class m8f_hn_SignMarker : MapMarker
 {
 
   Default
@@ -473,11 +496,35 @@ class m8f_hn_WoodenSignMarker : MapMarker
       YScale 0.2;
     }
 
+} // m8f_hn_SignMarker
+
+
+class m8f_hn_WoodenSignMarker : m8f_hn_SignMarker
+{
+
   States
     {
     Spawn:
-      HNWS A -1;
+      HNWS M -1;
       Stop;
     }
 
 } // m8f_hn_WoodenSignMarker
+
+class m8f_hn_TransparentSignMarker : m8f_hn_SignMarker
+{
+
+  Default
+    {
+      XScale 0.4;
+      YScale 0.4;
+    }
+
+  States
+    {
+    Spawn:
+      HNTS M -1;
+      Stop;
+    }
+
+} // m8f_hn_TransparentSignMarker
