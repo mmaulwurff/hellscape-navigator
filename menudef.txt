@@ -66,6 +66,17 @@ OptionMenu "m8f_hn_Options"
   Control "Wall Spray"  , "m8f_hn_wall_spray_open"
 
   StaticText ""
+  StaticText "Footstep Marker Options", "Blue"
+  Slider "Marker Spawn Period (tics)" , "m8f_hn_marker_spawn_period", 1, 50, 1, 0
+  Slider "Marker Lifetime (s)"        , "m8f_hn_marker_lifetime", 10, 900, 10, 0
+  Option "Footstep Marker"     , "m8f_hn_marker_type", "m8f_hn_marker_type_values"
+
+  StaticText "Footsteps and Arrow type rotation doesn't", "Black"
+  StaticText "work when automap rotation is on, so", "Black"
+  StaticText "disable automap rotation here:", "Black"
+  Option "$AUTOMAPMNU_ROTATE" , "am_rotate" , "RotateTypes"
+
+  StaticText ""
   StaticText "Sign Options", "Blue"
   Option "Sign Type"                , "m8f_hn_sign_type", "m8f_hn_sign_type_values"
   Option "Clear note on Done"       , "m8f_hn_sign_clear_after_make" , "OnOff"
@@ -78,6 +89,14 @@ OptionMenu "m8f_hn_Options"
   SafeCommand "Clear walls"      , "netevent m8f_hn_remove_decals; closemenu"
 
   StaticText ""
+}
+
+OptionValue "m8f_hn_marker_type_values"
+{
+  0, "Footsteps"
+  1, "Circle"
+  2, "Arrow"
+  3, "Disabled"
 }
 
 AddOptionMenu "OptionsMenu"

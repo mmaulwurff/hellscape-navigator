@@ -135,7 +135,7 @@ class m8f_hn_EventHandler : EventHandler
     if (level.time % period != 0) { return; }
 
     period         = CVar.GetCVar("m8f_hn_marker_spawn_period").GetInt();
-    int lifetime   = CVar.GetCVar("m8f_hn_marker_lifetime"    ).GetInt();
+    int lifetime   = CVar.GetCVar("m8f_hn_marker_lifetime"    ).GetInt() * 35;
     int markerType = CVar.GetCVar("m8f_hn_marker_type"        ).GetInt();
 
     PlayerInfo player = players[consolePlayer];
