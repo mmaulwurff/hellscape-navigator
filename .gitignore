@@ -4,6 +4,7 @@
 !*.sh
 !*.md
 !.gitignore
+!*.xcf
 changelog.txt
 
 !sprites

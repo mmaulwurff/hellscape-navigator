@@ -243,6 +243,14 @@ class m8f_hn_EventHandler : EventHandler
     double x           = Screen.GetWidth() / 2;
     double y           = 30;
     Screen.DrawText(font, normalcolor, x, y, areaName);
+
+    double angle       = players[consolePlayer].mo.angle % 360.0;
+    TextureID texture  = TexMan.CheckForTexture("compass", TexMan.Type_Any);
+    int xCompassStart = (270.0 - angle) * 150.0 / 270.0 + 56;
+    string angleText   = StringStruct.Format("%f %d", angle, -xCompassStart);
+    Screen.DrawText(font, normalcolor, x, y + 50, angleText);
+    Screen.SetClipRect(0, 0, 100, 15);
+    Screen.DrawTexture(texture, false, -xCompassStart, 0);
   }
 
   static string AngleLetter(float angle)
@@ -258,15 +266,18 @@ class m8f_hn_EventHandler : EventHandler
     while (angle > 360.0) { angle -= 360.0; }
     return letters[angle / 22.5];
   }
-}
+
+} // m8f_hn_EventHandler
 
 class m8f_hn_BaseAreaNameSource
 {
+
   play virtual string GetAreaName(m8f_hn_Data data) const
   {
     return "---";
   }
-}
+
+} // m8f_hn_BaseAreaNameSource
 
 class m8f_hn_PlayerStartNameSource : m8f_hn_BaseAreaNameSource
 {
@@ -284,7 +295,7 @@ class m8f_hn_PlayerStartNameSource : m8f_hn_BaseAreaNameSource
 
     return isCloseToStart ? "Entrance" : "";
   }
-}
+} // m8f_hn_PlayerStartNameSource
 
 class m8f_hn_SignAreaNameSource : m8f_hn_BaseAreaNameSource
 {
@@ -316,7 +327,7 @@ class m8f_hn_SignAreaNameSource : m8f_hn_BaseAreaNameSource
 
     return closestSign ? closestSign.areaName : "";
   }
-}
+} // m8f_hn_SignAreaNameSource
 
 class m8f_hn_SectorAreaNameSource : m8f_hn_BaseAreaNameSource
 {
@@ -359,7 +370,7 @@ class m8f_hn_SectorAreaNameSource : m8f_hn_BaseAreaNameSource
 
     return "";
   }
-}
+} // m8f_hn_SectorAreaNameSource
 
 class m8f_hn_Sign : Actor
 {
@@ -422,20 +433,24 @@ class m8f_hn_Sign : Actor
     marker.Destroy();
     super.Die(source, inflictor, dmgflags);
   }
-}
+
+} // m8f_hn_Sign
 
 class m8f_hn_WoodenSign : m8f_hn_Sign
 {
+
   States
     {
     Spawn:
       HNWS A -1;
       Stop;
     }
-}
+
+} // class m8f_hn_WoodenSign
 
 class m8f_hn_WoodenSignMarker : MapMarker
 {
+
   Default
     {
       XScale 0.2;
@@ -448,4 +463,5 @@ class m8f_hn_WoodenSignMarker : MapMarker
       HNWS A -1;
       Stop;
     }
-}
+
+} // m8f_hn_WoodenSignMarker
