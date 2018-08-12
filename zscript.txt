@@ -86,7 +86,55 @@ class m8f_hn_FadingCircle : m8f_hn_FadingMarker {States{ Spawn: HNCR A -1; Stop;
 
 class m8f_hn_Data
 {
-  Array<Sector> secretSectors;
+  Array<Sector>  secretSectors;
+  Array<int>     itemAreaPosX;
+  Array<int>     itemAreaPosY;
+  Array<int>     itemAreaPosZ;
+  Array<string>  itemAreaNames;
+  Array<string>  areaItems;
+
+  m8f_hn_Data init()
+  {
+    int nSectors = level.sectors.size();
+    for (int i = 0; i < nSectors; ++i)
+      {
+        Sector s        = level.sectors[i];
+        bool   isSecret = (s.Flags & (Sector.SECF_SECRET | Sector.SECF_WASSECRET));
+        if (isSecret)
+          {
+            secretSectors.push(s);
+          }
+      }
+
+    areaItems.push("Key");
+    areaItems.push("Weapon"); // weapons
+    areaItems.push("Goonades");
+    areaItems.push("SPAMMineItem");
+    areaItems.push("PowerupGiver"); // powerups
+    areaItems.push("MegaSphere");
+    areaItems.push("SoulSphere");
+    areaItems.push("GreenArmor");
+    areaItems.push("BlueArmor");
+    areaItems.push("TBPowerupBase");
+    areaItems.push("MapRevealer");
+    areaItems.push("Berserk");
+    areaItems.push("Speeders");
+    areaItems.push("IcarusMk8");
+    areaItems.push("ProtectoBand");
+    areaItems.push("BigSPAMMine");
+    areaItems.push("GuardBoi");
+    areaItems.push("BadassGlasses");
+    areaItems.push("Mapisto");
+    areaItems.push("LovebirdTag");
+    areaItems.push("BigScorePresent");
+    areaItems.push("BackpackItem"); // backpacks
+    areaItems.push("Backpack2");
+    areaItems.push("BlueprintItem");
+    areaItems.push("NetronianBackpack");
+    areaItems.push("Big_Coin_pickup"); // other
+
+    return self;
+  }
 }
 
 class m8f_hn_EventHandler : EventHandler
@@ -99,6 +147,8 @@ class m8f_hn_EventHandler : EventHandler
   int    renderUpdatePeriod;
   int    renderCounter;
   string areaName;
+  bool   isWorldLoaded;
+  bool   isFirstTick;
 
   override void OnRegister()
   {
@@ -106,33 +156,46 @@ class m8f_hn_EventHandler : EventHandler
     left   = false;
     areaNameSources.push(new("m8f_hn_SignAreaNameSource"));
     areaNameSources.push(new("m8f_hn_PlayerStartNameSource"));
+    areaNameSources.push(new("m8f_hn_ItemAreaNameSource"));
     areaNameSources.push(new("m8f_hn_SectorAreaNameSource"));
     areaNameSources.push(new("m8f_hn_BaseAreaNameSource"));
-
-    data = new("m8f_hn_Data");
 
     renderUpdatePeriod = 20;
     renderCounter      =  0;
     areaName           = "";
+    isWorldLoaded      = false;
+    isFirstTick        = true;
   }
 
   override void WorldLoaded(WorldEvent e)
   {
-    int nSectors = level.sectors.size();
-    for (int i = 0; i < nSectors; ++i)
+    data = new("m8f_hn_Data").init();
+  }
+
+  override void WorldThingSpawned(WorldEvent e)
+  {
+    if (isWorldLoaded) { return; }
+
+    Actor item       = e.thing;
+    int   nAreaItems = data.areaItems.size();
+
+    for (int i = 0; i < nAreaItems; ++i)
       {
-        Sector s        = level.sectors[i];
-        bool   isSecret = (s.Flags & (Sector.SECF_SECRET | Sector.SECF_WASSECRET));
-        if (isSecret)
-          {
-            data.secretSectors.push(s);
-          }
+        if (!(item is data.areaItems[i])) { continue; }
+
+        data.itemAreaPosX.push(item.pos.x);
+        data.itemAreaPosY.push(item.pos.y);
+        data.itemAreaPosZ.push(item.pos.z);
+        data.itemAreaNames.push(item.GetTag());
       }
   }
 
   override void WorldTick()
   {
     if (level.time % period != 0) { return; }
+
+    if (!isFirstTick) { isWorldLoaded = true; }
+    isFirstTick = false;
 
     period         = CVar.GetCVar("m8f_hn_marker_spawn_period").GetInt();
     int lifetime   = CVar.GetCVar("m8f_hn_marker_lifetime"    ).GetInt() * 35;
@@ -344,6 +407,86 @@ class m8f_hn_SignAreaNameSource : m8f_hn_BaseAreaNameSource
     return closestSign ? closestSign.areaName : "";
   }
 } // m8f_hn_SignAreaNameSource
+
+class m8f_hn_ItemAreaNameSource : m8f_hn_BaseAreaNameSource
+{
+
+  override string GetAreaName(m8f_hn_Data data)
+  {
+    vector3 playerPos   = players[consolePlayer].mo.pos;
+    double  minDistance = -1;
+    string  closestItem = "";
+    double  itemAreaRadius = 20000.0;
+
+    int nAreaItems = data.itemAreaPosX.size();
+    for (int i = 0; i < nAreaItems; ++i)
+      {
+        double  dx       = data.itemAreaPosX[i] - playerPos.x;
+        double  dy       = data.itemAreaPosY[i] - playerPos.y;
+        double  dz       = data.itemAreaPosZ[i] - playerPos.z;
+        double  distance = dx * dx + dy * dy + dz * dz;
+
+        if ((distance < minDistance || minDistance < 0.0)
+            && distance < itemAreaRadius)
+          {
+            minDistance = distance;
+            closestItem = data.itemAreaNames[i];
+          }
+      }
+
+    if (closestItem.length())
+      {
+        return StringStruct.Format("%s Area", beautify(closestItem));
+      }
+
+    return "";
+  }
+
+  string beautify(string name)
+  {
+    string result = SeparateCamelCase(name);
+    result.replace("_", " ");
+    return result;
+  }
+
+  static string SeparateCamelCase(string source)
+  {
+    int    sourceLength = source.Length();
+    string result       = "";
+    string letter1      = source.CharAt(0);
+    string letter2;
+
+    for (int i = 1; i < sourceLength; ++i)
+      {
+        letter2 = source.CharAt(i);
+        if (IsSmallLetter(letter1) && IsBigLetter(letter2))
+          {
+            result.AppendFormat("%s ", letter1);
+          }
+        else
+          {
+            result.AppendFormat(letter1);
+          }
+        letter1 = letter2;
+      }
+    result.AppendFormat(letter2);
+
+    return result;
+  }
+
+  static bool IsSmallLetter(string letter)
+  {
+    int code = letter.CharCodeAt(0);
+    return (97 <= code && code <= 122);
+  }
+
+  static bool IsBigLetter(string letter)
+  {
+    int code = letter.CharCodeAt(0);
+    return (65 <= code && code <= 90);
+  }
+
+} // m8f_hn_ItemAreaNameSource
 
 class m8f_hn_SectorAreaNameSource : m8f_hn_BaseAreaNameSource
 {
