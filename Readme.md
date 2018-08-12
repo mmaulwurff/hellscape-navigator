@@ -13,7 +13,7 @@ complex maps.
   * Configurable lifetime and generation period
 
 * Signs
-  * A Sign can be placed to leave a note on level
+  * A Sign can be placed to leave a note on level (use Sign to read the note)
   * Three kinds: wooden/metal/transparent to fit level theme
   * Can be configured to be indestructible or not
   * Present on automap
@@ -39,6 +39,7 @@ complex maps.
 * Scaling option for compass
 * Scaling option for sign automap icons
 * Scaling option for Footstep Markers
+* Option to disable compass on Automap
 * (Maybe) breaking animation and damaged sprites for signs
 * ?
 
@@ -47,5 +48,7 @@ complex maps.
 [Git Repository](https://github.com/mmaulwurff/hellscape-navigator)
 
 [Screenshots](https://imgur.com/a/pZ10Hss)
+
+[Forum Post](https://forum.zdoom.org/viewtopic.php?f=43&t=61643#p1068272)
 
 Alexander Kromm (mmaulwurff@gmail.com)
