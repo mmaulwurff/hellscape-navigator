@@ -1,0 +1,142 @@
+class m8f_hn_Sign : Actor
+{
+
+  Default
+    {
+      Health 30;
+      Height 10;
+      Radius  3;
+      +SOLID;
+      +NOBLOOD;
+      +NOTONAUTOMAP;
+      +DONTTHRUST;
+    }
+
+  string note;
+  int    spawnTime;
+  Actor  marker;
+  string areaName;
+  double areaRadius;
+
+  override void BeginPlay()
+  {
+    string line1 = CVar.GetCVar("m8f_hn_sign_note1").GetString();
+    string line2 = CVar.GetCVar("m8f_hn_sign_note2").GetString();
+    string line3 = CVar.GetCVar("m8f_hn_sign_note3").GetString();
+
+    note = line1;
+    if (line2.Length() != 0) { note.AppendFormat("\n%s", line2); }
+    if (line3.Length() != 0) { note.AppendFormat("\n%s", line3); }
+
+    spawnTime = level.time;
+
+    bool shootable = CVar.GetCVar("m8f_hn_sign_shootable").GetInt();
+    bSHOOTABLE = shootable;
+
+    CVar areaNameCVar = CVar.GetCVar("m8f_hn_area_name");
+    areaName          = areaNameCVar.GetString();
+    areaNameCVar.setString("");
+
+    areaRadius = CVar.GetCVar("m8f_hn_area_radius").GetFloat();
+    areaRadius *= areaRadius;
+  }
+
+  override bool Used(Actor user)
+  {
+    string text    = note;
+    int    sec     = Thinker.Tics2Seconds(spawnTime);
+    bool   addTime = CVar.GetCVar("m8f_hn_sign_add_time").GetInt();
+    if (addTime)
+      {
+        text.AppendFormat("\n\n        %02d:%02d:%02d",
+                          sec / 3600, (sec % 3600) / 60, sec % 60);
+      }
+    user.A_Print(text);
+    return true;
+  }
+
+  override void Die(Actor source, Actor inflictor, int dmgflags)
+  {
+    marker.Destroy();
+    super.Die(source, inflictor, dmgflags);
+  }
+
+} // m8f_hn_Sign
+
+class m8f_hn_WoodenSign : m8f_hn_Sign
+{
+
+  States
+    {
+    Spawn:
+      HNWS A -1;
+      Stop;
+    }
+
+  override void BeginPlay()
+  {
+    marker = Spawn("m8f_hn_WoodenSignMarker", pos);
+    super.BeginPlay();
+  }
+
+} // class m8f_hn_WoodenSign
+
+class m8f_hn_TransparentSign : m8f_hn_Sign
+{
+
+  States
+    {
+    Spawn:
+      HNTS A -1;
+      Stop;
+    }
+
+  override void BeginPlay()
+  {
+    marker = Spawn("m8f_hn_TransparentSignMarker", pos);
+    super.BeginPlay();
+  }
+
+} // class m8f_hn_TransparentSign
+
+class m8f_hn_SignMarker : MapMarker
+{
+
+  Default
+    {
+      XScale 0.2;
+      YScale 0.2;
+    }
+
+} // m8f_hn_SignMarker
+
+
+class m8f_hn_WoodenSignMarker : m8f_hn_SignMarker
+{
+
+  States
+    {
+    Spawn:
+      HNWS M -1;
+      Stop;
+    }
+
+} // m8f_hn_WoodenSignMarker
+
+class m8f_hn_TransparentSignMarker : m8f_hn_SignMarker
+{
+
+  Default
+    {
+      XScale 0.4;
+      YScale 0.4;
+    }
+
+  States
+    {
+    Spawn:
+      HNTS M -1;
+      Stop;
+    }
+
+} // m8f_hn_TransparentSignMarker

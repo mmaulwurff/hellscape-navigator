@@ -10,3 +10,7 @@ changelog.txt
 !sprites
 sprites/*
 !sprites/*.png
+
+!zscript
+zscript/*
+!zscript/*.txt

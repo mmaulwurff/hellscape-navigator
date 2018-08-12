@@ -1,0 +1,182 @@
+class m8f_hn_BaseAreaNameSource
+{
+
+  play virtual string GetAreaName(m8f_hn_Data data) const
+  {
+    return "";
+  }
+
+} // m8f_hn_BaseAreaNameSource
+
+class m8f_hn_PlayerStartNameSource : m8f_hn_BaseAreaNameSource
+{
+  override string GetAreaName(m8f_hn_Data data)
+  {
+    vector3    playerStart;
+    int        angle;
+    [playerStart, angle]      = Object.G_PickPlayerStart(consolePlayer);
+    vector3    playerPos      = players[consolePlayer].mo.pos;
+    double     dx             = playerStart.x - playerPos.x;
+    double     dy             = playerStart.y - playerPos.y;
+    double     dz             = playerStart.z - playerPos.z;
+    double     distance       = dx * dx + dy * dy + dz * dz;
+    bool       isCloseToStart = (distance < 20000);
+
+    return isCloseToStart ? "Entrance" : "";
+  }
+} // m8f_hn_PlayerStartNameSource
+
+class m8f_hn_SignAreaNameSource : m8f_hn_BaseAreaNameSource
+{
+  override string GetAreaName(m8f_hn_Data data)
+  {
+    vector3     playerPos = players[consolePlayer].mo.pos;
+    let         iterator  = ThinkerIterator.Create("m8f_hn_Sign");
+    m8f_hn_Sign sign;
+    double      minDistance = -1;
+    m8f_hn_Sign closestSign = null;
+
+    while (sign = m8f_hn_Sign(iterator.Next()))
+      {
+        if (sign.areaName.length() == 0) { continue; }
+
+        vector3 signPos       = sign.pos;
+        double  dx            = signPos.x - playerPos.x;
+        double  dy            = signPos.y - playerPos.y;
+        double  dz            = signPos.z - playerPos.z;
+        double  distance      = dx * dx + dy * dy + dz * dz;
+
+        if ((distance < minDistance || minDistance < 0.0)
+            && distance < sign.areaRadius)
+          {
+            minDistance = distance;
+            closestSign = sign;
+          }
+      }
+
+    return closestSign ? closestSign.areaName : "";
+  }
+} // m8f_hn_SignAreaNameSource
+
+class m8f_hn_ItemAreaNameSource : m8f_hn_BaseAreaNameSource
+{
+
+  override string GetAreaName(m8f_hn_Data data)
+  {
+    vector3 playerPos   = players[consolePlayer].mo.pos;
+    double  minDistance = -1;
+    string  closestItem = "";
+    double  itemAreaRadius = 20000.0;
+
+    int nAreaItems = data.itemAreaPosX.size();
+    for (int i = 0; i < nAreaItems; ++i)
+      {
+        double  dx       = data.itemAreaPosX[i] - playerPos.x;
+        double  dy       = data.itemAreaPosY[i] - playerPos.y;
+        double  dz       = data.itemAreaPosZ[i] - playerPos.z;
+        double  distance = dx * dx + dy * dy + dz * dz;
+
+        if ((distance < minDistance || minDistance < 0.0)
+            && distance < itemAreaRadius)
+          {
+            minDistance = distance;
+            closestItem = data.itemAreaNames[i];
+          }
+      }
+
+    if (closestItem.length())
+      {
+        return StringStruct.Format("%s Area", beautify(closestItem));
+      }
+
+    return "";
+  }
+
+  string beautify(string name)
+  {
+    string result = SeparateCamelCase(name);
+    result.replace("_", " ");
+    return result;
+  }
+
+  static string SeparateCamelCase(string source)
+  {
+    int    sourceLength = source.Length();
+    string result       = "";
+    string letter1      = source.CharAt(0);
+    string letter2;
+
+    for (int i = 1; i < sourceLength; ++i)
+      {
+        letter2 = source.CharAt(i);
+        if (IsSmallLetter(letter1) && IsBigLetter(letter2))
+          {
+            result.AppendFormat("%s ", letter1);
+          }
+        else
+          {
+            result.AppendFormat(letter1);
+          }
+        letter1 = letter2;
+      }
+    result.AppendFormat(letter2);
+
+    return result;
+  }
+
+  static bool IsSmallLetter(string letter)
+  {
+    int code = letter.CharCodeAt(0);
+    return (97 <= code && code <= 122);
+  }
+
+  static bool IsBigLetter(string letter)
+  {
+    int code = letter.CharCodeAt(0);
+    return (65 <= code && code <= 90);
+  }
+
+} // m8f_hn_ItemAreaNameSource
+
+class m8f_hn_SectorAreaNameSource : m8f_hn_BaseAreaNameSource
+{
+  override string GetAreaName(m8f_hn_Data data)
+  {
+    PlayerInfo player = players[consolePlayer];
+    if (player == null) { return ""; }
+
+    Actor playerActor = player.mo;
+    if (playerActor == null) { return ""; }
+
+    Sector currentSector = playerActor.curSector;
+    if (currentSector == null) { return ""; }
+
+    bool isSecret = (currentSector.Flags & (Sector.SECF_SECRET | Sector.SECF_WASSECRET));
+    if (isSecret)
+      {
+        int nSecretSectors = data.secretSectors.size();
+        int i = 0;
+        for (; i < nSecretSectors; ++i)
+          {
+            if (currentSector == data.secretSectors[i]) { break; }
+          }
+        return StringStruct.Format("Secret #%d", i + 1);
+      }
+
+    bool isSky = (currentSector.GetTexture(1) == skyflatnum);
+    if (isSky) { return "Outdoors"; }
+
+    int nLines = currentSector.lines.size();
+    for (int i = 0; i < nLines; ++i)
+      {
+        Line l = currentSector.lines[i];
+        int  s = l.special;
+        if (s == 74 || s == 75 || s == 243 || s == 244)
+          {
+            return "Exit";
+          }
+      }
+
+    return "";
+  }
+} // m8f_hn_SectorAreaNameSource

@@ -1,0 +1,263 @@
+class m8f_hn_Data
+{
+  Array<Sector>  secretSectors;
+  Array<int>     itemAreaPosX;
+  Array<int>     itemAreaPosY;
+  Array<int>     itemAreaPosZ;
+  Array<string>  itemAreaNames;
+  Array<string>  areaItems;
+
+  m8f_hn_Data init()
+  {
+    int nSectors = level.sectors.size();
+    for (int i = 0; i < nSectors; ++i)
+      {
+        Sector s        = level.sectors[i];
+        bool   isSecret = (s.Flags & (Sector.SECF_SECRET | Sector.SECF_WASSECRET));
+        if (isSecret)
+          {
+            secretSectors.push(s);
+          }
+      }
+
+    areaItems.push("Key");
+    areaItems.push("Weapon"); // weapons
+    areaItems.push("Goonades");
+    areaItems.push("SPAMMineItem");
+    areaItems.push("PowerupGiver"); // powerups
+    areaItems.push("MegaSphere");
+    areaItems.push("SoulSphere");
+    areaItems.push("GreenArmor");
+    areaItems.push("BlueArmor");
+    areaItems.push("TBPowerupBase");
+    areaItems.push("MapRevealer");
+    areaItems.push("Berserk");
+    areaItems.push("Speeders");
+    areaItems.push("IcarusMk8");
+    areaItems.push("ProtectoBand");
+    areaItems.push("BigSPAMMine");
+    areaItems.push("GuardBoi");
+    areaItems.push("BadassGlasses");
+    areaItems.push("Mapisto");
+    areaItems.push("LovebirdTag");
+    areaItems.push("BigScorePresent");
+    areaItems.push("BackpackItem"); // backpacks
+    areaItems.push("Backpack2");
+    areaItems.push("BlueprintItem");
+    areaItems.push("NetronianBackpack");
+    areaItems.push("Big_Coin_pickup"); // other
+
+    return self;
+  }
+}
+
+class m8f_hn_EventHandler : EventHandler
+{
+  int     period;
+  vector3 oldPos;
+  bool    left;
+  Array<m8f_hn_BaseAreaNameSource> areaNameSources;
+  m8f_hn_Data data;
+  int    renderUpdatePeriod;
+  int    renderCounter;
+  string areaName;
+  bool   isWorldLoaded;
+  bool   isFirstTick;
+
+  override void OnRegister()
+  {
+    period = CVar.GetCVar("m8f_hn_marker_spawn_period").GetInt();
+    left   = false;
+    areaNameSources.push(new("m8f_hn_SignAreaNameSource"));
+    areaNameSources.push(new("m8f_hn_PlayerStartNameSource"));
+    areaNameSources.push(new("m8f_hn_ItemAreaNameSource"));
+    areaNameSources.push(new("m8f_hn_SectorAreaNameSource"));
+    areaNameSources.push(new("m8f_hn_BaseAreaNameSource"));
+
+    renderUpdatePeriod = 20;
+    renderCounter      =  0;
+    areaName           = "";
+    isWorldLoaded      = false;
+    isFirstTick        = true;
+  }
+
+  override void WorldLoaded(WorldEvent e)
+  {
+    data = new("m8f_hn_Data").init();
+  }
+
+  override void WorldThingSpawned(WorldEvent e)
+  {
+    if (isWorldLoaded) { return; }
+
+    Actor item       = e.thing;
+    int   nAreaItems = data.areaItems.size();
+
+    for (int i = 0; i < nAreaItems; ++i)
+      {
+        if (!(item is data.areaItems[i])) { continue; }
+
+        data.itemAreaPosX.push(item.pos.x);
+        data.itemAreaPosY.push(item.pos.y);
+        data.itemAreaPosZ.push(item.pos.z);
+        data.itemAreaNames.push(item.GetTag());
+      }
+  }
+
+  override void WorldTick()
+  {
+    if (level.time % period != 0) { return; }
+
+    if (!isFirstTick) { isWorldLoaded = true; }
+    isFirstTick = false;
+
+    period         = CVar.GetCVar("m8f_hn_marker_spawn_period").GetInt();
+    int lifetime   = CVar.GetCVar("m8f_hn_marker_lifetime"    ).GetInt() * 35;
+    int markerType = CVar.GetCVar("m8f_hn_marker_type"        ).GetInt();
+
+    PlayerInfo player = players[consolePlayer];
+    Actor playerActor = player.mo;
+    vector3 pos = playerActor.pos;
+    if (playerActor && oldPos == pos) { return; }
+
+    float xdiff = oldPos.x - pos.x;
+    float ydiff = oldPos.y - pos.y;
+    float dist  = xdiff * xdiff + ydiff * ydiff;
+    if (dist < 400) { return; }
+
+    oldPos = pos;
+
+    string markerClass;
+    switch (markerType)
+      {
+      case 0: // footsteps
+        {
+          float  angle  = playerActor.angle;
+          string letter = AngleLetter(angle);
+          markerClass   = left ? "m8f_hn_FadingLeft" : "m8f_hn_FadingRight";
+          markerClass.AppendFormat(letter);
+          left = !left;
+        }
+        break;
+
+      case 1: // circle
+        markerClass = "m8f_hn_FadingCircle";
+        break;
+
+      case 2: // arrow
+        {
+          float  angle  = playerActor.angle;
+          string letter = AngleLetter(angle);
+          markerClass   = "m8f_hn_FadingArrow";
+          markerClass.AppendFormat(letter);
+        }
+        break;
+
+      case 3: // off
+        return;
+      }
+
+    let marker = Actor.Spawn(markerClass, pos);
+    m8f_hn_FadingMarker(marker).init(lifetime);
+  }
+
+  override void NetworkProcess(ConsoleEvent event)
+  {
+    if (event.name == "m8f_hn_remove_signs")
+      {
+        let   iterator = ThinkerIterator.Create("m8f_hn_Sign");
+        Actor sign;
+        while (sign = Actor(iterator.Next()))
+          {
+            sign.Destroy();
+          }
+      }
+
+    else if (event.name == "m8f_hn_remove_decals")
+      {
+        let     iterator = ThinkerIterator.Create("Thinker", Thinker.STAT_DECAL);
+        Thinker dec;
+        while (dec = iterator.Next())
+          {
+            dec.Destroy();
+          }
+      }
+  }
+
+  ui string GetAreaName(m8f_hn_Data data)
+  {
+    string areaName = "no area name sources found";
+    int    size     = areaNameSources.size();
+    for (int i = 0; i < size; ++i)
+      {
+        areaName = areaNameSources[i].GetAreaName(data);
+        if (areaName.Length() != 0) { break; }
+      }
+    return areaName;
+  }
+
+  play void SetRenderCounter(int value) const
+  {
+    renderCounter = value;
+  }
+
+  play void SetAreaName(string name) const
+  {
+    areaName = name;
+  }
+
+  override void RenderOverlay(RenderEvent e)
+  {
+    if (renderCounter >= renderUpdatePeriod)
+      {
+        SetAreaName(GetAreaName(data));
+        SetRenderCounter(0);
+      }
+    else { SetRenderCounter(renderCounter + 1); }
+
+    Font   font        = Font.GetFont("SMALLFONT");
+    int    normalcolor = Font.CR_GRAY;
+    double x           = Screen.GetWidth() / 2;
+    double y           = 10;
+    drawTextCenter(areaName, normalColor, 1.0, y + 20, font);
+
+    double    angle     = players[consolePlayer].mo.angle % 360.0;
+    TextureID eswn      = TexMan.CheckForTexture("compass",  TexMan.Type_Any);
+    TextureID border    = TexMan.CheckForTexture("compassb", TexMan.Type_Any);
+    int       xStart    = (270.0 - angle) * 150.0 / 270.0 + 56;
+    double    compX     = x - 102 / 2;
+    Screen.SetClipRect(compX + 1, y + 1, 100, 15);
+    Screen.DrawTexture(eswn, false, compX - xStart + 1, y + 1);
+    Screen.ClearClipRect();
+    Screen.DrawTexture(border, false, compX, y);
+  }
+
+  ui static void drawTextCenter(string text, int color, double scale, double y,
+                                Font font, int xAdjustment = 0)
+  {
+    int width    = scale * Screen.GetWidth();
+    int height   = scale * (Screen.GetHeight() - font.GetHeight());
+    int position = width - font.StringWidth(text);
+
+    double x = position * 0.5 + xAdjustment;
+
+    Screen.DrawText(font, color, x, y, text,
+                    DTA_KeepRatio,     true,
+                    DTA_VirtualWidth,  width,
+                    DTA_VirtualHeight, height);
+  }
+
+  static string AngleLetter(float angle)
+  {
+    static const string letters[] =
+      {
+        "3", "A", "2", "9", "1", "G", "8", "F",
+        "7", "E", "6", "D", "5", "C", "4", "B"
+      };
+
+    angle += 45.0 / 4;
+    angle %= 360.0;
+    return letters[angle / 22.5];
+  }
+
+} // m8f_hn_EventHandler
