@@ -29,8 +29,10 @@ complex maps.
   * Glow prints: visible in the dark
   * Neon prints: fade and disappear after 1 minute
 
-# Contacts
+# Links and contacts
 
 [Git Repository](https://github.com/mmaulwurff/hellscape-navigator)
+
+[Screenshots](https://imgur.com/a/pZ10Hss)
 
 Alexander Kromm (mmaulwurff@gmail.com)
