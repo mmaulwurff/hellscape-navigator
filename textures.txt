@@ -25,3 +25,17 @@ sprite hntsm0, 52, 31
   sprite hntsa0, 0, 0
   Offset 26, 15
 }
+
+// Metal Sign with offset
+sprite hnmsa0, 52, 61
+{
+  sprite hnmsa0, 0, 0
+  Offset 26, 61
+}
+
+// Metal Sign map marker with offset
+sprite hnmsm0, 52, 31
+{
+  sprite hnmsa0, 0, 0
+  Offset 26, 15
+}

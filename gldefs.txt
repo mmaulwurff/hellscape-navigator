@@ -11,3 +11,8 @@ object m8f_hn_WoodenSign
 {
   frame HNWSA { light m8f_hn_sign_candle_light }
 }
+
+brightmap sprite hnmsa0
+{
+  map hnmsa0b
+}

@@ -6,9 +6,10 @@ AddMenuKey "Wall Spray"  "m8f_hn_wall_spray_open"
 
 alias m8f_hn_summon_wooden_sign      "summon m8f_hn_WoodenSign"
 alias m8f_hn_summon_transparent_sign "summon m8f_hn_TransparentSign"
+alias m8f_hn_summon_metal_sign       "summon m8f_hn_MetalSign"
 
 alias m8f_hn_make_sign_open   "openmenu m8f_hn_SignNoteMenu"
-alias m8f_hn_make_sign_close  "closemenu; test == $m8f_hn_sign_type 0 m8f_hn_summon_wooden_sign; test == $m8f_hn_sign_type 1 m8f_hn_summon_transparent_sign; test $m8f_hn_sign_clear_after_make m8f_hn_make_sign_clear"
+alias m8f_hn_make_sign_close  "closemenu; test == $m8f_hn_sign_type 0 m8f_hn_summon_wooden_sign; test == $m8f_hn_sign_type 1 m8f_hn_summon_transparent_sign; test == $m8f_hn_sign_type 2 m8f_hn_summon_metal_sign; test $m8f_hn_sign_clear_after_make m8f_hn_make_sign_clear"
 alias m8f_hn_make_sign_cancel "closemenu"
 alias m8f_hn_make_sign_clear  "m8f_hn_sign_note1 \"\"; m8f_hn_sign_note2 \"\"; m8f_hn_sign_note3 \"\""
 

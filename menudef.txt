@@ -41,6 +41,7 @@ OptionValue "m8f_hn_sign_type_values"
 {
   0, "Wooden"
   1, "Transparent"
+  2, "Metal"
 }
 
 OptionMenu "m8f_hn_WallPrintMenu"
