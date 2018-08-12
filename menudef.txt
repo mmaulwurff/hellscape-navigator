@@ -89,7 +89,8 @@ OptionMenu "m8f_hn_Options"
 
   StaticText ""
   StaticText "Compass", "Blue"
-  Slider     "Horizontal position", "m8f_hn_compass_y", 0.0, 0.95, 0.01, 2
+  Slider     "Horizontal position" , "m8f_hn_compass_y", 0.0, 0.95, 0.01, 2
+  Option     "Show level name"     , "m8f_hn_compass_level_name", "OnOff"
 
   StaticText  ""
   StaticText  "Commands", "Blue"

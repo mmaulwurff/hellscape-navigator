@@ -22,3 +22,4 @@ user string m8f_hn_decal_name2;
 user int    m8f_hn_print_color;
 
 server float m8f_hn_compass_y = 0.1;
+server bool  m8f_hn_compass_level_name = true;

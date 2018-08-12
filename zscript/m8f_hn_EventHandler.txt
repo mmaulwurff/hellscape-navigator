@@ -226,7 +226,8 @@ class m8f_hn_EventHandler : EventHandler
     double x           = Screen.GetWidth() / 2;
     double relativeY   = CVar.GetCVar("m8f_hn_compass_y").GetFloat();
     double y           = int(Screen.GetHeight() * relativeY);
-    drawTextCenter(areaName, normalColor, 1.0, y + 20, font);
+    double lineHeight  = Font.GetHeight();
+    bool   levelName   = CVar.GetCVar("m8f_hn_compass_level_name").GetInt();
 
     double    angle  = players[consolePlayer].mo.angle % 360.0;
     TextureID eswn   = TexMan.CheckForTexture("compass",  TexMan.Type_Any);
@@ -237,6 +238,15 @@ class m8f_hn_EventHandler : EventHandler
     Screen.DrawTexture(eswn, false, compX - xStart + 1, y + 1);
     Screen.ClearClipRect();
     Screen.DrawTexture(border, false, compX, y);
+
+    y += 20;
+    if (levelName)
+      {
+        drawTextCenter(level.levelName, normalColor, 1.0, y, font);
+        y += lineHeight;
+      }
+
+    drawTextCenter(areaName, normalColor, 1.0, y, font);
   }
 
   ui static void drawTextCenter(string text, int color, double scale, double y,
