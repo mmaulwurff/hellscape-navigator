@@ -88,7 +88,11 @@ OptionMenu "m8f_hn_Options"
   Option "Make this sign shootable" , "m8f_hn_sign_shootable"        , "OnOff"
 
   StaticText ""
-  StaticText "Commands", "Blue"
+  StaticText "Compass", "Blue"
+  Slider     "Horizontal position", "m8f_hn_compass_y", 0.0, 0.95, 0.01, 2
+
+  StaticText  ""
+  StaticText  "Commands", "Blue"
   SafeCommand "Remove all signs" , "netevent m8f_hn_remove_signs"
   SafeCommand "Clear walls"      , "netevent m8f_hn_remove_decals"
 

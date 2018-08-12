@@ -224,14 +224,15 @@ class m8f_hn_EventHandler : EventHandler
     Font   font        = Font.GetFont("SMALLFONT");
     int    normalcolor = Font.CR_GRAY;
     double x           = Screen.GetWidth() / 2;
-    double y           = 10;
+    double relativeY   = CVar.GetCVar("m8f_hn_compass_y").GetFloat();
+    double y           = int(Screen.GetHeight() * relativeY);
     drawTextCenter(areaName, normalColor, 1.0, y + 20, font);
 
-    double    angle     = players[consolePlayer].mo.angle % 360.0;
-    TextureID eswn      = TexMan.CheckForTexture("compass",  TexMan.Type_Any);
-    TextureID border    = TexMan.CheckForTexture("compassb", TexMan.Type_Any);
-    int       xStart    = (270.0 - angle) * 150.0 / 270.0 + 56;
-    double    compX     = x - 102 / 2;
+    double    angle  = players[consolePlayer].mo.angle % 360.0;
+    TextureID eswn   = TexMan.CheckForTexture("compass",  TexMan.Type_Any);
+    TextureID border = TexMan.CheckForTexture("compassb", TexMan.Type_Any);
+    int       xStart = (270.0 - angle) * 150.0 / 270.0 + 56;
+    double    compX  = x - 102 / 2;
     Screen.SetClipRect(compX + 1, y + 1, 100, 15);
     Screen.DrawTexture(eswn, false, compX - xStart + 1, y + 1);
     Screen.ClearClipRect();

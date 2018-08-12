@@ -20,3 +20,5 @@ server int    m8f_hn_sign_type             = 0;
 user string m8f_hn_decal_name1;
 user string m8f_hn_decal_name2;
 user int    m8f_hn_print_color;
+
+server float m8f_hn_compass_y = 0.1;
