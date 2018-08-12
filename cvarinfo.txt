@@ -17,5 +17,6 @@ server bool   m8f_hn_sign_shootable        = true;
 server float  m8f_hn_area_radius           = 500.0;
 server int    m8f_hn_sign_type             = 0;
 
-user string m8f_hn_decal_name;
+user string m8f_hn_decal_name1;
+user string m8f_hn_decal_name2;
 user int    m8f_hn_print_color;

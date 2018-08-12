@@ -39,3 +39,38 @@ sprite hnmsm0, 52, 31
   sprite hnmsa0, 0, 0
   Offset 26, 15
 }
+
+// Blue Dead Wall Sprite with offset
+sprite hn0blu, 60, 40
+{
+  sprite hn0blu, 0, 0
+  Offset 30, 20
+}
+
+// Red Clear Wall Sprite with offseet
+sprite hn1red, 60, 40
+{
+  sprite hn1red, 0, 0
+  Offset 30, 20
+}
+
+// Red Clear Wall Flow Sprite with offset
+sprite hn1res, 60, 40
+{
+  sprite hn1res, 0, 0
+  Offset 30, 20
+}
+
+// Green Clear Wall Sprite with offset
+sprite hn1grn, 60, 40
+{
+  sprite hn1grn, 0, 0
+  Offset 30, 20
+}
+
+// Blue Clear Wall Sprite with offset
+sprite hn1blu, 60, 40
+{
+  sprite hn1blu, 0, 0
+  Offset 30, 20
+}

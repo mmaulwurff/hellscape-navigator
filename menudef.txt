@@ -50,11 +50,14 @@ OptionMenu "m8f_hn_WallPrintMenu"
 
   StaticText ""
   Option "Print type", "m8f_hn_print_color", "m8f_hn_print_color_values"
-  Command "Dead", "m8f_hn_print_red_dead"
+
+  StaticText ""
+  Command "Dead"  , "m8f_hn_print_dead"
+  Command "Clear" , "m8f_hn_print_clear"
 
   StaticText ""
   StaticText "Commands", "Blue"
-  SafeCommand "Clear walls", "netevent m8f_hn_remove_decals; closemenu"
+  SafeCommand "Clear walls", "m8f_hn_clear_walls"
 }
 
 OptionMenu "m8f_hn_Options"
@@ -87,7 +90,7 @@ OptionMenu "m8f_hn_Options"
   StaticText ""
   StaticText "Commands", "Blue"
   SafeCommand "Remove all signs" , "netevent m8f_hn_remove_signs"
-  SafeCommand "Clear walls"      , "netevent m8f_hn_remove_decals; closemenu"
+  SafeCommand "Clear walls"      , "netevent m8f_hn_remove_decals"
 
   StaticText ""
 }
