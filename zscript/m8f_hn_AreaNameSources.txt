@@ -63,18 +63,18 @@ class m8f_hn_ItemAreaNameSource : m8f_hn_BaseAreaNameSource
 
   override string GetAreaName(m8f_hn_Data data)
   {
-    vector3 playerPos   = players[consolePlayer].mo.pos;
-    double  minDistance = -1;
-    string  closestItem = "";
+    vector3 playerPos      = players[consolePlayer].mo.pos;
+    double  minDistance    = -1;
+    string  closestItem    = "";
     double  itemAreaRadius = 20000.0;
+    int     nAreaItems     = data.itemAreaPosX.size();
 
-    int nAreaItems = data.itemAreaPosX.size();
     for (int i = 0; i < nAreaItems; ++i)
       {
-        double  dx       = data.itemAreaPosX[i] - playerPos.x;
-        double  dy       = data.itemAreaPosY[i] - playerPos.y;
-        double  dz       = data.itemAreaPosZ[i] - playerPos.z;
-        double  distance = dx * dx + dy * dy + dz * dz;
+        double dx       = data.itemAreaPosX[i] - playerPos.x;
+        double dy       = data.itemAreaPosY[i] - playerPos.y;
+        double dz       = data.itemAreaPosZ[i] - playerPos.z;
+        double distance = dx * dx + dy * dy + dz * dz;
 
         if ((distance < minDistance || minDistance < 0.0)
             && distance < itemAreaRadius)

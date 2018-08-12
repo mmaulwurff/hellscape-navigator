@@ -89,9 +89,15 @@ class m8f_hn_EventHandler : EventHandler
   override void WorldThingSpawned(WorldEvent e)
   {
     if (isWorldLoaded) { return; }
+    if (e == null)     { return; }
 
-    Actor item       = e.thing;
-    int   nAreaItems = data.areaItems.size();
+    Actor item = e.thing;
+    if (item == null) { return; }
+
+    Inventory inv = Inventory(item);
+    if (inv && inv.owner) { return; }
+
+    int nAreaItems = data.areaItems.size();
 
     for (int i = 0; i < nAreaItems; ++i)
       {
