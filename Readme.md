@@ -6,7 +6,7 @@ complex maps.
 
 # Features
 
-* Automap footsteps marks
+* Automap Footstep Markers
   * Display visited places
   * Fade with time
   * Configurable looks: footsteps/arrow/point
@@ -16,18 +16,31 @@ complex maps.
   * A Sign can be placed to leave a note on level
   * Three kinds: wooden/metal/transparent to fit level theme
   * Can be configured to be indestructible or not
+  * Present on automap
 
 * Compass
   * Shows view direction
 
-* Area names
+* Area Names
   * Entrance/Exit/Outdoors/Secrets
-  * A Sign can be configured to mark area with name
+  * A Sign can be configured to create custom area with name
 
-* Wall prints
+* Wall Prints
   * Blood prints
   * Glow prints: visible in the dark
   * Neon prints: fade and disappear after 1 minute
+  * Available prints: "Dead", "Clear"
+  * All prints have blood, glow, and neon variants
+
+# Todo
+
+* More Wall Prints ("Enemy", "Ammo", "Health", "Todo", "Done", "<-", "->",
+"v", "^")
+* Scaling option for compass
+* Scaling option for sign automap icons
+* Scaling option for Footstep Markers
+* (Maybe) breaking animation and damaged sprites for signs
+* ?
 
 # Links and contacts
 
