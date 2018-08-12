@@ -1,7 +1,7 @@
 # Hellscape Navigator
 (singleplayer GZDoom mod)
 
-Hellscape Navitagor is a collection of tools designed to help navigation in
+Hellscape Navigator is a collection of tools designed to help navigation in
 complex maps.
 
 # Features
@@ -15,7 +15,7 @@ complex maps.
 * Signs
   * A Sign can be placed to leave a note on level
   * Three kinds: wooden/metal/transparent to fit level theme
-  * Can be configured to be undestructible or not
+  * Can be configured to be indestructible or not
 
 * Compass
   * Shows view direction
