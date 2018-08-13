@@ -246,7 +246,55 @@ class m8f_hn_EventHandler : EventHandler
         y += lineHeight;
       }
 
-    drawTextCenter(areaName, normalColor, 1.0, y, font);
+    if (areaName.length() != 0)
+      {
+        drawTextCenter(areaName, normalColor, 1.0, y, font);
+        y += lineHeight;
+      }
+
+    if (CVar.GetCVar("m8f_hn_show_grid_coords").GetInt())
+      {
+        vector3 pos    = players[consolePlayer].mo.pos;
+        string  coords = makeGridCoordinates(pos);
+        drawTextCenter(coords, normalColor, 1.0, y, font);
+      }
+  }
+
+  ui static string makeGridCoordinates(vector3 pos)
+  {
+    int     x        = pos.x;
+    int     y        = pos.y;
+    int     gridSize = 512;
+    if (x < 0) { x -= gridSize; }
+    if (y < 0) { y -= gridSize; }
+    string  xString  = intToStringAA(x / gridSize);
+    y                = (y + 64) / gridSize;
+    string  coords   = StringStruct.Format("%s %d", xString, y);
+    return coords;
+  }
+
+  ui static string intToStringAA(int value)
+  {
+    if (value == 0) { return "A"; }
+
+    bool negative;
+    if (value >= 0) { negative = false;}
+    else            { negative = true; value = -value - 1; }
+
+    string result = "";
+    while (true)
+      {
+        int small = value % 26;
+        result    = StringStruct.Format("%c%s", 65 + small, result);
+        value    /= 26;
+
+        if (value == 0) break;
+        --value;
+      }
+
+    if (negative) { result = StringStruct.Format("-%s", result); }
+
+    return result;
   }
 
   ui static void drawTextCenter(string text, int color, double scale, double y,
