@@ -1,0 +1,21 @@
+class m8f_hn_Settings
+{
+  double yStart;
+  bool   showCompass;
+  bool   levelName;
+  bool   showGridCoords;
+
+  void read(PlayerInfo player)
+  {
+    yStart         = CVar.GetCVar("m8f_hn_compass_y"          , player).GetFloat();
+    showCompass    = CVar.GetCVar("m8f_hn_compass_show"       , player).GetInt();
+    levelName      = CVar.GetCVar("m8f_hn_compass_level_name" , player).GetInt();
+    showGridCoords = CVar.GetCVar("m8f_hn_show_grid_coords"   , player).GetInt();
+  }
+
+  m8f_hn_Settings init(PlayerInfo player)
+  {
+    read(player);
+    return self;
+  }
+}

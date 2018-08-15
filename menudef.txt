@@ -44,6 +44,14 @@ OptionValue "m8f_hn_sign_type_values"
   2, "Metal"
 }
 
+OptionValue "m8f_hn_update_period_values"
+{
+  -1, "Never"
+   0, "Immediately"
+  35, "Every second"
+ 105, "Every three seconds"
+}
+
 OptionMenu "m8f_hn_WallPrintMenu"
 {
   Title "New wall print"
@@ -68,6 +76,10 @@ OptionMenu "m8f_hn_Options"
   StaticText "Controls", "Blue"
   Control "Make a sign" , "m8f_hn_make_sign_open"
   Control "Wall Spray"  , "m8f_hn_wall_spray_open"
+
+  StaticText ""
+  StaticText "General Options"
+  Option "Options update" , "m8f_hn_update_period" , "m8f_hn_update_period_values"
 
   StaticText ""
   StaticText "Footstep Marker Options", "Blue"

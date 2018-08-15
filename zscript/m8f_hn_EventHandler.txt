@@ -64,6 +64,7 @@ class m8f_hn_EventHandler : EventHandler
   bool   isWorldLoaded;
   bool   isFirstTick;
   bool   isTitlemap;
+  m8f_hn_Settings settings;
 
   override void OnRegister()
   {
@@ -86,6 +87,7 @@ class m8f_hn_EventHandler : EventHandler
   {
     data       = new("m8f_hn_Data").init();
     isTitlemap = CheckTitlemap();
+    settings   = new("m8f_hn_Settings").init(players[consolePlayer]);
   }
 
   override void WorldThingSpawned(WorldEvent e)
@@ -224,6 +226,16 @@ class m8f_hn_EventHandler : EventHandler
   {
     if (isTitlemap) { return; }
 
+    PlayerInfo player = players[consolePlayer];
+    int optionsUpdatePeriod = CVar.GetCVar("m8f_hn_update_period", player).GetInt();
+
+    if (optionsUpdatePeriod == 0) { settings.read(player); }
+    else if (optionsUpdatePeriod != -1
+             && (level.time % optionsUpdatePeriod) == 0)
+      {
+        settings.read(player);
+      }
+
     if (renderCounter >= renderUpdatePeriod)
       {
         SetAreaName(GetAreaName(data));
@@ -233,18 +245,15 @@ class m8f_hn_EventHandler : EventHandler
 
     Font   font        = Font.GetFont("SMALLFONT");
     int    normalcolor = Font.CR_GRAY;
-    double relativeY   = CVar.GetCVar("m8f_hn_compass_y").GetFloat();
-    double y           = int(Screen.GetHeight() * relativeY);
+    double y           = int(Screen.GetHeight() * settings.yStart);
     double lineHeight  = Font.GetHeight();
 
-    bool showCompass = CVar.GetCVar("m8f_hn_compass_show").GetInt();
-    if (showCompass)
+    if (settings.showCompass)
     {
       y += drawCompass(y);
     }
 
-    bool levelName = CVar.GetCVar("m8f_hn_compass_level_name").GetInt();
-    if (levelName)
+    if (settings.levelName)
       {
         drawTextCenter(level.levelName, normalColor, 1.0, y, font);
         y += lineHeight;
@@ -256,7 +265,7 @@ class m8f_hn_EventHandler : EventHandler
         y += lineHeight;
       }
 
-    if (CVar.GetCVar("m8f_hn_show_grid_coords").GetInt())
+    if (settings.showGridCoords)
       {
         vector3 pos    = players[consolePlayer].mo.pos;
         string  coords = makeGridCoordinates(pos);
