@@ -233,23 +233,17 @@ class m8f_hn_EventHandler : EventHandler
 
     Font   font        = Font.GetFont("SMALLFONT");
     int    normalcolor = Font.CR_GRAY;
-    double x           = Screen.GetWidth() / 2;
     double relativeY   = CVar.GetCVar("m8f_hn_compass_y").GetFloat();
     double y           = int(Screen.GetHeight() * relativeY);
     double lineHeight  = Font.GetHeight();
-    bool   levelName   = CVar.GetCVar("m8f_hn_compass_level_name").GetInt();
 
-    double    angle  = players[consolePlayer].mo.angle % 360.0;
-    TextureID eswn   = TexMan.CheckForTexture("compass",  TexMan.Type_Any);
-    TextureID border = TexMan.CheckForTexture("compassb", TexMan.Type_Any);
-    int       xStart = (270.0 - angle) * 150.0 / 270.0 + 56;
-    double    compX  = x - 102 / 2;
-    Screen.SetClipRect(compX + 1, y + 1, 100, 15);
-    Screen.DrawTexture(eswn, false, compX - xStart + 1, y + 1);
-    Screen.ClearClipRect();
-    Screen.DrawTexture(border, false, compX, y);
+    bool showCompass = CVar.GetCVar("m8f_hn_compass_show").GetInt();
+    if (showCompass)
+    {
+      y += drawCompass(y);
+    }
 
-    y += 20;
+    bool levelName = CVar.GetCVar("m8f_hn_compass_level_name").GetInt();
     if (levelName)
       {
         drawTextCenter(level.levelName, normalColor, 1.0, y, font);
@@ -268,6 +262,22 @@ class m8f_hn_EventHandler : EventHandler
         string  coords = makeGridCoordinates(pos);
         drawTextCenter(coords, normalColor, 1.0, y, font);
       }
+  }
+
+  ui static double drawCompass(double y)
+  {
+    double x         = Screen.GetWidth() / 2;
+    double    angle  = players[consolePlayer].mo.angle % 360.0;
+    TextureID eswn   = TexMan.CheckForTexture("compass",  TexMan.Type_Any);
+    TextureID border = TexMan.CheckForTexture("compassb", TexMan.Type_Any);
+    int       xStart = (270.0 - angle) * 150.0 / 270.0 + 56;
+    double    compX  = x - 102 / 2;
+    Screen.SetClipRect(compX + 1, y + 1, 100, 15);
+    Screen.DrawTexture(eswn, false, compX - xStart + 1, y + 1);
+    Screen.ClearClipRect();
+    Screen.DrawTexture(border, false, compX, y);
+
+    return 20.0;
   }
 
   ui static string makeGridCoordinates(vector3 pos)

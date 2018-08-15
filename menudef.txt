@@ -88,7 +88,8 @@ OptionMenu "m8f_hn_Options"
   Option "Make this sign shootable" , "m8f_hn_sign_shootable"        , "OnOff"
 
   StaticText ""
-  StaticText "Compass", "Blue"
+  StaticText "Compass and Coordinates", "Blue"
+  Option     "Show Compass"         , "m8f_hn_compass_show"       , "OnOff"
   Slider     "Horizontal position"  , "m8f_hn_compass_y" , 0.0, 0.95, 0.01, 2
   Option     "Show level name"      , "m8f_hn_compass_level_name" , "OnOff"
   Option     "Show grid coordinates", "m8f_hn_show_grid_coords"   , "OnOff"
