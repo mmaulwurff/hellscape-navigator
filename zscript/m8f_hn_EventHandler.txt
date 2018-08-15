@@ -63,6 +63,7 @@ class m8f_hn_EventHandler : EventHandler
   string areaName;
   bool   isWorldLoaded;
   bool   isFirstTick;
+  bool   isTitlemap;
 
   override void OnRegister()
   {
@@ -83,7 +84,8 @@ class m8f_hn_EventHandler : EventHandler
 
   override void WorldLoaded(WorldEvent e)
   {
-    data = new("m8f_hn_Data").init();
+    data       = new("m8f_hn_Data").init();
+    isTitlemap = CheckTitlemap();
   }
 
   override void WorldThingSpawned(WorldEvent e)
@@ -212,8 +214,16 @@ class m8f_hn_EventHandler : EventHandler
     areaName = name;
   }
 
+  bool CheckTitlemap()
+  {
+    bool isTitlemap = (level.mapname == "TITLEMAP");
+    return isTitlemap;
+  }
+
   override void RenderOverlay(RenderEvent e)
   {
+    if (isTitlemap) { return; }
+
     if (renderCounter >= renderUpdatePeriod)
       {
         SetAreaName(GetAreaName(data));
