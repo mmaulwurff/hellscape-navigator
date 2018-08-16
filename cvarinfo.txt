@@ -27,5 +27,6 @@ user float m8f_hn_compass_y          = 0.1;
 user bool  m8f_hn_compass_level_name = true;
 user bool  m8f_hn_compass_show       = true;
 user bool  m8f_hn_show_grid_coords   = false;
+user bool  m8f_hn_compass_automap    = true;
 
 user int   m8f_hn_update_period      = 35;

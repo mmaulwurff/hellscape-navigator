@@ -239,6 +239,7 @@ class m8f_hn_EventHandler : EventHandler
   override void RenderOverlay(RenderEvent e)
   {
     if (isTitlemap) { return; }
+    if (automapActive && !settings.showOnAutomap) { return; }
 
     PlayerInfo player = players[consolePlayer];
     int optionsUpdatePeriod = CVar.GetCVar("m8f_hn_update_period", player).GetInt();
