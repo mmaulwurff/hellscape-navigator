@@ -87,6 +87,7 @@ OptionMenu "m8f_hn_Options"
   Slider "Marker Lifetime (s)"        , "m8f_hn_marker_lifetime", 10, 900, 10, 0
   Option "Markers Stay Forever"       , "m8f_hn_marker_forever" , "OnOff"
   Slider "Initial Opacity"            , "m8f_hn_marker_alpha", 0.1, 1.0, 0.1, 1
+  Slider "Size"                       , "m8f_hn_marker_scale", 0.5, 2.0, 0.1, 1
   Option "Footstep Marker"     , "m8f_hn_marker_type", "m8f_hn_marker_type_values"
 
   StaticText "Footsteps and Arrow type rotation doesn't", "Black"

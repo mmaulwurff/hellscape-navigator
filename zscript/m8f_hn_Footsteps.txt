@@ -10,11 +10,13 @@ class m8f_hn_FadingMarker : MapMarker
   float fadeStep;
   bool  forever;
 
-  m8f_hn_FadingMarker init(int lifetime, double initAlpha, bool f)
+  m8f_hn_FadingMarker init(int lifetime, double initAlpha, bool f, double s)
   {
     alpha    = initAlpha;
     fadeStep = alpha / lifetime;
     forever  = f;
+    scale.x *= s;
+    scale.y *= s;
     return self;
   }
 
