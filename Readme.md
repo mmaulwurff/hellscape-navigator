@@ -51,4 +51,6 @@ complex maps.
 
 [Forum Post](https://forum.zdoom.org/viewtopic.php?f=43&t=61643#p1068272)
 
-Alexander Kromm (mmaulwurff@gmail.com)
+Author: Alexander Kromm (mmaulwurff@gmail.com)
+
+License: GPLv3 (see copying.txt)
