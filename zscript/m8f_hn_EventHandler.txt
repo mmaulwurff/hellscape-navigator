@@ -241,8 +241,9 @@ class m8f_hn_EventHandler : EventHandler
     if (isTitlemap) { return; }
     if (automapActive && !settings.showOnAutomap) { return; }
 
-    PlayerInfo player = players[consolePlayer];
-    int optionsUpdatePeriod = CVar.GetCVar("m8f_hn_update_period", player).GetInt();
+    PlayerInfo player              = players[consolePlayer];
+    int        optionsUpdatePeriod =
+      CVar.GetCVar("m8f_hn_update_period", player).GetInt();
 
     if (optionsUpdatePeriod == 0) { settings.read(player); }
     else if (optionsUpdatePeriod != -1
@@ -290,14 +291,14 @@ class m8f_hn_EventHandler : EventHandler
 
   ui static double drawCompass(double y)
   {
-    double x         = Screen.GetWidth() / 2;
+    double    x      = Screen.GetWidth() / 2.0;
     double    angle  = players[consolePlayer].mo.angle % 360.0;
     TextureID eswn   = TexMan.CheckForTexture("compass",  TexMan.Type_Any);
     TextureID border = TexMan.CheckForTexture("compassb", TexMan.Type_Any);
-    int       xStart = (270.0 - angle) * 150.0 / 270.0 + 56;
-    double    compX  = x - 102 / 2;
+    double    xStart = (270.0 - angle) * 150.0 / 270.0 + 56.0;
+    double    compX  = x - 102.0 / 2.0;
     Screen.SetClipRect(compX + 1, y + 1, 100, 15);
-    Screen.DrawTexture(eswn, false, compX - xStart + 1, y + 1);
+    Screen.DrawTexture(eswn, false, compX - xStart + 1.0, y + 1);
     Screen.ClearClipRect();
     Screen.DrawTexture(border, false, compX, y);
 
@@ -344,11 +345,10 @@ class m8f_hn_EventHandler : EventHandler
   ui static void drawTextCenter(string text, int color, double scale, double y,
                                 Font font, int xAdjustment = 0)
   {
-    int width    = scale * Screen.GetWidth();
-    int height   = scale * (Screen.GetHeight() - font.GetHeight());
-    int position = width - font.StringWidth(text);
-
-    double x = position * 0.5 + xAdjustment;
+    int    width    = scale * Screen.GetWidth();
+    int    height   = scale * (Screen.GetHeight() - font.GetHeight());
+    int    position = width - font.StringWidth(text);
+    double x        = position * 0.5 + xAdjustment;
 
     Screen.DrawText(font, color, x, y, text,
                     DTA_KeepRatio,     true,
