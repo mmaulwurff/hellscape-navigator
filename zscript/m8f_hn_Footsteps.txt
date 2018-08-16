@@ -9,9 +9,10 @@ class m8f_hn_FadingMarker : MapMarker
 
   float fadeStep;
 
-  m8f_hn_FadingMarker init(int lifetime)
+  m8f_hn_FadingMarker init(int lifetime, double initAlpha)
   {
-    fadeStep = 1.0 / lifetime;
+    alpha    = initAlpha;
+    fadeStep = alpha / lifetime;
     return self;
   }
 

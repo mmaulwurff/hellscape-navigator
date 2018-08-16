@@ -16,6 +16,7 @@ class m8f_hn_Settings
   int    footstepPeriod; // tics
   int    markerType;     // FootstepMarkerTypes
   int    markerLifetime; // tics
+  double markerAlpha;
 
   void read(PlayerInfo player)
   {
@@ -27,7 +28,7 @@ class m8f_hn_Settings
     footstepPeriod = CVar.GetCVar("m8f_hn_marker_spawn_period", player).GetInt();
     markerType     = CVar.GetCVar("m8f_hn_marker_type"        , player).GetInt();
     markerLifetime = CVar.GetCVar("m8f_hn_marker_lifetime" , player).GetInt() * 35;
-
+    markerAlpha    = CVar.GetCVar("m8f_hn_marker_alpha"       , player).GetFloat();
   }
 
   m8f_hn_Settings init(PlayerInfo player)

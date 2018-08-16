@@ -165,7 +165,8 @@ class m8f_hn_EventHandler : EventHandler
       }
 
     let marker = Actor.Spawn(markerClass, pos);
-    m8f_hn_FadingMarker(marker).init(settings.markerLifetime);
+    m8f_hn_FadingMarker(marker).init(settings.markerLifetime,
+                                     settings.markerAlpha);
   }
 
   override void NetworkProcess(ConsoleEvent event)
