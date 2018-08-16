@@ -30,11 +30,12 @@ class m8f_hn_Sign : Actor
       +DONTTHRUST;
     }
 
+  m8f_hn_SignMarker marker;
   string note;
   int    spawnTime;
-  Actor  marker;
   string areaName;
   double areaRadius;
+  double mapMarkerScale;
 
   override void BeginPlay()
   {
@@ -57,6 +58,8 @@ class m8f_hn_Sign : Actor
 
     areaRadius = CVar.GetCVar("m8f_hn_area_radius").GetFloat();
     areaRadius *= areaRadius;
+
+    mapMarkerScale = Cvar.GetCVar("m8f_hn_sign_map_scale").GetFloat();
   }
 
   override bool Used(Actor user)
@@ -93,8 +96,9 @@ class m8f_hn_WoodenSign : m8f_hn_Sign
 
   override void BeginPlay()
   {
-    marker = Spawn("m8f_hn_WoodenSignMarker", pos);
     super.BeginPlay();
+    marker = m8f_hn_SignMarker(Spawn("m8f_hn_WoodenSignMarker", pos));
+    marker.init(mapMarkerScale);
   }
 
 } // class m8f_hn_WoodenSign
@@ -111,8 +115,9 @@ class m8f_hn_TransparentSign : m8f_hn_Sign
 
   override void BeginPlay()
   {
-    marker = Spawn("m8f_hn_TransparentSignMarker", pos);
     super.BeginPlay();
+    marker = m8f_hn_SignMarker(Spawn("m8f_hn_TransparentSignMarker", pos));
+    marker.init(mapMarkerScale);
   }
 
 } // class m8f_hn_TransparentSign
@@ -129,8 +134,9 @@ class m8f_hn_MetalSign : m8f_hn_Sign
 
   override void BeginPlay()
   {
-    marker = Spawn("m8f_hn_MetalSignMarker", pos);
     super.BeginPlay();
+    marker = m8f_hn_SignMarker(Spawn("m8f_hn_MetalSignMarker", pos));
+    marker.init(mapMarkerScale);
   }
 
 } // class m8f_hn_MetalSign
@@ -143,6 +149,12 @@ class m8f_hn_SignMarker : MapMarker
       XScale 0.2;
       YScale 0.2;
     }
+
+  void init(double mapScale)
+  {
+    scale.x *= mapScale;
+    scale.y *= mapScale;
+  }
 
 } // m8f_hn_SignMarker
 
