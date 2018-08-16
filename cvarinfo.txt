@@ -2,10 +2,9 @@
 // 1 - circle
 // 2 - arrow
 // 3 - off
-server int m8f_hn_marker_type = 0;
-
-server int m8f_hn_marker_spawn_period = 20;
-server int m8f_hn_marker_lifetime     = 3500;
+user int m8f_hn_marker_type         = 0;
+user int m8f_hn_marker_spawn_period = 20;
+user int m8f_hn_marker_lifetime     = 3500;
 
 server string m8f_hn_sign_note1;
 server string m8f_hn_sign_note2;

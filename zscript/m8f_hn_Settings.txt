@@ -1,9 +1,21 @@
 class m8f_hn_Settings
 {
+  enum FootstepMarkerTypes
+  {
+    MARKER_FOOTSTEP,
+    MARKER_CIRCLE,
+    MARKER_ARROW,
+    MARKER_OFF,
+  }
+
   double yStart;
   bool   showCompass;
   bool   levelName;
   bool   showGridCoords;
+
+  int    footstepPeriod; // tics
+  int    markerType;     // FootstepMarkerTypes
+  int    markerLifetime; // tics
 
   void read(PlayerInfo player)
   {
@@ -11,6 +23,11 @@ class m8f_hn_Settings
     showCompass    = CVar.GetCVar("m8f_hn_compass_show"       , player).GetInt();
     levelName      = CVar.GetCVar("m8f_hn_compass_level_name" , player).GetInt();
     showGridCoords = CVar.GetCVar("m8f_hn_show_grid_coords"   , player).GetInt();
+
+    footstepPeriod = CVar.GetCVar("m8f_hn_marker_spawn_period", player).GetInt();
+    markerType     = CVar.GetCVar("m8f_hn_marker_type"        , player).GetInt();
+    markerLifetime = CVar.GetCVar("m8f_hn_marker_lifetime" , player).GetInt() * 35;
+
   }
 
   m8f_hn_Settings init(PlayerInfo player)

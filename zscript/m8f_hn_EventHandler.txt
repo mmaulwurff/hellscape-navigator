@@ -53,7 +53,6 @@ class m8f_hn_Data
 
 class m8f_hn_EventHandler : EventHandler
 {
-  int     period;
   vector3 oldPos;
   bool    left;
   Array<m8f_hn_BaseAreaNameSource> areaNameSources;
@@ -68,7 +67,6 @@ class m8f_hn_EventHandler : EventHandler
 
   override void OnRegister()
   {
-    period = CVar.GetCVar("m8f_hn_marker_spawn_period").GetInt();
     left   = false;
     areaNameSources.push(new("m8f_hn_SignAreaNameSource"));
     areaNameSources.push(new("m8f_hn_PlayerStartNameSource"));
@@ -116,19 +114,21 @@ class m8f_hn_EventHandler : EventHandler
 
   override void WorldTick()
   {
-    if (level.time % period != 0) { return; }
+    makeFootstepMarks();
+  }
+
+  void makeFootstepMarks()
+  {
+    if (settings.markerType == settings.MARKER_OFF) { return; }
+    if (level.time % settings.footstepPeriod != 0)  { return; }
 
     if (!isFirstTick) { isWorldLoaded = true; }
     isFirstTick = false;
 
-    period         = CVar.GetCVar("m8f_hn_marker_spawn_period").GetInt();
-    int lifetime   = CVar.GetCVar("m8f_hn_marker_lifetime"    ).GetInt() * 35;
-    int markerType = CVar.GetCVar("m8f_hn_marker_type"        ).GetInt();
-
-    PlayerInfo player = players[consolePlayer];
-    Actor playerActor = player.mo;
-    vector3 pos = playerActor.pos;
-    if (playerActor && oldPos == pos) { return; }
+    PlayerInfo player      = players[consolePlayer];
+    Actor      playerActor = player.mo;
+    vector3    pos         = playerActor.pos;
+    if (oldPos == pos) { return; }
 
     float xdiff = oldPos.x - pos.x;
     float ydiff = oldPos.y - pos.y;
@@ -138,9 +138,9 @@ class m8f_hn_EventHandler : EventHandler
     oldPos = pos;
 
     string markerClass;
-    switch (markerType)
+    switch (settings.markerType)
       {
-      case 0: // footsteps
+      case settings.MARKER_FOOTSTEP:
         {
           float  angle  = playerActor.angle;
           string letter = AngleLetter(angle);
@@ -150,11 +150,11 @@ class m8f_hn_EventHandler : EventHandler
         }
         break;
 
-      case 1: // circle
+      case settings.MARKER_CIRCLE:
         markerClass = "m8f_hn_FadingCircle";
         break;
 
-      case 2: // arrow
+      case settings.MARKER_ARROW:
         {
           float  angle  = playerActor.angle;
           string letter = AngleLetter(angle);
@@ -162,13 +162,10 @@ class m8f_hn_EventHandler : EventHandler
           markerClass.AppendFormat(letter);
         }
         break;
-
-      case 3: // off
-        return;
       }
 
     let marker = Actor.Spawn(markerClass, pos);
-    m8f_hn_FadingMarker(marker).init(lifetime);
+    m8f_hn_FadingMarker(marker).init(settings.markerLifetime);
   }
 
   override void NetworkProcess(ConsoleEvent event)
