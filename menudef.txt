@@ -85,6 +85,7 @@ OptionMenu "m8f_hn_Options"
   StaticText "Footstep Marker Options", "Blue"
   Slider "Marker Spawn Period (tics)" , "m8f_hn_marker_spawn_period", 1, 50, 1, 0
   Slider "Marker Lifetime (s)"        , "m8f_hn_marker_lifetime", 10, 900, 10, 0
+  Option "Markers Stay Forever"       , "m8f_hn_marker_forever" , "OnOff"
   Slider "Initial Opacity"            , "m8f_hn_marker_alpha", 0.1, 1.0, 0.1, 1
   Option "Footstep Marker"     , "m8f_hn_marker_type", "m8f_hn_marker_type_values"
 
@@ -111,6 +112,7 @@ OptionMenu "m8f_hn_Options"
   StaticText  "Commands", "Blue"
   SafeCommand "Remove all signs" , "netevent m8f_hn_remove_signs"
   SafeCommand "Clear walls"      , "netevent m8f_hn_remove_decals"
+  SafeCommand "Clear footsteps"  , "netevent m8f_hn_remove_footsteps"
 
   StaticText ""
 }

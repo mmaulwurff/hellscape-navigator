@@ -166,29 +166,44 @@ class m8f_hn_EventHandler : EventHandler
 
     let marker = Actor.Spawn(markerClass, pos);
     m8f_hn_FadingMarker(marker).init(settings.markerLifetime,
-                                     settings.markerAlpha);
+                                     settings.markerAlpha,
+                                     settings.markerForever);
   }
 
   override void NetworkProcess(ConsoleEvent event)
   {
-    if (event.name == "m8f_hn_remove_signs")
-      {
-        let   iterator = ThinkerIterator.Create("m8f_hn_Sign");
-        Actor sign;
-        while (sign = Actor(iterator.Next()))
-          {
-            sign.Destroy();
-          }
-      }
+    if      (event.name == "m8f_hn_remove_signs")     { removeSigns();     }
+    else if (event.name == "m8f_hn_remove_decals")    { removeDecals();    }
+    else if (event.name == "m8f_hn_remove_footsteps") { removeFootsteps(); }
+  }
 
-    else if (event.name == "m8f_hn_remove_decals")
+  static void removeSigns()
+  {
+    let   iterator = ThinkerIterator.Create("m8f_hn_Sign");
+    Actor sign;
+    while (sign = Actor(iterator.Next()))
       {
-        let     iterator = ThinkerIterator.Create("Thinker", Thinker.STAT_DECAL);
-        Thinker dec;
-        while (dec = iterator.Next())
-          {
-            dec.Destroy();
-          }
+        sign.Destroy();
+      }
+  }
+
+  static void removeDecals()
+  {
+    let     iterator = ThinkerIterator.Create("Thinker", Thinker.STAT_DECAL);
+    Thinker dec;
+    while (dec = iterator.Next())
+      {
+        dec.Destroy();
+      }
+  }
+
+  static void removeFootsteps()
+  {
+    let   iterator = ThinkerIterator.Create("m8f_hn_FadingMarker");
+    Actor sign;
+    while (sign = Actor(iterator.Next()))
+      {
+        sign.Destroy();
       }
   }
 

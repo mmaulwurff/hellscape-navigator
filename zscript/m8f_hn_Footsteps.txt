@@ -8,16 +8,20 @@ class m8f_hn_FadingMarker : MapMarker
     }
 
   float fadeStep;
+  bool  forever;
 
-  m8f_hn_FadingMarker init(int lifetime, double initAlpha)
+  m8f_hn_FadingMarker init(int lifetime, double initAlpha, bool f)
   {
     alpha    = initAlpha;
     fadeStep = alpha / lifetime;
+    forever  = f;
     return self;
   }
 
   override void Tick()
   {
+    if (forever) { return; }
+
     alpha -= fadeStep;
     if (alpha <= 0.0) { Destroy(); }
   }

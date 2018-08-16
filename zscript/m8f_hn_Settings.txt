@@ -17,6 +17,7 @@ class m8f_hn_Settings
   int    markerType;     // FootstepMarkerTypes
   int    markerLifetime; // tics
   double markerAlpha;
+  bool   markerForever;
 
   void read(PlayerInfo player)
   {
@@ -29,6 +30,7 @@ class m8f_hn_Settings
     markerType     = CVar.GetCVar("m8f_hn_marker_type"        , player).GetInt();
     markerLifetime = CVar.GetCVar("m8f_hn_marker_lifetime" , player).GetInt() * 35;
     markerAlpha    = CVar.GetCVar("m8f_hn_marker_alpha"       , player).GetFloat();
+    markerForever  = CVar.GetCVar("m8f_hn_marker_forever"     , player).GetInt();
   }
 
   m8f_hn_Settings init(PlayerInfo player)
