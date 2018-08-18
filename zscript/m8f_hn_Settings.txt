@@ -31,6 +31,7 @@ class m8f_hn_Settings
   bool   levelName;
   bool   showGridCoords;
   bool   showOnAutomap;
+  bool   showAreaName;
 
   int    footstepPeriod; // tics
   int    markerType;     // FootstepMarkerTypes
@@ -46,7 +47,8 @@ class m8f_hn_Settings
     showCompass    = CVar.GetCVar("m8f_hn_compass_show"       , player).GetInt();
     levelName      = CVar.GetCVar("m8f_hn_compass_level_name" , player).GetInt();
     showGridCoords = CVar.GetCVar("m8f_hn_show_grid_coords"   , player).GetInt();
-    showOnAutomap  = Cvar.GetCVar("m8f_hn_compass_automap"    , player).GetInt();
+    showOnAutomap  = CVar.GetCVar("m8f_hn_compass_automap"    , player).GetInt();
+    showAreaName   = CVar.GetCVar("m8f_hn_show_area"          , player).GetInt();
 
     footstepPeriod = CVar.GetCVar("m8f_hn_marker_spawn_period", player).GetInt();
     markerType     = CVar.GetCVar("m8f_hn_marker_type"        , player).GetInt();

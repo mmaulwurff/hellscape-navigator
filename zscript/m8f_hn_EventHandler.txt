@@ -292,7 +292,7 @@ class m8f_hn_EventHandler : EventHandler
         y += drawTextCenter(level.levelName, normalColor, scale, y, font);
       }
 
-    if (areaName.length() != 0)
+    if (settings.showAreaName && areaName.length() != 0)
       {
         y += drawTextCenter(areaName, normalColor, scale, y, font);
       }

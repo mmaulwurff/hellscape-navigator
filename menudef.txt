@@ -111,6 +111,7 @@ OptionMenu "m8f_hn_Options"
   Option     "Show level name"      , "m8f_hn_compass_level_name" , "OnOff"
   Option     "Show grid coordinates", "m8f_hn_show_grid_coords"   , "OnOff"
   Option     "Show on Automap"      , "m8f_hn_compass_automap"    , "OnOff"
+  Option     "Show area name"       , "m8f_hn_show_area"          , "OnOff"
   Slider     "Compass size"         , "m8f_hn_compass_scale", 0.5, 3.0, 0.1, 1
 
   StaticText  ""
