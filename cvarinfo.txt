@@ -25,6 +25,7 @@ user string m8f_hn_decal_name2;
 user int    m8f_hn_print_color;
 
 user float m8f_hn_compass_y          = 0.1;
+user float m8f_hn_compass_x          = 0.5;
 user bool  m8f_hn_compass_level_name = true;
 user bool  m8f_hn_compass_show       = true;
 user bool  m8f_hn_show_area          = true;

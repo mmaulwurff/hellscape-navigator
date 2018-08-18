@@ -26,6 +26,7 @@ class m8f_hn_Settings
     MARKER_OFF,
   }
 
+  double xStart;
   double yStart;
   bool   showCompass;
   bool   levelName;
@@ -43,6 +44,7 @@ class m8f_hn_Settings
 
   void read(PlayerInfo player)
   {
+    xStart         = CVar.GetCVar("m8f_hn_compass_x"          , player).GetFloat();
     yStart         = CVar.GetCVar("m8f_hn_compass_y"          , player).GetFloat();
     showCompass    = CVar.GetCVar("m8f_hn_compass_show"       , player).GetInt();
     levelName      = CVar.GetCVar("m8f_hn_compass_level_name" , player).GetInt();

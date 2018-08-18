@@ -279,48 +279,53 @@ class m8f_hn_EventHandler : EventHandler
 
     Font   font        = Font.GetFont("SMALLFONT");
     int    normalcolor = Font.CR_GRAY;
+    double x           = settings.xStart;
     double y           = settings.yStart;
     double scale       = 1.0 / settings.compassScale;
 
     if (settings.showCompass)
     {
-      y += drawCompass(y, scale);
+      y += drawCompass(x, y, scale);
     }
 
     if (settings.levelName)
       {
-        y += drawTextCenter(level.levelName, normalColor, scale, y, font);
+        y += drawTextCenter(level.levelName, normalColor, scale, x, y, font);
       }
 
     if (settings.showAreaName && areaName.length() != 0)
       {
-        y += drawTextCenter(areaName, normalColor, scale, y, font);
+        y += drawTextCenter(areaName, normalColor, scale, x, y, font);
       }
 
     if (settings.showGridCoords)
       {
         vector3 pos    = players[consolePlayer].mo.pos;
         string  coords = makeGridCoordinates(pos);
-        y += drawTextCenter(coords, normalColor, scale, y, font);
+        y += drawTextCenter(coords, normalColor, scale, x, y, font);
       }
   }
 
-  ui static double drawCompass(double y, double scale)
+  ui static double drawCompass(double relativeX, double y, double scale)
   {
     int    width     = scale * Screen.GetWidth();
     int    height    = scale * Screen.GetHeight();
     double scaledY   = int(y * height);
 
-    double    x      = width / 2.0;
+    double    x      = width * relativeX;
     double    compX  = x - 102.0 / 2.0;
     double    angle  = players[consolePlayer].mo.angle % 360.0;
     TextureID eswn   = TexMan.CheckForTexture("compass",  TexMan.Type_Any);
     TextureID border = TexMan.CheckForTexture("compassb", TexMan.Type_Any);
     double    xStart = (270.0 - angle) * 150.0 / 270.0 + 56.0;
+    if      (compX < 0.0)           { compX = 0.0; }
+    else if (compX > width - 102.0) { compX = width - 102.0; }
 
     int clipRectWidth  = 102 / scale;
     int clipRectHeight = 15;
-    int clipRectX      = 1 + (Screen.GetWidth() / 2) - clipRectWidth / 2.0;
+    int clipRectX      = 1 + (Screen.GetWidth() * relativeX) - clipRectWidth / 2.0;
+    int maxClipRectX   = Screen.GetWidth() - clipRectWidth;
+    if (clipRectX > maxClipRectX) { clipRectX = maxClipRectX; }
 
     Screen.SetClipRect(clipRectX, 0, clipRectWidth - 1, Screen.GetHeight());
     Screen.DrawTexture( eswn, false, compX - xStart + 1.0, scaledY + 1
@@ -378,16 +383,19 @@ class m8f_hn_EventHandler : EventHandler
   ui static double drawTextCenter( string text
                                  , int    color
                                  , double scale
+                                 , double x
                                  , double y
                                  , Font   font
                                  , int    xAdjustment = 0
                                  )
   {
-    int    width    = scale * Screen.GetWidth();
-    int    height   = scale * Screen.GetHeight();
-    int    position = width - font.StringWidth(text);
-    double x        = position * 0.5 + xAdjustment;
+    int    width       = scale * Screen.GetWidth();
+    int    height      = scale * Screen.GetHeight();
+    double stringWidth = font.StringWidth(text);
+    x  = (width * x) - stringWidth / 2;
     y *= height;
+    if (x < 0.0) { x = 0.0; }
+    else if (x > width - stringWidth) { x = width - stringWidth; }
 
     Screen.DrawText( font, color, x, y, text
                    , DTA_KeepRatio,     true

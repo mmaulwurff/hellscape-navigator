@@ -125,8 +125,9 @@ OptionMenu "m8f_hn_CompassOptions"
   Option     "Show on Automap"     , "m8f_hn_compass_automap"    , "OnOff"
 
   StaticText ""
-  Slider     "Horizontal position" , "m8f_hn_compass_y"     , 0.0, 0.95, 0.01, 2
-  Slider     "Compass size"        , "m8f_hn_compass_scale" , 0.5, 3.0, 0.1, 1
+  Slider     "Horizontal position" , "m8f_hn_compass_x"     , 0.0, 1.0,  0.01, 2
+  Slider     "Vertical position"   , "m8f_hn_compass_y"     , 0.0, 0.95, 0.01, 2
+  Slider     "Compass size"        , "m8f_hn_compass_scale" , 0.5, 3.0,  0.1, 1
 
   StaticText ""
 }
