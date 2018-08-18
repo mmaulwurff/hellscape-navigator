@@ -74,3 +74,11 @@ sprite hn1blu, 60, 40
   sprite hn1blu, 0, 0
   Offset 30, 20
 }
+
+// Compass
+texture compass, 1248, 60
+{
+  sprite compass, 0, 0
+  XScale 4.0
+  YScale 4.0
+}
