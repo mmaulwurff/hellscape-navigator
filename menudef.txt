@@ -69,56 +69,92 @@ OptionMenu "m8f_hn_WallPrintMenu"
   SafeCommand "Clear walls", "m8f_hn_clear_walls"
 }
 
-OptionMenu "m8f_hn_Options"
+OptionMenu "m8f_hn_FootstepMarkerOptions"
 {
-  Title "Hellscape Navigator Options"
+  Title "Footstep Marker Options"
 
   StaticText ""
-  StaticText "Controls", "Blue"
-  Control "Make a sign" , "m8f_hn_make_sign_open"
-  Control "Wall Spray"  , "m8f_hn_wall_spray_open"
-
-  StaticText ""
-  StaticText "General Options"
-  Option "Options update" , "m8f_hn_update_period" , "m8f_hn_update_period_values"
-
-  StaticText ""
-  StaticText "Footstep Marker Options", "Blue"
   Slider "Marker Spawn Period (tics)" , "m8f_hn_marker_spawn_period", 1, 50, 1, 0
   Slider "Marker Lifetime (s)"        , "m8f_hn_marker_lifetime", 10, 900, 10, 0
   Option "Markers Stay Forever"       , "m8f_hn_marker_forever" , "OnOff"
-  Slider "Initial Opacity"            , "m8f_hn_marker_alpha", 0.1, 1.0, 0.1, 1
-  Slider "Size"                       , "m8f_hn_marker_scale", 0.5, 2.0, 0.1, 1
-  Option "Footstep Marker"     , "m8f_hn_marker_type", "m8f_hn_marker_type_values"
 
+  StaticText ""
+  Slider "Initial Opacity" , "m8f_hn_marker_alpha" , 0.1, 1.0, 0.1, 1
+  Slider "Size"            , "m8f_hn_marker_scale" , 0.5, 2.0, 0.1, 1
+  Option "Appearance"      , "m8f_hn_marker_type"  , "m8f_hn_marker_type_values"
+
+  StaticText ""
   StaticText "Footsteps and Arrow type rotation doesn't", "Black"
   StaticText "work when automap rotation is on, so", "Black"
   StaticText "disable automap rotation here:", "Black"
   Option "$AUTOMAPMNU_ROTATE" , "am_rotate" , "RotateTypes"
 
   StaticText ""
-  StaticText "Sign Options", "Blue"
+}
+
+OptionMenu "m8f_hn_SignOptions"
+{
+  Title "Sign Options"
+
+  StaticText ""
   Option "Sign Type"                , "m8f_hn_sign_type", "m8f_hn_sign_type_values"
+
+  StaticText ""
   Option "Clear note on Done"       , "m8f_hn_sign_clear_after_make" , "OnOff"
   Option "Add level time to note"   , "m8f_hn_sign_add_time"         , "OnOff"
-  Option "Make this sign shootable" , "m8f_hn_sign_shootable"        , "OnOff"
+  Option "Make next sign shootable" , "m8f_hn_sign_shootable"        , "OnOff"
+
+  StaticText ""
   Slider "Automap Sign Marker Size" , "m8f_hn_sign_map_scale" , 0.5, 2.0, 0.1, 1
 
   StaticText ""
-  StaticText "Compass and Coordinates", "Blue"
-  Option     "Show Compass"         , "m8f_hn_compass_show"       , "OnOff"
-  Slider     "Horizontal position"  , "m8f_hn_compass_y" , 0.0, 0.95, 0.01, 2
-  Option     "Show level name"      , "m8f_hn_compass_level_name" , "OnOff"
-  Option     "Show grid coordinates", "m8f_hn_show_grid_coords"   , "OnOff"
-  Option     "Show on Automap"      , "m8f_hn_compass_automap"    , "OnOff"
-  Option     "Show area name"       , "m8f_hn_show_area"          , "OnOff"
-  Slider     "Compass size"         , "m8f_hn_compass_scale", 0.5, 3.0, 0.1, 1
+}
+
+OptionMenu "m8f_hn_CompassOptions"
+{
+  Title "Compass Options"
+
+  StaticText ""
+  StaticText "Visibility"          , "Blue"
+  Option     "Compass"             , "m8f_hn_compass_show"       , "OnOff"
+  Option     "Level Name"          , "m8f_hn_compass_level_name" , "OnOff"
+  Option     "Area Name"           , "m8f_hn_show_area"          , "OnOff"
+  Option     "Grid Coordinates"    , "m8f_hn_show_grid_coords"   , "OnOff"
+
+  StaticText ""
+  Option     "Show on Automap"     , "m8f_hn_compass_automap"    , "OnOff"
+
+  StaticText ""
+  Slider     "Horizontal position" , "m8f_hn_compass_y"     , 0.0, 0.95, 0.01, 2
+  Slider     "Compass size"        , "m8f_hn_compass_scale" , 0.5, 3.0, 0.1, 1
+
+  StaticText ""
+}
+
+OptionMenu "m8f_hn_Options"
+{
+  Title "Hellscape Navigator Options"
+
+  StaticText ""
+  StaticText "Controls"    , "Blue"
+  Control    "Make a sign" , "m8f_hn_make_sign_open"
+  Control    "Wall Spray"  , "m8f_hn_wall_spray_open"
+
+  StaticText ""
+  StaticText "General Options", "Blue"
+  Option "Options update" , "m8f_hn_update_period" , "m8f_hn_update_period_values"
 
   StaticText  ""
-  StaticText  "Commands", "Blue"
+  StaticText  "Commands"         , "Blue"
   SafeCommand "Remove all signs" , "netevent m8f_hn_remove_signs"
   SafeCommand "Clear walls"      , "netevent m8f_hn_remove_decals"
   SafeCommand "Clear footsteps"  , "netevent m8f_hn_remove_footsteps"
+
+  StaticText  ""
+  StaticText  "Options"          , "Blue"
+  Submenu     "Footstep Markers" , "m8f_hn_FootstepMarkerOptions"
+  Submenu     "Sign"             , "m8f_hn_SignOptions"
+  Submenu     "Compass"          , "m8f_hn_CompassOptions"
 
   StaticText ""
 }
