@@ -38,6 +38,7 @@ class m8f_hn_Settings
   double markerAlpha;
   bool   markerForever;
   double markerScale;
+  double compassScale;
 
   void read(PlayerInfo player)
   {
@@ -53,6 +54,8 @@ class m8f_hn_Settings
     markerAlpha    = CVar.GetCVar("m8f_hn_marker_alpha"       , player).GetFloat();
     markerForever  = CVar.GetCVar("m8f_hn_marker_forever"     , player).GetInt();
     markerScale    = CVar.GetCVar("m8f_hn_marker_scale"       , player).GetFloat();
+
+    compassScale   = CVar.GetCVar("m8f_hn_compass_scale"      , player).GetFloat();
   }
 
   m8f_hn_Settings init(PlayerInfo player)

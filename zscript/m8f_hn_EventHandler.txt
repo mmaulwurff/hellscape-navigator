@@ -279,48 +279,63 @@ class m8f_hn_EventHandler : EventHandler
 
     Font   font        = Font.GetFont("SMALLFONT");
     int    normalcolor = Font.CR_GRAY;
-    double y           = int(Screen.GetHeight() * settings.yStart);
-    double lineHeight  = Font.GetHeight();
+    double y           = settings.yStart;
+    double scale       = 1.0 / settings.compassScale;
 
     if (settings.showCompass)
     {
-      y += drawCompass(y);
+      y += drawCompass(y, scale);
     }
 
     if (settings.levelName)
       {
-        drawTextCenter(level.levelName, normalColor, 1.0, y, font);
-        y += lineHeight;
+        y += drawTextCenter(level.levelName, normalColor, scale, y, font);
       }
 
     if (areaName.length() != 0)
       {
-        drawTextCenter(areaName, normalColor, 1.0, y, font);
-        y += lineHeight;
+        y += drawTextCenter(areaName, normalColor, scale, y, font);
       }
 
     if (settings.showGridCoords)
       {
         vector3 pos    = players[consolePlayer].mo.pos;
         string  coords = makeGridCoordinates(pos);
-        drawTextCenter(coords, normalColor, 1.0, y, font);
+        y += drawTextCenter(coords, normalColor, scale, y, font);
       }
   }
 
-  ui static double drawCompass(double y)
+  ui static double drawCompass(double y, double scale)
   {
-    double    x      = Screen.GetWidth() / 2.0;
+    int    width     = scale * Screen.GetWidth();
+    int    height    = scale * Screen.GetHeight();
+    double scaledY   = int(y * height);
+
+    double    x      = width / 2.0;
+    double    compX  = x - 102.0 / 2.0;
     double    angle  = players[consolePlayer].mo.angle % 360.0;
     TextureID eswn   = TexMan.CheckForTexture("compass",  TexMan.Type_Any);
     TextureID border = TexMan.CheckForTexture("compassb", TexMan.Type_Any);
     double    xStart = (270.0 - angle) * 150.0 / 270.0 + 56.0;
-    double    compX  = x - 102.0 / 2.0;
-    Screen.SetClipRect(compX + 1, y + 1, 100, 15);
-    Screen.DrawTexture(eswn, false, compX - xStart + 1.0, y + 1);
-    Screen.ClearClipRect();
-    Screen.DrawTexture(border, false, compX, y);
 
-    return 20.0;
+    int clipRectWidth  = 102 / scale;
+    int clipRectHeight = 15;
+    int clipRectX      = 1 + (Screen.GetWidth() / 2) - clipRectWidth / 2.0;
+
+    Screen.SetClipRect(clipRectX, 0, clipRectWidth - 1, Screen.GetHeight());
+    Screen.DrawTexture( eswn, false, compX - xStart + 1.0, scaledY + 1
+                      , DTA_KeepRatio,     true
+                      , DTA_VirtualWidth,  width
+                      , DTA_VirtualHeight, height
+                      );
+    Screen.ClearClipRect();
+    Screen.DrawTexture( border, false, compX, scaledY
+                      , DTA_KeepRatio,     true
+                      , DTA_VirtualWidth,  width
+                      , DTA_VirtualHeight, height
+                      );
+
+    return (clipRectHeight / scale) * 1.2 / Screen.GetHeight();
   }
 
   ui static string makeGridCoordinates(vector3 pos)
@@ -360,18 +375,27 @@ class m8f_hn_EventHandler : EventHandler
     return result;
   }
 
-  ui static void drawTextCenter(string text, int color, double scale, double y,
-                                Font font, int xAdjustment = 0)
+  ui static double drawTextCenter( string text
+                                 , int    color
+                                 , double scale
+                                 , double y
+                                 , Font   font
+                                 , int    xAdjustment = 0
+                                 )
   {
     int    width    = scale * Screen.GetWidth();
-    int    height   = scale * (Screen.GetHeight() - font.GetHeight());
+    int    height   = scale * Screen.GetHeight();
     int    position = width - font.StringWidth(text);
     double x        = position * 0.5 + xAdjustment;
+    y *= height;
 
-    Screen.DrawText(font, color, x, y, text,
-                    DTA_KeepRatio,     true,
-                    DTA_VirtualWidth,  width,
-                    DTA_VirtualHeight, height);
+    Screen.DrawText( font, color, x, y, text
+                   , DTA_KeepRatio,     true
+                   , DTA_VirtualWidth,  width
+                   , DTA_VirtualHeight, height
+                   );
+
+    return (font.GetHeight() / scale) / Screen.GetHeight();
   }
 
   static string AngleLetter(float angle)
