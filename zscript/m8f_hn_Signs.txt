@@ -28,6 +28,7 @@ class m8f_hn_Sign : Actor
       +NOBLOOD;
       +NOTONAUTOMAP;
       +DONTTHRUST;
+      Tag "Sign";
     }
 
   m8f_hn_SignMarker marker;
