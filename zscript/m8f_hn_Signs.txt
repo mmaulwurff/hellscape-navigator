@@ -60,6 +60,7 @@ class m8f_hn_Sign : Actor
     areaRadius *= areaRadius;
 
     mapMarkerScale = Cvar.GetCVar("m8f_hn_sign_map_scale").GetFloat();
+    marker = null;
   }
 
   override bool Used(Actor user)
@@ -78,7 +79,7 @@ class m8f_hn_Sign : Actor
 
   override void Die(Actor source, Actor inflictor, int dmgflags)
   {
-    marker.Destroy();
+    if (marker != null) { marker.Destroy(); }
     super.Die(source, inflictor, dmgflags);
   }
 
