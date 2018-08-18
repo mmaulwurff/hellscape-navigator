@@ -24,6 +24,7 @@ complex maps.
 * Area Names
   * Entrance/Exit/Outdoors/Secrets
   * A Sign can be configured to create custom area with name
+  * Grid coordinates
 
 * Wall Prints
   * Blood prints
@@ -36,10 +37,8 @@ complex maps.
 
 * More Wall Prints ("Enemy", "Ammo", "Health", "Todo", "Done", "<-", "->",
 "v", "^")
-* Scaling option for compass
-* Scaling option for sign automap icons
-* Scaling option for Footstep Markers
-* Option to disable compass on Automap
+* An option to display signs on Compass
+* Format for external source of area names
 * (Maybe) breaking animation and damaged sprites for signs
 * ?
 
