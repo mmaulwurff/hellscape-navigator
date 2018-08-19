@@ -242,7 +242,13 @@ class m8f_hn_EventHandler : EventHandler
     int    size     = areaNameSources.size();
     for (int i = 0; i < size; ++i)
       {
-        areaName = areaNameSources[i].GetAreaName(data);
+        let areaNameSource = areaNameSources[i];
+        if (settings.hideAutoAreaNames && areaNameSource.IsAutomatic())
+          {
+            continue;
+          }
+
+        areaName = areaNameSource.GetAreaName(data);
         if (areaName.Length() != 0) { break; }
       }
     return areaName;

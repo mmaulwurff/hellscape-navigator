@@ -32,5 +32,6 @@ user bool  m8f_hn_show_area          = true;
 user bool  m8f_hn_show_grid_coords   = false;
 user bool  m8f_hn_compass_automap    = true;
 user float m8f_hn_compass_scale      = 1.0;
+user bool  m8f_hn_hide_auto_names    = false;
 
 user int   m8f_hn_update_period      = 35;

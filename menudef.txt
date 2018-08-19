@@ -122,6 +122,7 @@ OptionMenu "m8f_hn_CompassOptions"
   Option     "Grid Coordinates"    , "m8f_hn_show_grid_coords"   , "OnOff"
 
   StaticText ""
+  Option     "Hide Automatic Area Names", "m8f_hn_hide_auto_names", "OnOff"
   Option     "Show on Automap"     , "m8f_hn_compass_automap"    , "OnOff"
 
   StaticText ""
