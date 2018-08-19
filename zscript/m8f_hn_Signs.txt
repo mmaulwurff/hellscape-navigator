@@ -35,7 +35,7 @@ class m8f_hn_Sign : Actor
   string note;
   int    spawnTime;
   string areaName;
-  double areaRadius;
+  double areaRadiusSq;
   double mapMarkerScale;
 
   override void BeginPlay()
@@ -57,8 +57,8 @@ class m8f_hn_Sign : Actor
     areaName          = areaNameCVar.GetString();
     areaNameCVar.setString("");
 
-    areaRadius = CVar.GetCVar("m8f_hn_area_radius").GetFloat();
-    areaRadius *= areaRadius;
+    double areaRadius = CVar.GetCVar("m8f_hn_area_radius").GetFloat();
+    areaRadiusSq      = areaRadius * areaRadius;
 
     mapMarkerScale = Cvar.GetCVar("m8f_hn_sign_map_scale").GetFloat();
     marker = null;

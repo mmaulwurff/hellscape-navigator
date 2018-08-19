@@ -24,6 +24,7 @@ class m8f_hn_Data
   Array<int>     itemAreaPosZ;
   Array<string>  itemAreaNames;
   Array<string>  areaItems;
+  Array<Actor>   areaNameMarkers;
 
   m8f_hn_Data init()
   {
@@ -108,11 +109,20 @@ class m8f_hn_EventHandler : EventHandler
 
   override void WorldThingSpawned(WorldEvent e)
   {
-    if (isWorldLoaded) { return; }
     if (e == null)     { return; }
 
     Actor item = e.thing;
     if (item == null) { return; }
+
+    // detect and store area name markers
+    string spawnedClassName = item.GetClassName();
+    bool   isAreaNameMarker = (spawnedClassName.IndexOf("hn_AreaNameMarker") != -1);
+    if (isAreaNameMarker)
+      {
+        data.areaNameMarkers.push(item);
+      }
+
+    if (isWorldLoaded) { return; }
 
     Inventory inv = Inventory(item);
     if (inv && inv.owner) { return; }
