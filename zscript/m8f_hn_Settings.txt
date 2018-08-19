@@ -18,6 +18,7 @@
 
 class m8f_hn_Settings
 {
+
   enum FootstepMarkerTypes
   {
     MARKER_FOOTSTEP,
@@ -41,7 +42,9 @@ class m8f_hn_Settings
   double markerAlpha;
   bool   markerForever;
   double markerScale;
+
   double compassScale;
+  int    compassStyle;
 
   void read(PlayerInfo player)
   {
@@ -62,6 +65,7 @@ class m8f_hn_Settings
     markerScale    = CVar.GetCVar("m8f_hn_marker_scale"       , player).GetFloat();
 
     compassScale   = CVar.GetCVar("m8f_hn_compass_scale"      , player).GetFloat();
+    compassStyle   = CVar.GetCVar("m8f_hn_compass_style"      , player).GetInt();
   }
 
   m8f_hn_Settings init(PlayerInfo player)
@@ -69,4 +73,5 @@ class m8f_hn_Settings
     read(player);
     return self;
   }
-}
+
+} // class m8f_hn_Settings

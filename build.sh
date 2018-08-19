@@ -21,6 +21,7 @@ zip $name.pk3 \
     *.txt \
     *.md \
     sprites/*.png \
+    sprites/compass/*.png \
     source/*.acs \
     zscript/*.txt \
     acs/*.o \

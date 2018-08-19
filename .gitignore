@@ -11,6 +11,10 @@ changelog.txt
 sprites/*
 !sprites/*.png
 
+!sprites/compass
+sprites/compass/*
+!sprites/compass/*.png
+
 !zscript
 zscript/*
 !zscript/*.txt

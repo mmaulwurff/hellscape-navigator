@@ -76,9 +76,30 @@ sprite hn1blu, 60, 40
 }
 
 // Compass
-texture compass, 1248, 60
+texture hncmpr1, 1248, 60
 {
-  sprite compass, 0, 0
+  sprite hncmpr1, 0, 0
+  XScale 4.0
+  YScale 4.0
+}
+
+texture hncmpr2, 1248, 60
+{
+  sprite hncmpr2, 0, 0
+  XScale 4.0
+  YScale 4.0
+}
+
+texture hncmpb1, 440, 100
+{
+  sprite hncmpb1, 0, 0
+  XScale 4.0
+  YScale 4.0
+}
+
+texture hncmpb2, 440, 100
+{
+  sprite hncmpb2, 0, 0
   XScale 4.0
   YScale 4.0
 }

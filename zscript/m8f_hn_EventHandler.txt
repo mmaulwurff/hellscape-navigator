@@ -301,7 +301,7 @@ class m8f_hn_EventHandler : EventHandler
 
     if (settings.showCompass)
     {
-      y += drawCompass(x, y, scale);
+      y += drawCompass(x, y, scale, settings.compassStyle);
     }
 
     if (settings.levelName)
@@ -322,8 +322,19 @@ class m8f_hn_EventHandler : EventHandler
       }
   }
 
-  ui static double drawCompass(double relativeX, double y, double scale)
+  ui static double drawCompass(double relativeX, double y, double scale, int style)
   {
+    static const string ribbons[] =
+      {
+        "hncmpr1",
+        "hncmpr2"
+      };
+    static const string borders[] =
+      {
+        "hncmpb1",
+        "hncmpb2"
+      };
+
     int    width     = scale * Screen.GetWidth();
     int    height    = scale * Screen.GetHeight();
     double scaledY   = int(y * height);
@@ -331,8 +342,8 @@ class m8f_hn_EventHandler : EventHandler
     double    x      = width * relativeX;
     double    compX  = x - 102.0 / 2.0;
     double    angle  = players[consolePlayer].mo.angle % 360.0;
-    TextureID eswn   = TexMan.CheckForTexture("compass",  TexMan.Type_Any);
-    TextureID border = TexMan.CheckForTexture("compassb", TexMan.Type_Any);
+    TextureID eswn   = TexMan.CheckForTexture(ribbons[style], TexMan.Type_Any);
+    TextureID border = TexMan.CheckForTexture(borders[style], TexMan.Type_Any);
     double    xStart = (270.0 - angle) * 150.0 / 270.0 + 56.0;
     if      (compX < 0.0)           { compX = 0.0; }
     else if (compX > width - 102.0) { compX = width - 102.0; }
@@ -350,13 +361,15 @@ class m8f_hn_EventHandler : EventHandler
                       , DTA_VirtualHeight, height
                       );
     Screen.ClearClipRect();
-    Screen.DrawTexture( border, false, compX, scaledY
+    double borderX = compX   - 4;
+    double borderY = scaledY - 4;
+    Screen.DrawTexture( border, false, borderX, borderY
                       , DTA_KeepRatio,     true
                       , DTA_VirtualWidth,  width
                       , DTA_VirtualHeight, height
                       );
 
-    return (clipRectHeight / scale) * 1.2 / Screen.GetHeight();
+    return (clipRectHeight / scale) * 1.4 / Screen.GetHeight();
   }
 
   ui static string makeGridCoordinates(vector3 pos)
