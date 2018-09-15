@@ -27,6 +27,7 @@ class m8f_hn_Data
   Array<Actor>   areaNameMarkers;
 
   Array<m8f_hn_Pointer> pointers;
+  int pointerId;
 
   m8f_hn_Data init()
   {
@@ -68,7 +69,7 @@ class m8f_hn_Data
     areaItems.push("NetronianBackpack");
     areaItems.push("Big_Coin_pickup"); // other
 
-    pointers.push(new("m8f_hn_Pointer").init(0, 0, m8f_hn_Pointer.POINTER_RED));
+    pointerId = 0;
 
     return self;
   }
@@ -87,6 +88,28 @@ class m8f_hn_EventHandler : EventHandler
   bool   isFirstTick;
   bool   isTitlemap;
   m8f_hn_Settings settings;
+
+  // returns unique pointer id
+  int AddPointer(double x, double y, int type)
+  {
+    ++data.pointerId;
+    data.pointers.push(new("m8f_hn_Pointer").init(x, y, type, data.pointerId));
+
+    return data.pointerId;
+  }
+
+  void RemovePointer(int id)
+  {
+    int nPointers = data.pointers.size();
+    for (int i = 0; i < nPointers; ++i)
+      {
+        if (data.pointers[i].id() == id)
+          {
+            data.pointers.delete(i);
+            break;
+          }
+      }
+  }
 
   override void OnRegister()
   {

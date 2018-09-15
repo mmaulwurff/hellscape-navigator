@@ -37,6 +37,7 @@ class m8f_hn_Sign : Actor
   string areaName;
   double areaRadiusSq;
   double mapMarkerScale;
+  int    id;
 
   override void BeginPlay()
   {
@@ -62,6 +63,8 @@ class m8f_hn_Sign : Actor
 
     mapMarkerScale = Cvar.GetCVar("m8f_hn_sign_map_scale").GetFloat();
     marker = null;
+
+    id = 0;
   }
 
   override bool Used(Actor user)
@@ -82,6 +85,12 @@ class m8f_hn_Sign : Actor
   {
     if (marker != null) { marker.Destroy(); }
     super.Die(source, inflictor, dmgflags);
+
+    if (id != 0)
+      {
+        let eventHandler = m8f_hn_EventHandler(StaticEventHandler.Find("m8f_hn_EventHandler"));
+        eventHandler.RemovePointer(id);
+      }
   }
 
 } // m8f_hn_Sign
@@ -101,6 +110,9 @@ class m8f_hn_WoodenSign : m8f_hn_Sign
     super.BeginPlay();
     marker = m8f_hn_SignMarker(Spawn("m8f_hn_WoodenSignMarker", pos));
     marker.init(mapMarkerScale);
+
+    let eventHandler = m8f_hn_EventHandler(StaticEventHandler.Find("m8f_hn_EventHandler"));
+    id = eventHandler.AddPointer(pos.x, pos.y, m8f_hn_Pointer.POINTER_RED);
   }
 
 } // class m8f_hn_WoodenSign
@@ -120,6 +132,9 @@ class m8f_hn_TransparentSign : m8f_hn_Sign
     super.BeginPlay();
     marker = m8f_hn_SignMarker(Spawn("m8f_hn_TransparentSignMarker", pos));
     marker.init(mapMarkerScale);
+
+    let eventHandler = m8f_hn_EventHandler(StaticEventHandler.Find("m8f_hn_EventHandler"));
+    id = eventHandler.AddPointer(pos.x, pos.y, m8f_hn_Pointer.POINTER_WHITE);
   }
 
 } // class m8f_hn_TransparentSign
@@ -139,6 +154,9 @@ class m8f_hn_MetalSign : m8f_hn_Sign
     super.BeginPlay();
     marker = m8f_hn_SignMarker(Spawn("m8f_hn_MetalSignMarker", pos));
     marker.init(mapMarkerScale);
+
+    let eventHandler = m8f_hn_EventHandler(StaticEventHandler.Find("m8f_hn_EventHandler"));
+    id = eventHandler.AddPointer(pos.x, pos.y, m8f_hn_Pointer.POINTER_BLUE);
   }
 
 } // class m8f_hn_MetalSign

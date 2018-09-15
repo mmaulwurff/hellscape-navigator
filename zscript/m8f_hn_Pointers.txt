@@ -30,31 +30,23 @@ class m8f_hn_Pointer
     POINTER_SKIP
   };
 
-  m8f_hn_Pointer init(double x, double y, int type)
+  m8f_hn_Pointer init(double x, double y, int type, int id)
   {
     _position.x = x;
     _position.y = y;
     _type       = type;
+    _id         = id;
 
     return self;
   }
 
-  double x()
-  {
-    return _position.x;
-  }
+  double x()    { return _position.x; }
+  double y()    { return _position.y; }
+  int    type() { return _type;       }
+  int    id()   { return _id;         }
 
-  double y()
-  {
-    return _position.y;
-  }
-
-  int type()
-  {
-    return _type;
-  }
-
-  vector2 _position;
-  int     _type;
+  private vector2 _position;
+  private int     _type;
+  private int     _id;
 
 } // m8f_hn_Pointer
