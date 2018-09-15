@@ -5,7 +5,10 @@
 !*.md
 !.gitignore
 !*.xcf
+!language.*
 changelog.txt
+
+*~
 
 !sprites
 sprites/*

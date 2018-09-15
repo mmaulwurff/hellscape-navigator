@@ -4,6 +4,8 @@
 
 name=hellscape-navigator
 
+#IWAD="-iwad /home/allkromm/Programs/Games/wads/doom/freedoom1.wad"
+
 acc source/$name.acs acs/$name.o \
 && \
 rm -f $name.pk3 \
@@ -25,11 +27,11 @@ zip $name.pk3 \
     source/*.acs \
     zscript/*.txt \
     acs/*.o \
+    language.enu \
 && \
 cp $name.pk3 $name-$(git describe --abbrev=0 --tags).pk3 \
 && \
-gzdoom \ #-iwad ~/Programs/Games/wads/doom/freedoom1.wad \
-       \ #-iwad ~/Programs/Games/wads/doom/freedoom2.wad \
+gzdoom $IWAD \
        -file \
        $name.pk3 \
        ~/Programs/Games/wads/maps/DOOMTEST.wad \

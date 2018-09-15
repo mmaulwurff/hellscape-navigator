@@ -1,0 +1,68 @@
+[enu default]
+
+// colors:
+// a - reddish brick
+// b - tan
+// c - gray
+// d - green
+// e - brown
+// f - gold
+// g - red
+// h - blue
+// i - orange
+// j - white
+// k - yellow
+// l - use original colors
+// m - black
+// n - light blue
+// o - cream
+// p - olive
+// q - dark green
+// r - dark red
+// s - dark brown
+// t - purple
+// u - dark gray
+// v - cyan
+// w - ice
+// x - fire
+// y - sapphire
+// z - teal
+
+// - - Default color for Print messages  *   Default color for chat messages
+// + - Default color for PrintBold messages  !   Default color for team chat messages
+
+// Doom
+
+GOTBLUECARD = "\chPicked up a blue keycard.";
+GOTYELWCARD = "\ckPicked up a yellow keycard.";
+GOTREDCARD  = "\cgPicked up a red keycard.";
+
+GOTBLUESKUL = "\chPicked up a blue skull key.";
+GOTYELWSKUL = "\ckPicked up a yellow skull key.";
+GOTREDSKUL  = "\cgPicked up a red skull key.";
+
+PD_BLUEO    = "\chBlue key required!";
+PD_REDO     = "\cgRed key required!";
+PD_YELLOWO  = "\ckYellow key required!";
+
+PD_BLUEK    = "\chBlue key required!";
+PD_REDK     = "\cgRed key required!";
+PD_YELLOWK  = "\ckYellow key required!";
+
+PD_BLUECO   = "\chBlue card required!";
+PD_REDCO    = "\cgRed card required!";
+PD_YELLOWCO = "\ckYellow card required!";
+
+PD_BLUESO   = "\chBlue skull required!";
+PD_REDSO    = "\cgRed skull required!";
+PD_YELLOWSO = "\ckYellow skull required!";
+
+// Heretic
+
+TXT_NEEDBLUEKEY   = "You need a \chBlue Key\c- to open this door";
+TXT_NEEDGREENKEY  = "You need a \cdGreen Key\c- to open this door";
+TXT_NEEDYELLOWKEY = "You need a \ckYellow Key\c- to open this door";
+
+TXT_GOTBLUEKEY    = "\chBlue Key";
+TXT_GOTYELLOWKEY  = "\ckYellow Key";
+TXT_GOTGREENKEY   = "\cdGreen Key";
