@@ -2,7 +2,7 @@
 // 1 - circle
 // 2 - arrow
 // 3 - off
-user int    m8f_hn_marker_type         = 0;
+user int    m8f_hn_marker_type         = 1;
 user int    m8f_hn_marker_spawn_period = 20;  // tics
 user int    m8f_hn_marker_lifetime     = 300; // seconds
 user float  m8f_hn_marker_alpha        = 1.0;
@@ -31,7 +31,7 @@ user bool  m8f_hn_compass_show       = true;
 user bool  m8f_hn_show_area          = true;
 user bool  m8f_hn_show_grid_coords   = false;
 user bool  m8f_hn_compass_automap    = true;
-user float m8f_hn_compass_scale      = 1.0;
+user float m8f_hn_compass_scale      = 2.0;
 user bool  m8f_hn_hide_auto_names    = false;
 user int   m8f_hn_compass_style      = 0;
 
