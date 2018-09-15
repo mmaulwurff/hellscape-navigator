@@ -9,6 +9,8 @@ user float  m8f_hn_marker_alpha        = 1.0;
 user bool   m8f_hn_marker_forever      = false;
 user float  m8f_hn_marker_scale        = 1.0;
 
+server float  m8f_hn_quest_marker_scale  = 0.5;
+
 server string m8f_hn_sign_note1;
 server string m8f_hn_sign_note2;
 server string m8f_hn_sign_note3;

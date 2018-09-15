@@ -31,14 +31,33 @@ class m8f_hn_QuestPointer : Actor
   {
     let eventHandler = m8f_hn_EventHandler(StaticEventHandler.Find("m8f_hn_EventHandler"));
     _id = eventHandler.AddPointer(pos.x, pos.y, m8f_hn_Pointer.POINTER_GOLD);
+
+    float scale = CVar.GetCVar("m8f_hn_quest_marker_scale").GetFloat();
+    _marker = m8f_hn_SignMarker(Spawn("m8f_hn_QuestPointerMarker", pos));
+    _marker.init(scale);
   }
 
   override void Die(Actor source, Actor inflictor, int dmgflags)
   {
     let eventHandler = m8f_hn_EventHandler(StaticEventHandler.Find("m8f_hn_EventHandler"));
     eventHandler.RemovePointer(_id);
+
+    _marker.Destroy();
   }
 
-  int _id;
+  int               _id;
+  m8f_hn_SignMarker _marker;
 
 } // class m8f_hn_QuestPointer
+
+class m8f_hn_QuestPointerMarker : m8f_hn_SignMarker
+{
+
+    States
+    {
+    Spawn:
+      HNQU B -1;
+      Stop;
+    }
+
+} // class m8f_hn_QuestPointerMarker

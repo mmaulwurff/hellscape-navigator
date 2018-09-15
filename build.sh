@@ -24,6 +24,7 @@ zip $name.pk3 \
     *.md \
     sprites/*.png \
     sprites/compass/*.png \
+    sprites/automap/*.png \
     source/*.acs \
     zscript/*.txt \
     acs/*.o \

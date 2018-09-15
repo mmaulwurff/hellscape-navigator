@@ -155,3 +155,12 @@ texture hn_compass_pointer6, 20, 100
 }
 
 // End of compass pointers section ////////////////////////////////////////////
+
+// Quest marker
+sprite hnqub0, 200, 200
+{
+  sprite hnqua0, 0, 0
+  Offset 100, 100
+  XScale 4.0
+  YScale 4.0
+}

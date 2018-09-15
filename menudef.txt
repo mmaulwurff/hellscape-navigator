@@ -146,14 +146,14 @@ OptionMenu "m8f_hn_Options"
 {
   Title "Hellscape Navigator Options"
 
-  StaticText ""
-  StaticText "Controls"    , "Blue"
-  Control    "Make a sign" , "m8f_hn_make_sign_open"
-  Control    "Wall Spray"  , "m8f_hn_wall_spray_open"
+  StaticText  ""
+  StaticText  "Controls"    , "Blue"
+  Control     "Make a sign" , "m8f_hn_make_sign_open"
+  Control     "Wall Spray"  , "m8f_hn_wall_spray_open"
 
-  StaticText ""
-  StaticText "General Options", "Blue"
-  Option "Options update" , "m8f_hn_update_period" , "m8f_hn_update_period_values"
+  StaticText  ""
+  StaticText  "General Options", "Blue"
+  Option      "Options update" , "m8f_hn_update_period" , "m8f_hn_update_period_values"
 
   StaticText  ""
   StaticText  "Commands"         , "Blue"
@@ -167,7 +167,7 @@ OptionMenu "m8f_hn_Options"
   Submenu     "Sign"             , "m8f_hn_SignOptions"
   Submenu     "Compass"          , "m8f_hn_CompassOptions"
 
-  StaticText ""
+  StaticText  ""
 }
 
 OptionValue "m8f_hn_marker_type_values"
@@ -181,5 +181,5 @@ OptionValue "m8f_hn_marker_type_values"
 AddOptionMenu "OptionsMenu"
 {
   StaticText ""
-  Submenu "Hellscape Navigator Options", "m8f_hn_Options"
+  Submenu    "Hellscape Navigator Options", "m8f_hn_Options"
 }
