@@ -111,8 +111,12 @@ class m8f_hn_WoodenSign : m8f_hn_Sign
     marker = m8f_hn_SignMarker(Spawn("m8f_hn_WoodenSignMarker", pos));
     marker.init(mapMarkerScale);
 
-    let eventHandler = m8f_hn_EventHandler(StaticEventHandler.Find("m8f_hn_EventHandler"));
-    id = eventHandler.AddPointer(pos.x, pos.y, m8f_hn_Pointer.POINTER_RED);
+    bool addToCompass = CVar.GetCVar("m8f_hn_sign_with_pointer").GetInt();
+    if (addToCompass)
+      {
+        let eventHandler = m8f_hn_EventHandler(StaticEventHandler.Find("m8f_hn_EventHandler"));
+        id = eventHandler.AddPointer(pos.x, pos.y, m8f_hn_Pointer.POINTER_RED);
+      }
   }
 
 } // class m8f_hn_WoodenSign
@@ -133,8 +137,12 @@ class m8f_hn_TransparentSign : m8f_hn_Sign
     marker = m8f_hn_SignMarker(Spawn("m8f_hn_TransparentSignMarker", pos));
     marker.init(mapMarkerScale);
 
-    let eventHandler = m8f_hn_EventHandler(StaticEventHandler.Find("m8f_hn_EventHandler"));
-    id = eventHandler.AddPointer(pos.x, pos.y, m8f_hn_Pointer.POINTER_WHITE);
+    bool addToCompass = CVar.GetCVar("m8f_hn_sign_with_pointer").GetInt();
+    if (addToCompass)
+      {
+        let eventHandler = m8f_hn_EventHandler(StaticEventHandler.Find("m8f_hn_EventHandler"));
+        id = eventHandler.AddPointer(pos.x, pos.y, m8f_hn_Pointer.POINTER_WHITE);
+      }
   }
 
 } // class m8f_hn_TransparentSign
@@ -155,8 +163,12 @@ class m8f_hn_MetalSign : m8f_hn_Sign
     marker = m8f_hn_SignMarker(Spawn("m8f_hn_MetalSignMarker", pos));
     marker.init(mapMarkerScale);
 
-    let eventHandler = m8f_hn_EventHandler(StaticEventHandler.Find("m8f_hn_EventHandler"));
-    id = eventHandler.AddPointer(pos.x, pos.y, m8f_hn_Pointer.POINTER_BLUE);
+    bool addToCompass = CVar.GetCVar("m8f_hn_sign_with_pointer").GetInt();
+    if (addToCompass)
+      {
+        let eventHandler = m8f_hn_EventHandler(StaticEventHandler.Find("m8f_hn_EventHandler"));
+        id = eventHandler.AddPointer(pos.x, pos.y, m8f_hn_Pointer.POINTER_BLUE);
+      }
   }
 
 } // class m8f_hn_MetalSign

@@ -22,6 +22,7 @@ OptionMenu "m8f_hn_SignNoteMenu"
   Option "Clear note on Done"       , "m8f_hn_sign_clear_after_make" , "OnOff"
   Option "Add level time to note"   , "m8f_hn_sign_add_time"         , "OnOff"
   Option "Make this sign shootable" , "m8f_hn_sign_shootable"        , "OnOff"
+  Option "Add to Compass"           , "m8f_hn_sign_with_pointer"     , "OnOff"
   Slider "Automap Sign Marker Size" , "m8f_hn_sign_map_scale" , 0.5, 2.0, 0.1, 1
 
   StaticText ""
@@ -103,6 +104,7 @@ OptionMenu "m8f_hn_SignOptions"
   Option "Clear note on Done"       , "m8f_hn_sign_clear_after_make" , "OnOff"
   Option "Add level time to note"   , "m8f_hn_sign_add_time"         , "OnOff"
   Option "Make next sign shootable" , "m8f_hn_sign_shootable"        , "OnOff"
+  Option "Add next sign to Compass" , "m8f_hn_sign_with_pointer"     , "OnOff"
 
   StaticText ""
   Slider "Automap Sign Marker Size" , "m8f_hn_sign_map_scale" , 0.5, 2.0, 0.1, 1
