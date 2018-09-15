@@ -26,6 +26,8 @@ class m8f_hn_Data
   Array<string>  areaItems;
   Array<Actor>   areaNameMarkers;
 
+  Array<m8f_hn_Pointer> pointers;
+
   m8f_hn_Data init()
   {
     int nSectors = level.sectors.size();
@@ -65,6 +67,8 @@ class m8f_hn_Data
     areaItems.push("BlueprintItem");
     areaItems.push("NetronianBackpack");
     areaItems.push("Big_Coin_pickup"); // other
+
+    pointers.push(new("m8f_hn_Pointer").init(0, 0, m8f_hn_Pointer.POINTER_RED));
 
     return self;
   }
@@ -293,15 +297,17 @@ class m8f_hn_EventHandler : EventHandler
       }
     else { SetRenderCounter(renderCounter + 1); }
 
-    Font   font        = Font.GetFont("SMALLFONT");
-    int    normalcolor = Font.CR_GRAY;
-    double x           = settings.xStart;
-    double y           = settings.yStart;
-    double scale       = 1.0 / settings.compassScale;
+    Font    font        = Font.GetFont("SMALLFONT");
+    int     normalcolor = Font.CR_GRAY;
+    double  x           = settings.xStart;
+    double  y           = settings.yStart;
+    double  scale       = 1.0 / settings.compassScale;
+    vector3 pos         = player.mo.pos;
+    double  playerAngle = player.mo.angle;
 
     if (settings.showCompass)
     {
-      y += drawCompass(x, y, scale, settings.compassStyle);
+      y += drawCompass(x, y, scale, settings.compassStyle, data, pos, playerAngle);
     }
 
     if (settings.levelName)
@@ -316,13 +322,14 @@ class m8f_hn_EventHandler : EventHandler
 
     if (settings.showGridCoords)
       {
-        vector3 pos    = players[consolePlayer].mo.pos;
         string  coords = makeGridCoordinates(pos);
         y += drawTextCenter(coords, normalColor, scale, x, y, font);
       }
   }
 
-  ui static double drawCompass(double relativeX, double y, double scale, int style)
+  // What a mess.
+  ui static double drawCompass( double relativeX, double y, double scale, int style
+                              , m8f_hn_Data data, vector3 center, double angle)
   {
     static const string ribbons[] =
       {
@@ -350,16 +357,28 @@ class m8f_hn_EventHandler : EventHandler
 
     int clipRectWidth  = 102 / scale;
     int clipRectHeight = 15;
-    int clipRectX      = 1 + (Screen.GetWidth() * relativeX) - clipRectWidth / 2.0;
+    int clipRectX      = 1 + (Screen.GetWidth()  * relativeX) - clipRectWidth / 2.0;
+    int clipRectY      = Screen.GetHeight() * y;
     int maxClipRectX   = Screen.GetWidth() - clipRectWidth;
     if (clipRectX > maxClipRectX) { clipRectX = maxClipRectX; }
 
-    Screen.SetClipRect(clipRectX, 0, clipRectWidth - 1, Screen.GetHeight());
+    // I no longer know what's happening with clip height here.
+    Screen.SetClipRect( clipRectX
+                      , clipRectY
+                      , clipRectWidth - 1
+                      , (clipRectHeight + 1.5) / scale
+                      );
+
     Screen.DrawTexture( eswn, false, compX - xStart + 1.0, scaledY + 1
                       , DTA_KeepRatio,     true
                       , DTA_VirtualWidth,  width
                       , DTA_VirtualHeight, height
                       );
+
+    drawPointers(compX, scaledY + 1, width, height
+                , data, center, angle
+                );
+
     Screen.ClearClipRect();
     double borderX = compX   - 4;
     double borderY = scaledY - 4;
@@ -368,6 +387,7 @@ class m8f_hn_EventHandler : EventHandler
                       , DTA_VirtualWidth,  width
                       , DTA_VirtualHeight, height
                       );
+
 
     return (clipRectHeight / scale) * 1.4 / Screen.GetHeight();
   }
@@ -446,6 +466,54 @@ class m8f_hn_EventHandler : EventHandler
     angle += 45.0 / 4;
     angle %= 360.0;
     return letters[angle / 22.5];
+  }
+
+  ui static void drawPointers( double x, double y, int width, int height
+                             , m8f_hn_Data data, vector3 center, double playerAngle)
+  {
+    static const string pointerTextures[] =
+      {
+        "hn_compass_pointer1",
+        "hn_compass_pointer2",
+        "hn_compass_pointer3",
+        "hn_compass_pointer4",
+        "hn_compass_pointer5",
+        "hn_compass_pointer6"
+      };
+
+    int nPointers = data.pointers.size();
+    for (int i = 0; i < nPointers; ++i)
+      {
+        double xPointer = data.pointers[i].x();
+        double yPointer = data.pointers[i].y();
+        int    type     = data.pointers[i].type();
+        TextureID pointerTex = TexMan.CheckForTexture(pointerTextures[type], TexMan.Type_Any);
+
+        double xDiff    = xPointer - center.x;
+        double yDiff    = yPointer - center.y;
+        double angle;
+        if      (yDiff > 0.0) { angle = atan(xDiff / yDiff) +  90.0; }
+        else if (yDiff < 0.0) { angle = atan(xDiff / yDiff) + 270.0; }
+        else if (xDiff < 0.0) { angle =   0.0; }
+        else if (xDiff > 0.0) { angle = 180.0; }
+        else                  { angle =  90.0; }
+
+        angle         = (angle + playerAngle - 90.0) % 360.0;
+        double xStart = angle * 150.0 / 270.0;
+
+        double distance = xDiff * xDiff + yDiff * yDiff;
+        double step     = 500000.0;
+        double steps    = distance / step;
+        double yOffset  = 3 + steps;        //  3 - minimum
+        if (yOffset > 11) { yOffset = 11; } // 11 - maximum
+
+        Screen.DrawTexture( pointerTex, false, x + xStart, y + yOffset
+                            , DTA_KeepRatio,     true
+                            , DTA_VirtualWidth,  width
+                            , DTA_VirtualHeight, height
+                            );
+      }
+
   }
 
 } // m8f_hn_EventHandler

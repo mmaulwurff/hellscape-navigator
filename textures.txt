@@ -103,3 +103,55 @@ texture hncmpb2, 440, 100
   XScale 4.0
   YScale 4.0
 }
+
+// Compass pointers section ///////////////////////////////////////////////////
+
+texture hn_compass_pointer1, 20, 100
+{
+  sprite hncmptr1, 0, 0
+  XScale 4.0
+  YScale 4.0
+  offset 6, 0
+}
+
+texture hn_compass_pointer2, 20, 100
+{
+  sprite hncmptr1, 0, 0 { Translation Blue }
+  XScale 4.0
+  YScale 4.0
+  offset 6, 0
+}
+
+texture hn_compass_pointer3, 20, 100
+{
+  sprite hncmptr1, 0, 0 { Translation Gold }
+  XScale 4.0
+  YScale 4.0
+  offset 6, 0
+}
+
+texture hn_compass_pointer4, 20, 100
+{
+  sprite hncmptr1, 0, 0 { Translation Green }
+  XScale 4.0
+  YScale 4.0
+  offset 6, 0
+}
+
+texture hn_compass_pointer5, 20, 100
+{
+  sprite hncmptr1, 0, 0 { Translation Ice }
+  XScale 4.0
+  YScale 4.0
+  offset 6, 0
+}
+
+texture hn_compass_pointer6, 20, 100
+{
+  sprite hncmptr1, 0, 0 { Translation Red }
+  XScale 4.0
+  YScale 4.0
+  offset 6, 0
+}
+
+// End of compass pointers section ////////////////////////////////////////////
