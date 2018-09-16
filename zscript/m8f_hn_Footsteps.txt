@@ -16,8 +16,158 @@
  * along with Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+class m8f_hn_FootstepSettings
+{
+
+  enum FootstepMarkerTypes
+  {
+    MARKER_FOOTSTEP,
+    MARKER_CIRCLE,
+    MARKER_ARROW,
+    MARKER_OFF,
+  }
+
+  int    footstepPeriod; // tics
+  int    markerType;     // FootstepMarkerTypes
+  int    markerLifetime; // tics
+  double markerAlpha;
+  bool   markerForever;
+  double markerScale;
+
+  void read(PlayerInfo player)
+  {
+    footstepPeriod = CVar.GetCVar("m8f_hn_marker_spawn_period", player).GetInt();
+    markerType     = CVar.GetCVar("m8f_hn_marker_type"        , player).GetInt();
+    markerLifetime = CVar.GetCVar("m8f_hn_marker_lifetime"    , player).GetInt() * 35;
+    markerAlpha    = CVar.GetCVar("m8f_hn_marker_alpha"       , player).GetFloat();
+    markerForever  = CVar.GetCVar("m8f_hn_marker_forever"     , player).GetInt();
+    markerScale    = CVar.GetCVar("m8f_hn_marker_scale"       , player).GetFloat();
+  }
+
+  m8f_hn_FootstepSettings init(PlayerInfo player)
+  {
+    read(player);
+    return self;
+  }
+
+} // class m8f_hn_FootstepSettings
+
+class m8f_hn_FootstepHandler : EventHandler
+{
+
+  m8f_hn_FootstepSettings _settings;
+
+  bool    _left;
+  vector3 _oldPos;
+  bool    _isFirstTick;
+  bool    _isWorldLoaded;
+
+  override void OnRegister()
+  {
+    _left          = false;
+
+    _isFirstTick   = true;
+    _isWorldLoaded = false;
+  }
+
+  override void WorldLoaded(WorldEvent e)
+  {
+    _settings = new("m8f_hn_FootstepSettings").init(players[consolePlayer]);
+  }
+
+  override void WorldTick()
+  {
+    makeFootstepMarks();
+  }
+
+  void makeFootstepMarks()
+  {
+    if (_settings.markerType == _settings.MARKER_OFF) { return; }
+    if (level.time % _settings.footstepPeriod != 0)  { return; }
+
+    if (!_isFirstTick) { _isWorldLoaded = true; }
+    _isFirstTick = false;
+
+    PlayerInfo player      = players[consolePlayer];
+    Actor      playerActor = player.mo;
+    vector3    pos         = playerActor.pos;
+    if (_oldPos == pos) { return; }
+
+    float xdiff = _oldPos.x - pos.x;
+    float ydiff = _oldPos.y - pos.y;
+    float dist  = xdiff * xdiff + ydiff * ydiff;
+    if (dist < 400) { return; }
+
+    _oldPos = pos;
+
+    string markerClass;
+    switch (_settings.markerType)
+      {
+      case _settings.MARKER_FOOTSTEP:
+        {
+          float  angle  = playerActor.angle;
+          string letter = AngleLetter(angle);
+          markerClass   = _left ? "m8f_hn_FadingLeft" : "m8f_hn_FadingRight";
+          markerClass.AppendFormat(letter);
+          _left = !_left;
+        }
+        break;
+
+      case _settings.MARKER_CIRCLE:
+        markerClass = "m8f_hn_FadingCircle";
+        break;
+
+      case _settings.MARKER_ARROW:
+        {
+          float  angle  = playerActor.angle;
+          string letter = AngleLetter(angle);
+          markerClass   = "m8f_hn_FadingArrow";
+          markerClass.AppendFormat(letter);
+        }
+        break;
+      }
+
+    let marker = Actor.Spawn(markerClass, pos);
+    m8f_hn_FadingMarker(marker).init( _settings.markerLifetime
+                                    , _settings.markerAlpha
+                                    , _settings.markerForever
+                                    , _settings.markerScale
+                                    );
+  }
+
+  override void NetworkProcess(ConsoleEvent event)
+  {
+    if (event.name == "m8f_hn_remove_footsteps") { removeFootsteps(); }
+  }
+
+  static void removeFootsteps()
+  {
+    let   iterator = ThinkerIterator.Create("m8f_hn_FadingMarker");
+    Actor sign;
+    while (sign = Actor(iterator.Next()))
+      {
+        sign.Destroy();
+      }
+  }
+
+  static string AngleLetter(float angle)
+  {
+    static const string letters[] =
+      {
+        "3", "A", "2", "9", "1", "G", "8", "F",
+        "7", "E", "6", "D", "5", "C", "4", "B"
+      };
+
+    angle += 45.0 / 4;
+    angle %= 360.0;
+    return letters[angle / 22.5];
+  }
+
+} // class m8f_hn_FootstepHandler
+
 class m8f_hn_FadingMarker : MapMarker
 {
+
   Default
     {
       RenderStyle "Translucent";
@@ -52,7 +202,8 @@ class m8f_hn_FadingMarker : MapMarker
       HNF1 A -1;
       Stop;
     }
-}
+
+} // class m8f_hn_FadingMarker
 
 class m8f_hn_FadingLeft1 : m8f_hn_FadingMarker {States{ Spawn: HNL1 A -1; Stop; }}
 class m8f_hn_FadingLeft2 : m8f_hn_FadingMarker {States{ Spawn: HNL2 A -1; Stop; }}

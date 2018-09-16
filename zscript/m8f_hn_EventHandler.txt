@@ -77,17 +77,17 @@ class m8f_hn_Data
 
 class m8f_hn_EventHandler : EventHandler
 {
-  vector3 oldPos;
-  bool    left;
   Array<m8f_hn_BaseAreaNameSource> areaNameSources;
   m8f_hn_Data data;
-  int    renderUpdatePeriod;
-  int    renderCounter;
-  string areaName;
-  bool   isWorldLoaded;
-  bool   isFirstTick;
-  bool   isTitlemap;
   m8f_hn_Settings settings;
+
+  int     renderUpdatePeriod;
+  int     renderCounter;
+  string  areaName;
+  bool    isTitlemap;
+
+  bool    _isFirstTick;
+  bool    _isWorldLoaded;
 
   // returns unique pointer id
   int AddPointer(double x, double y, int type)
@@ -113,7 +113,6 @@ class m8f_hn_EventHandler : EventHandler
 
   override void OnRegister()
   {
-    left   = false;
     areaNameSources.push(new("m8f_hn_SignAreaNameSource"));
     areaNameSources.push(new("m8f_hn_PlayerStartNameSource"));
     areaNameSources.push(new("m8f_hn_ItemAreaNameSource"));
@@ -123,8 +122,9 @@ class m8f_hn_EventHandler : EventHandler
     renderUpdatePeriod = 20;
     renderCounter      =  0;
     areaName           = "";
-    isWorldLoaded      = false;
-    isFirstTick        = true;
+
+    _isWorldLoaded = false;
+    _isFirstTick   = true;
   }
 
   override void WorldLoaded(WorldEvent e)
@@ -132,6 +132,12 @@ class m8f_hn_EventHandler : EventHandler
     data       = new("m8f_hn_Data").init();
     isTitlemap = CheckTitlemap();
     settings   = new("m8f_hn_Settings").init(players[consolePlayer]);
+  }
+
+  override void WorldTick()
+  {
+    if (!_isFirstTick) { _isWorldLoaded = true; }
+    _isFirstTick = false;
   }
 
   override void WorldThingSpawned(WorldEvent e)
@@ -149,7 +155,7 @@ class m8f_hn_EventHandler : EventHandler
         data.areaNameMarkers.push(item);
       }
 
-    if (isWorldLoaded) { return; }
+    if (_isWorldLoaded) { return; }
 
     Inventory inv = Inventory(item);
     if (inv && inv.owner) { return; }
@@ -167,70 +173,10 @@ class m8f_hn_EventHandler : EventHandler
       }
   }
 
-  override void WorldTick()
-  {
-    makeFootstepMarks();
-  }
-
-  void makeFootstepMarks()
-  {
-    if (settings.markerType == settings.MARKER_OFF) { return; }
-    if (level.time % settings.footstepPeriod != 0)  { return; }
-
-    if (!isFirstTick) { isWorldLoaded = true; }
-    isFirstTick = false;
-
-    PlayerInfo player      = players[consolePlayer];
-    Actor      playerActor = player.mo;
-    vector3    pos         = playerActor.pos;
-    if (oldPos == pos) { return; }
-
-    float xdiff = oldPos.x - pos.x;
-    float ydiff = oldPos.y - pos.y;
-    float dist  = xdiff * xdiff + ydiff * ydiff;
-    if (dist < 400) { return; }
-
-    oldPos = pos;
-
-    string markerClass;
-    switch (settings.markerType)
-      {
-      case settings.MARKER_FOOTSTEP:
-        {
-          float  angle  = playerActor.angle;
-          string letter = AngleLetter(angle);
-          markerClass   = left ? "m8f_hn_FadingLeft" : "m8f_hn_FadingRight";
-          markerClass.AppendFormat(letter);
-          left = !left;
-        }
-        break;
-
-      case settings.MARKER_CIRCLE:
-        markerClass = "m8f_hn_FadingCircle";
-        break;
-
-      case settings.MARKER_ARROW:
-        {
-          float  angle  = playerActor.angle;
-          string letter = AngleLetter(angle);
-          markerClass   = "m8f_hn_FadingArrow";
-          markerClass.AppendFormat(letter);
-        }
-        break;
-      }
-
-    let marker = Actor.Spawn(markerClass, pos);
-    m8f_hn_FadingMarker(marker).init(settings.markerLifetime,
-                                     settings.markerAlpha,
-                                     settings.markerForever,
-                                     settings.markerScale);
-  }
-
   override void NetworkProcess(ConsoleEvent event)
   {
     if      (event.name == "m8f_hn_remove_signs")     { removeSigns();     }
     else if (event.name == "m8f_hn_remove_decals")    { removeDecals();    }
-    else if (event.name == "m8f_hn_remove_footsteps") { removeFootsteps(); }
   }
 
   static void removeSigns()
@@ -250,16 +196,6 @@ class m8f_hn_EventHandler : EventHandler
     while (dec = iterator.Next())
       {
         dec.Destroy();
-      }
-  }
-
-  static void removeFootsteps()
-  {
-    let   iterator = ThinkerIterator.Create("m8f_hn_FadingMarker");
-    Actor sign;
-    while (sign = Actor(iterator.Next()))
-      {
-        sign.Destroy();
       }
   }
 
@@ -476,19 +412,6 @@ class m8f_hn_EventHandler : EventHandler
                    );
 
     return (font.GetHeight() / scale) / Screen.GetHeight();
-  }
-
-  static string AngleLetter(float angle)
-  {
-    static const string letters[] =
-      {
-        "3", "A", "2", "9", "1", "G", "8", "F",
-        "7", "E", "6", "D", "5", "C", "4", "B"
-      };
-
-    angle += 45.0 / 4;
-    angle %= 360.0;
-    return letters[angle / 22.5];
   }
 
   ui static void drawPointers( double x, double y, int width, int height

@@ -1,5 +1,5 @@
 gameinfo
 {
-  AddEventHandlers = "m8f_hn_EventHandler"
+  AddEventHandlers = "m8f_hn_EventHandler", "m8f_hn_FootstepHandler"
   MapArrow         = "marrow", "ddtmarr"
 }
