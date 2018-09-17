@@ -25,6 +25,7 @@ class m8f_hn_Data
   Array<string>  itemAreaNames;
   Array<string>  areaItems;
   Array<Actor>   areaNameMarkers;
+  Array<Actor>   questPointers;
 
   Array<m8f_hn_Pointer> pointers;
   int pointerId;
@@ -159,19 +160,31 @@ class m8f_hn_EventHandler : EventHandler
     if (_progress > 10) { _progress = 10; }
   }
 
+  static bool contains(String s, String substring)
+  {
+    return (s.IndexOf(substring) != -1);
+  }
+
   override void WorldThingSpawned(WorldEvent e)
   {
-    if (e == null)     { return; }
+    if (e == null) { return; }
 
     Actor item = e.thing;
     if (item == null) { return; }
 
     // detect and store area name markers
     string spawnedClassName = item.GetClassName();
-    bool   isAreaNameMarker = (spawnedClassName.IndexOf("hn_AreaNameMarker") != -1);
+    bool   isAreaNameMarker = contains(spawnedClassName, "hn_AreaNameMarker");
     if (isAreaNameMarker)
       {
         data.areaNameMarkers.push(item);
+      }
+
+    // detect and store quest markers
+    bool isQuestPointer = contains(spawnedClassName, "hn_QuestPointer");
+    if (isQuestPointer)
+      {
+        data.questPointers.push(item);
       }
 
     if (_isWorldLoaded) { return; }
@@ -440,7 +453,8 @@ class m8f_hn_EventHandler : EventHandler
   }
 
   ui static void drawPointers( double x, double y, int width, int height
-                             , m8f_hn_Data data, vector3 center, double playerAngle)
+                             , m8f_hn_Data data, vector3 center, double playerAngle
+                             )
   {
     static const string pointerTextures[] =
       {
@@ -455,36 +469,62 @@ class m8f_hn_EventHandler : EventHandler
     int nPointers = data.pointers.size();
     for (int i = 0; i < nPointers; ++i)
       {
-        double xPointer = data.pointers[i].x();
-        double yPointer = data.pointers[i].y();
-        int    type     = data.pointers[i].type();
+        double    xPointer   = data.pointers[i].x();
+        double    yPointer   = data.pointers[i].y();
+        int       type       = data.pointers[i].type();
         TextureID pointerTex = TexMan.CheckForTexture(pointerTextures[type], TexMan.Type_Any);
 
-        double xDiff    = xPointer - center.x;
-        double yDiff    = yPointer - center.y;
-        double angle;
-        if      (yDiff > 0.0) { angle = atan(xDiff / yDiff) +  90.0; }
-        else if (yDiff < 0.0) { angle = atan(xDiff / yDiff) + 270.0; }
-        else if (xDiff < 0.0) { angle =   0.0; }
-        else if (xDiff > 0.0) { angle = 180.0; }
-        else                  { angle =  90.0; }
-
-        angle         = (angle + playerAngle - 90.0) % 360.0;
-        double xStart = angle * 150.0 / 270.0;
-
-        double distance = xDiff * xDiff + yDiff * yDiff;
-        double step     = 500000.0;
-        double steps    = distance / step;
-        double yOffset  = 3 + steps;        //  3 - minimum
-        if (yOffset > 11) { yOffset = 11; } // 11 - maximum
-
-        Screen.DrawTexture( pointerTex, false, x + xStart, y + yOffset
-                            , DTA_KeepRatio,     true
-                            , DTA_VirtualWidth,  width
-                            , DTA_VirtualHeight, height
-                            );
+        drawPointer( x, y, width, height
+                   , center, playerAngle
+                   , xPointer, yPointer, pointerTex
+                   );
       }
 
+    int nQuestPointers = data.questPointers.size();
+    for (int i = 0; i < nQuestPointers; ++i)
+      {
+        double    xPointer   = data.questPointers[i].pos.x;
+        double    yPointer   = data.questPointers[i].pos.y;
+        TextureID pointerTex = TexMan.CheckForTexture( pointerTextures[m8f_hn_Pointer.POINTER_GOLD]
+                                                     , TexMan.Type_Any
+                                                     );
+
+        drawPointer( x, y, width, height
+                   , center, playerAngle
+                   , xPointer, yPointer, pointerTex
+                   );
+      }
+  }
+
+  ui static void drawPointer( double x, double y, int width, int height
+                            , vector3 center, double playerAngle
+                            , double xPointer, double yPointer, TextureID pointerTex
+                            )
+  {
+
+    double xDiff = xPointer - center.x;
+    double yDiff = yPointer - center.y;
+    double angle;
+    if      (yDiff > 0.0) { angle = atan(xDiff / yDiff) +  90.0; }
+    else if (yDiff < 0.0) { angle = atan(xDiff / yDiff) + 270.0; }
+    else if (xDiff < 0.0) { angle =   0.0; }
+    else if (xDiff > 0.0) { angle = 180.0; }
+    else                  { angle =  90.0; }
+
+    angle         = (angle + playerAngle - 90.0) % 360.0;
+    double xStart = angle * 150.0 / 270.0;
+
+    double distance = xDiff * xDiff + yDiff * yDiff;
+    double step     = 500000.0;
+    double steps    = distance / step;
+    double yOffset  = 3 + steps;        //  3 - minimum
+    if (yOffset > 11) { yOffset = 11; } // 11 - maximum
+
+    Screen.DrawTexture( pointerTex, false, x + xStart, y + yOffset
+                      , DTA_KeepRatio,     true
+                      , DTA_VirtualWidth,  width
+                      , DTA_VirtualHeight, height
+                      );
   }
 
   static int countFoundSectors()

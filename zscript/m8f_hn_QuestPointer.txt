@@ -16,48 +16,36 @@
  * along with Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-class m8f_hn_QuestPointer : Actor
+// This is an example of Quest Pointer
+// To make Hellscape Navigator Compass display the quest marker:
+//
+// 1. Copy this class to your wad/pk3 ZScript code;
+// 2. Give the class a unique name, e.g. my_own_hn_QuestPointer_something
+//    The name can by anything, but it must contain substring "hn_QuestPointer"
+//    to be recognized by Hellscape Navigator.
+// 3. Put an object of this class on the map.
+//
+// Notes:
+// - You can create as many QuestPointer classes as you want.
+// - QuestPointer detection is dynamic, so if actor moves on the map,
+//   the position change is reflected on Compass.
+//
+class m8f_hn_QuestPointer_Example : MapMarker
 {
-  Default
-  {
-    +NOBLOCKMAP;
-    +NOGRAVITY;
-    +DONTSPLASH;
-    +NOTONAUTOMAP;
-    +DONTTHRUST;
-  }
 
   override void BeginPlay()
   {
-    let eventHandler = m8f_hn_EventHandler(StaticEventHandler.Find("m8f_hn_EventHandler"));
-    _id = eventHandler.AddPointer(pos.x, pos.y, m8f_hn_Pointer.POINTER_GOLD);
-
-    float scale = CVar.GetCVar("m8f_hn_quest_marker_scale").GetFloat();
-    _marker = m8f_hn_SignMarker(Spawn("m8f_hn_QuestPointerMarker", pos));
-    _marker.init(scale);
+    float mapScale = CVar.GetCVar("m8f_hn_quest_marker_scale").GetFloat();
+    scale.x = mapScale * 0.2;
+    scale.y = mapScale * 0.2;
+    super.BeginPlay();
   }
 
-  override void Die(Actor source, Actor inflictor, int dmgflags)
-  {
-    let eventHandler = m8f_hn_EventHandler(StaticEventHandler.Find("m8f_hn_EventHandler"));
-    eventHandler.RemovePointer(_id);
-
-    _marker.Destroy();
-  }
-
-  int               _id;
-  m8f_hn_SignMarker _marker;
-
-} // class m8f_hn_QuestPointer
-
-class m8f_hn_QuestPointerMarker : m8f_hn_SignMarker
-{
-
-    States
+  States
     {
     Spawn:
       HNQU B -1;
       Stop;
     }
 
-} // class m8f_hn_QuestPointerMarker
+} // class m8f_hn_QuestPointer_Example
