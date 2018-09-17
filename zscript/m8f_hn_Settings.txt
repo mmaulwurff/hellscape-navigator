@@ -27,6 +27,7 @@ class m8f_hn_Settings
   bool   showOnAutomap;
   bool   showAreaName;
   bool   hideAutoAreaNames;
+  bool   showExplored;
 
   double compassScale;
   int    compassStyle;
@@ -41,6 +42,7 @@ class m8f_hn_Settings
     showOnAutomap     = CVar.GetCVar("m8f_hn_compass_automap"    , player).GetInt();
     showAreaName      = CVar.GetCVar("m8f_hn_show_area"          , player).GetInt();
     hideAutoAreaNames = CVar.GetCVar("m8f_hn_hide_auto_names"    , player).GetInt();
+    showExplored      = CVar.GetCVar("m8f_hn_show_explored"      , player).GetInt();
 
     compassScale      = CVar.GetCVar("m8f_hn_compass_scale"      , player).GetFloat();
     compassStyle      = CVar.GetCVar("m8f_hn_compass_style"      , player).GetInt();

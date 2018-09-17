@@ -77,17 +77,19 @@ class m8f_hn_Data
 
 class m8f_hn_EventHandler : EventHandler
 {
-  Array<m8f_hn_BaseAreaNameSource> areaNameSources;
-  m8f_hn_Data data;
-  m8f_hn_Settings settings;
+  private Array<m8f_hn_BaseAreaNameSource> areaNameSources;
+  private m8f_hn_Data data;
+  private m8f_hn_Settings settings;
 
-  int     renderUpdatePeriod;
-  int     renderCounter;
-  string  areaName;
-  bool    isTitlemap;
+  private int     renderUpdatePeriod;
+  private int     renderCounter;
+  private string  areaName;
+  private bool    isTitlemap;
+  private int     _progress;
+  private int     _initialFoundSectorsCount;
 
-  bool    _isFirstTick;
-  bool    _isWorldLoaded;
+  private bool    _isFirstTick;
+  private bool    _isWorldLoaded;
 
   // returns unique pointer id
   int AddPointer(double x, double y, int type)
@@ -123,8 +125,7 @@ class m8f_hn_EventHandler : EventHandler
     renderCounter      =  0;
     areaName           = "";
 
-    _isWorldLoaded = false;
-    _isFirstTick   = true;
+    _isWorldLoaded     = false;
   }
 
   override void WorldLoaded(WorldEvent e)
@@ -132,12 +133,30 @@ class m8f_hn_EventHandler : EventHandler
     data       = new("m8f_hn_Data").init();
     isTitlemap = CheckTitlemap();
     settings   = new("m8f_hn_Settings").init(players[consolePlayer]);
+
+    _progress  = 0;
+    _initialFoundSectorsCount = 0;
   }
 
   override void WorldTick()
   {
-    if (!_isFirstTick) { _isWorldLoaded = true; }
-    _isFirstTick = false;
+    if (level.time == 1)
+      {
+        _isWorldLoaded            = true;
+        _initialFoundSectorsCount = countFoundSectors();
+      }
+
+    int  updatePeriod = 35;
+    bool isSkip       = (level.time % updatePeriod);
+
+    if (!isSkip) { return; }
+
+    int nSectors      = level.sectors.size() - _initialFoundSectorsCount;
+    int nFoundSectors = countFoundSectors()  - _initialFoundSectorsCount;
+
+    // leave place for unaccessible sectors
+    _progress = nFoundSectors * 11 / nSectors;
+    if (_progress > 10) { _progress = 10; }
   }
 
   override void WorldThingSpawned(WorldEvent e)
@@ -199,7 +218,7 @@ class m8f_hn_EventHandler : EventHandler
       }
   }
 
-  ui string GetAreaName(m8f_hn_Data data)
+  ui string GetAreaName(m8f_hn_Data data) const
   {
     string areaName = "no area name sources found";
     int    size     = areaNameSources.size();
@@ -227,7 +246,7 @@ class m8f_hn_EventHandler : EventHandler
     areaName = name;
   }
 
-  bool CheckTitlemap()
+  static bool CheckTitlemap()
   {
     bool isTitlemap = (level.mapname == "TITLEMAP");
     return isTitlemap;
@@ -274,6 +293,12 @@ class m8f_hn_EventHandler : EventHandler
         y += drawTextCenter(level.levelName, normalColor, scale, x, y, font);
       }
 
+    if (settings.showExplored)
+      {
+        string progress = StringStruct.Format("Explored: %d/10", _progress);
+        y += drawTextCenter(progress, normalColor, scale, x, y, font);
+      }
+
     if (settings.showAreaName && areaName.length() != 0)
       {
         y += drawTextCenter(areaName, normalColor, scale, x, y, font);
@@ -281,7 +306,7 @@ class m8f_hn_EventHandler : EventHandler
 
     if (settings.showGridCoords)
       {
-        string  coords = makeGridCoordinates(pos);
+        string coords = makeGridCoordinates(pos);
         y += drawTextCenter(coords, normalColor, scale, x, y, font);
       }
   }
@@ -460,6 +485,21 @@ class m8f_hn_EventHandler : EventHandler
                             );
       }
 
+  }
+
+  static int countFoundSectors()
+  {
+    int foundSectors = 0;
+    int nSectors     = level.sectors.size();
+
+    for (int i = 0; i < nSectors; ++i)
+      {
+        Sector s       = level.sectors[i];
+        bool   isFound = (s.MoreFlags & Sector.SECMF_DRAWN);
+        if (isFound) { ++foundSectors; }
+      }
+
+    return foundSectors;
   }
 
 } // m8f_hn_EventHandler
