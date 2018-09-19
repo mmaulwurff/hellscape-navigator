@@ -152,7 +152,13 @@ class m8f_hn_EventHandler : EventHandler
 
     if (!isSkip) { return; }
 
-    int nSectors      = level.sectors.size() - _initialFoundSectorsCount;
+    int nSectors = level.sectors.size() - _initialFoundSectorsCount;
+    if (nSectors == 0)
+    {
+      _progress = 10;
+      return;
+    }
+
     int nFoundSectors = countFoundSectors()  - _initialFoundSectorsCount;
 
     // leave place for unaccessible sectors
