@@ -101,7 +101,7 @@ class m8f_hn_WoodenSign : m8f_hn_Sign
   States
     {
     Spawn:
-      HNWS A -1;
+      HNWS B -1;
       Stop;
     }
 
@@ -127,7 +127,7 @@ class m8f_hn_TransparentSign : m8f_hn_Sign
   States
     {
     Spawn:
-      HNTS A -1;
+      HNTS B -1;
       Stop;
     }
 
@@ -153,7 +153,7 @@ class m8f_hn_MetalSign : m8f_hn_Sign
   States
     {
     Spawn:
-      HNMS A -1;
+      HNMS B -1;
       Stop;
     }
 

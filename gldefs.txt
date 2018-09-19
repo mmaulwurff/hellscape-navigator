@@ -14,5 +14,5 @@ object m8f_hn_WoodenSign
 
 brightmap sprite hnmsa0
 {
-  map hnmsa0b
+  map hnmsb0
 }

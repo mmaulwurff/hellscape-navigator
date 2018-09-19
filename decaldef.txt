@@ -7,7 +7,7 @@ decal m8f_hn_RedDeadDecal
 
 decal m8f_hn_RedClearDecal
 {
-  pic hn1red
+  pic hn1redo
 }
 
 slider m8f_hn_BloodSlider
@@ -24,7 +24,7 @@ decal m8f_hn_RedDeadDecalFlow
 
 decal m8f_hn_RedClearDecalFlow
 {
-  pic hn1res
+  pic hn1reso
   animator m8f_hn_BloodSlider
 }
 
@@ -38,7 +38,7 @@ decal m8f_hn_GreenDeadDecal
 
 decal m8f_hn_GreenClearDecal
 {
-  pic hn1grn
+  pic hn1grno
   fullbright
 }
 
@@ -52,12 +52,12 @@ fader m8f_hn_BlueFader
 
 decal m8f_hn_BlueDeadDecal
 {
-  pic hn0blu
+  pic hn0bluo
   animator m8f_hn_BlueFader
 }
 
 decal m8f_hn_BlueClearDecal
 {
-  pic hn1blu
+  pic hn1bluo
   animator m8f_hn_BlueFader
 }
