@@ -160,7 +160,7 @@ class m8f_hn_FootstepHandler : EventHandler
 
     angle += 45.0 / 4;
     angle %= 360.0;
-    return letters[angle / 22.5];
+    return letters[int(angle / 22.5)];
   }
 
 } // class m8f_hn_FootstepHandler

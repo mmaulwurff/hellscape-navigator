@@ -204,9 +204,9 @@ class m8f_hn_EventHandler : EventHandler
       {
         if (!(item is data.areaItems[i])) { continue; }
 
-        data.itemAreaPosX.push(item.pos.x);
-        data.itemAreaPosY.push(item.pos.y);
-        data.itemAreaPosZ.push(item.pos.z);
+        data.itemAreaPosX.push(int(item.pos.x));
+        data.itemAreaPosY.push(int(item.pos.y));
+        data.itemAreaPosZ.push(int(item.pos.z));
         data.itemAreaNames.push(item.GetTag());
       }
   }
@@ -346,8 +346,8 @@ class m8f_hn_EventHandler : EventHandler
         "hncmpb2"
       };
 
-    int    width     = scale * Screen.GetWidth();
-    int    height    = scale * Screen.GetHeight();
+    int    width     = int(scale * Screen.GetWidth());
+    int    height    = int(scale * Screen.GetHeight());
     double scaledY   = int(y * height);
 
     double    x      = width * relativeX;
@@ -359,10 +359,10 @@ class m8f_hn_EventHandler : EventHandler
     if      (compX < 0.0)           { compX = 0.0; }
     else if (compX > width - 102.0) { compX = width - 102.0; }
 
-    int clipRectWidth  = 102 / scale;
+    int clipRectWidth  = int(102 / scale);
     int clipRectHeight = 15;
-    int clipRectX      = 1 + (Screen.GetWidth()  * relativeX) - clipRectWidth / 2.0;
-    int clipRectY      = Screen.GetHeight() * y;
+    int clipRectX      = int(1 + (Screen.GetWidth()  * relativeX) - clipRectWidth / 2.0);
+    int clipRectY      = int(Screen.GetHeight() * y);
     int maxClipRectX   = Screen.GetWidth() - clipRectWidth;
     if (clipRectX > maxClipRectX) { clipRectX = maxClipRectX; }
 
@@ -370,7 +370,7 @@ class m8f_hn_EventHandler : EventHandler
     Screen.SetClipRect( clipRectX
                       , clipRectY
                       , clipRectWidth - 1
-                      , (clipRectHeight + 1.5) / scale
+                      , int((clipRectHeight + 1.5) / scale)
                       );
 
     Screen.DrawTexture( eswn, false, compX - xStart + 1.0, scaledY + 1
@@ -398,8 +398,8 @@ class m8f_hn_EventHandler : EventHandler
 
   ui static string makeGridCoordinates(vector3 pos)
   {
-    int     x        = pos.x;
-    int     y        = pos.y;
+    int     x        = int(pos.x);
+    int     y        = int(pos.y);
     int     gridSize = 512;
     if (x < 0) { x -= gridSize; }
     if (y < 0) { y -= gridSize; }
@@ -442,8 +442,8 @@ class m8f_hn_EventHandler : EventHandler
                                  , int    xAdjustment = 0
                                  )
   {
-    int    width       = scale * Screen.GetWidth();
-    int    height      = scale * Screen.GetHeight();
+    int    width       = int(scale * Screen.GetWidth());
+    int    height      = int(scale * Screen.GetHeight());
     double stringWidth = font.StringWidth(text);
     x  = (width * x) - stringWidth / 2;
     y *= height;
