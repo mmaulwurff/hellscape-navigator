@@ -392,7 +392,6 @@ class m8f_hn_EventHandler : EventHandler
                       , DTA_VirtualHeight, height
                       );
 
-
     return (clipRectHeight / scale) * 1.4 / Screen.GetHeight();
   }
 
@@ -447,8 +446,9 @@ class m8f_hn_EventHandler : EventHandler
     double stringWidth = font.StringWidth(text);
     x  = (width * x) - stringWidth / 2;
     y *= height;
-    if (x < 0.0) { x = 0.0; }
-    else if (x > width - stringWidth) { x = width - stringWidth; }
+    double margin = 4.0;
+    if      (x < margin)                       { x = margin; }
+    else if (x > width - stringWidth - margin) { x = width - stringWidth - margin; }
 
     Screen.DrawText( font, color, x, y, text
                    , DTA_KeepRatio,     true
