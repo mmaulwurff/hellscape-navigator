@@ -150,9 +150,19 @@ OptionMenu "m8f_hn_CompassOptions"
   StaticText ""
 }
 
-OptionMenu "m8f_hn_Options"
+OptionMenu    "m8f_hn_GameplayOptions"
 {
-  Title "Hellscape Navigator Options"
+  Title       "Hellscape Navigator Gameplay"
+
+  StaticText  ""
+  Option      "Reveal map when it is explored" , "m8f_hn_reveal_when_explored" , "OnOff"
+
+  StaticText  ""
+}
+
+OptionMenu    "m8f_hn_Options"
+{
+  Title       "Hellscape Navigator Options"
 
   StaticText  ""
   StaticText  "Controls"    , "Blue"
@@ -174,11 +184,12 @@ OptionMenu "m8f_hn_Options"
   Submenu     "Footstep Markers" , "m8f_hn_FootstepMarkerOptions"
   Submenu     "Sign"             , "m8f_hn_SignOptions"
   Submenu     "Compass"          , "m8f_hn_CompassOptions"
+  Submenu     "Gameplay"         , "m8f_hn_GameplayOptions"
 
   StaticText  ""
 }
 
-OptionValue "m8f_hn_marker_type_values"
+OptionValue   "m8f_hn_marker_type_values"
 {
   0, "Footsteps"
   1, "Circle"
@@ -188,6 +199,6 @@ OptionValue "m8f_hn_marker_type_values"
 
 AddOptionMenu "OptionsMenu"
 {
-  StaticText ""
-  Submenu    "Hellscape Navigator Options", "m8f_hn_Options"
+  StaticText  ""
+  Submenu     "Hellscape Navigator Options", "m8f_hn_Options"
 }

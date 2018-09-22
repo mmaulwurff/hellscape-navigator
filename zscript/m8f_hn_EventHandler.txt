@@ -87,6 +87,7 @@ class m8f_hn_EventHandler : EventHandler
   private string  areaName;
   private bool    isTitlemap;
   private int     _progress;
+  private int     _oldProgress;
   private int     _initialFoundSectorsCount;
 
   private bool    _isFirstTick;
@@ -135,7 +136,8 @@ class m8f_hn_EventHandler : EventHandler
     isTitlemap = CheckTitlemap();
     settings   = new("m8f_hn_Settings").init(players[consolePlayer]);
 
-    _progress  = 0;
+    _progress    = 0;
+    _oldProgress = 0;
     _initialFoundSectorsCount = 0;
   }
 
@@ -164,6 +166,18 @@ class m8f_hn_EventHandler : EventHandler
     // leave place for unaccessible sectors
     _progress = nFoundSectors * 11 / nSectors;
     if (_progress > 10) { _progress = 10; }
+
+    if (_oldProgress != _progress && _progress == 10)
+    {
+      PlayerInfo player = players[consolePlayer];
+      if (CVar.GetCVar("m8f_hn_reveal_when_explored", player).GetInt())
+      {
+        Console.Printf("Level is explored, map is revealed.");
+        player.mo.GiveInventory("MapRevealer", 1);
+      }
+    }
+
+    _oldProgress = _progress;
   }
 
   static bool contains(String s, String substring)
