@@ -530,11 +530,11 @@ class m8f_hn_EventHandler : EventHandler
   ui static bool isSwitch(Line l)
   {
     bool activation = (l.activation & ( SPAC_Use
-                                | SPAC_Impact
-                                | SPAC_Push
-                                | SPAC_UseThrough
-                                | SPAC_UseBack
-                                ));
+                                      | SPAC_Impact
+                                      | SPAC_Push
+                                      | SPAC_UseThrough
+                                      | SPAC_UseBack
+                                      ));
     return (activation);
   }
 
@@ -561,7 +561,7 @@ class m8f_hn_EventHandler : EventHandler
     if (closeFormula)
     {
       double distance = sqrt(xDiff * xDiff + yDiff * yDiff);
-      yOffset         = log(distance * 0.05) * 4;
+      yOffset         = log(distance * 0.05) * 5 - 5;
 
     }
     else
@@ -569,7 +569,7 @@ class m8f_hn_EventHandler : EventHandler
       double distance = xDiff * xDiff + yDiff * yDiff;
       double step     = 500000.0;
       double steps    = distance / step;
-      yOffset         = steps;        //  3 - minimum
+      yOffset         = steps;
       if (yOffset > 11) { yOffset = 11; } // 11 - maximum
     }
 
