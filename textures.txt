@@ -96,6 +96,13 @@ texture hncmpr2, 1248, 60
   YScale 4.0
 }
 
+texture hncmpr3, 1248, 60
+{
+  sprite hncmpr3, 0, 0
+  XScale 4.0
+  YScale 4.0
+}
+
 texture hncmpb1, 440, 100
 {
   sprite hncmpb1, 0, 0
@@ -106,6 +113,13 @@ texture hncmpb1, 440, 100
 texture hncmpb2, 440, 100
 {
   sprite hncmpb2, 0, 0
+  XScale 4.0
+  YScale 4.0
+}
+
+texture hncmpb3, 440, 100
+{
+  sprite hncmpb3, 0, 0
   XScale 4.0
   YScale 4.0
 }

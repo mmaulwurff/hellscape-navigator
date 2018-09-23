@@ -116,6 +116,7 @@ OptionValue "m8f_hn_style_options"
 {
   0, "Dark"
   1, "Minimalistic"
+  2, "Blue"
 }
 
 OptionMenu "m8f_hn_CompassOptions"
