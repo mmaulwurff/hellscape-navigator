@@ -37,6 +37,7 @@ user bool  m8f_hn_compass_automap    = true;
 user float m8f_hn_compass_scale      = 2.0;
 user bool  m8f_hn_hide_auto_names    = false;
 user int   m8f_hn_compass_style      = 0;
+user bool  m8f_hn_compass_under      = false;
 user bool  m8f_hn_show_explored      = true;
 user bool  m8f_hn_show_switches      = true;
 

@@ -315,32 +315,45 @@ class m8f_hn_EventHandler : EventHandler
     double  scale       = 1.0 / settings.compassScale;
     vector3 pos         = player.mo.pos;
     double  playerAngle = player.mo.angle % 360.0;
+    double  drawDirection = settings.textAboveCompass ? -1 : 1;
 
     if (settings.showCompass)
     {
-      y += drawCompass(x, y, scale, settings.compassStyle, data, pos, playerAngle);
+      double offset = drawCompass(x, y, scale, settings.compassStyle, data, pos, playerAngle);
+      if (!settings.textAboveCompass)
+      {
+        y += offset;
+      }
+      else
+      {
+        y -= double(font.GetHeight() * 2.5) / Screen.GetHeight();
+      }
     }
 
     if (settings.levelName)
       {
-        y += drawTextCenter(level.levelName, normalColor, scale, x, y, font);
+        y += drawTextCenter(level.levelName, normalColor, scale, x, y, font)
+          * drawDirection;
       }
 
     if (settings.showExplored)
       {
         string progress = StringStruct.Format("Explored: %d/10", _progress);
-        y += drawTextCenter(progress, normalColor, scale, x, y, font);
+        y += drawTextCenter(progress, normalColor, scale, x, y, font)
+          * drawDirection;
       }
 
     if (settings.showAreaName && areaName.length() != 0)
       {
-        y += drawTextCenter(areaName, normalColor, scale, x, y, font);
+        y += drawTextCenter(areaName, normalColor, scale, x, y, font)
+          * drawDirection;
       }
 
     if (settings.showGridCoords)
       {
         string coords = makeGridCoordinates(pos);
-        y += drawTextCenter(coords, normalColor, scale, x, y, font);
+        y += drawTextCenter(coords, normalColor, scale, x, y, font)
+          * drawDirection;
       }
   }
 
