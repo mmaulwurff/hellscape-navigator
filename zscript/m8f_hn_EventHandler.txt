@@ -370,7 +370,7 @@ class m8f_hn_EventHandler : EventHandler
     else                  { return value; }
   }
 
-  ui static double clampInt(int value, int min, int max)
+  ui static int clampInt(int value, int min, int max)
   {
     if      (value < min) { return min;   }
     else if (value > max) { return max;   }
