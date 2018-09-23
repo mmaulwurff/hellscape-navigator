@@ -42,6 +42,13 @@ complex maps.
 * (Maybe) breaking animation and damaged sprites for signs
 * ?
 
+# Thanks
+
+* ramon.dexter for testing and feature suggestions;
+* ShockwaveS08 for bug reports and feature suggestions;
+* Clifford21 for feature suggestions;
+* Enjay for testing, bug reports, and feature suggestions.
+
 # Links and contacts
 
 [Git Repository](https://github.com/mmaulwurff/hellscape-navigator)
