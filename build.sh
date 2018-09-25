@@ -22,9 +22,8 @@ git log --date=short --pretty=format:"-%d %ad %s%n" | \
 zip $name.pk3 \
     *.txt \
     *.md \
-    sprites/*.png \
-    sprites/compass/*.png \
-    sprites/automap/*.png \
+    sprites/*/*.png \
+    graphics/*/*.png \
     source/*.acs \
     zscript/*.txt \
     acs/*.o \

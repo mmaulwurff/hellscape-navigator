@@ -20,16 +20,16 @@ class m8f_hn_Sign : Actor
 {
 
   Default
-    {
-      Health 30;
-      Height 10;
-      Radius  3;
-      +SOLID;
-      +NOBLOOD;
-      +NOTONAUTOMAP;
-      +DONTTHRUST;
-      Tag "Sign";
-    }
+  {
+    Health 30;
+    Height 10;
+    Radius  3;
+    +SOLID;
+    +NOBLOOD;
+    +NOTONAUTOMAP;
+    +DONTTHRUST;
+    Tag "Sign";
+  }
 
   m8f_hn_SignMarker marker;
   string note;
@@ -99,11 +99,11 @@ class m8f_hn_WoodenSign : m8f_hn_Sign
 {
 
   States
-    {
+  {
     Spawn:
       HNWS B -1;
       Stop;
-    }
+  }
 
   override void BeginPlay()
   {
@@ -125,11 +125,11 @@ class m8f_hn_TransparentSign : m8f_hn_Sign
 {
 
   States
-    {
+  {
     Spawn:
       HNTS B -1;
       Stop;
-    }
+  }
 
   override void BeginPlay()
   {
@@ -151,11 +151,11 @@ class m8f_hn_MetalSign : m8f_hn_Sign
 {
 
   States
-    {
+  {
     Spawn:
       HNMS B -1;
       Stop;
-    }
+  }
 
   override void BeginPlay()
   {
@@ -177,10 +177,10 @@ class m8f_hn_SignMarker : MapMarker
 {
 
   Default
-    {
-      XScale 0.2;
-      YScale 0.2;
-    }
+  {
+    XScale 0.2;
+    YScale 0.2;
+  }
 
   void init(double mapScale)
   {
@@ -195,29 +195,23 @@ class m8f_hn_WoodenSignMarker : m8f_hn_SignMarker
 {
 
   States
-    {
+  {
     Spawn:
       HNWS M -1;
       Stop;
-    }
+  }
 
 } // m8f_hn_WoodenSignMarker
 
 class m8f_hn_TransparentSignMarker : m8f_hn_SignMarker
 {
 
-  Default
-    {
-      XScale 0.4;
-      YScale 0.4;
-    }
-
   States
-    {
+  {
     Spawn:
       HNTS M -1;
       Stop;
-    }
+  }
 
 } // m8f_hn_TransparentSignMarker
 
@@ -225,10 +219,10 @@ class m8f_hn_MetalSignMarker : m8f_hn_SignMarker
 {
 
   States
-    {
+  {
     Spawn:
       HNMS M -1;
       Stop;
-    }
+  }
 
 } // m8f_hn_MetalSignMarker

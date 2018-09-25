@@ -1,185 +1,185 @@
-// Wooden Sign with offset
-sprite hnwsb0, 52, 61
+// Wooden Sign with Offset
+Sprite hnwsb0, 52, 61
 {
-  sprite hnwsa0, 0, 0
+  Patch  hnwsa0, 0, 0
   Offset 26, 61
 }
 
-// Wooden Sign map marker with offset
-sprite hnwsm0, 52, 31
+// Wooden Sign map marker with Offset
+Sprite hnwsm0, 52, 31
 {
-  sprite hnwsa0, 0, 0
+  Patch  hnwsa0, 0, 0
   Offset 26, 15
 }
 
-// Transparent Sign with offset
-sprite hntsb0, 52, 61
+// Transparent Sign with Offset
+Sprite hntsb0, 52, 61
 {
-  sprite hntsa0, 0, 0
+  Patch  hntsa0, 0, 0
   Offset 26, 61
 }
 
-// Transparent Sign map marker with offset
-sprite hntsm0, 52, 31
+// Transparent Sign map marker with Offset
+Sprite hntsm0, 52, 31
 {
-  sprite hntsa0, 0, 0
+  Patch  hntsa0, 0, 0
   Offset 26, 15
 }
 
-// Metal Sign with offset
-sprite hnmsb0, 52, 61
+// Metal Sign with Offset
+Sprite hnmsb0, 52, 61
 {
-  sprite hnmsa0, 0, 0
+  Patch  hnmsa0, 0, 0
   Offset 26, 61
 }
 
-// Metal Sign map marker with offset
-sprite hnmsm0, 52, 31
+// Metal Sign map marker with Offset
+Sprite hnmsm0, 52, 31
 {
-  sprite hnmsa0, 0, 0
+  Patch  hnmsa0, 0, 0
   Offset 26, 15
 }
 
-// Wall sprite section ////////////////////////////////////////////////////////
+// Wall Sprite section ////////////////////////////////////////////////////////
 
-// Blue Dead Wall Sprite with offset
-sprite hn0bluo, 60, 40
+// Blue Dead Wall Sprite with Offset
+Sprite hn0bluo, 60, 40
 {
-  sprite hn0blu, 0, 0
+  Patch  hn0blu, 0, 0
   Offset 30, 20
 }
 
 // Red Clear Wall Sprite with offseet
-sprite hn1redo, 60, 40
+Sprite hn1redo, 60, 40
 {
-  sprite hn1red, 0, 0
+  Patch  hn1red, 0, 0
   Offset 30, 20
 }
 
-// Red Clear Wall Flow Sprite with offset
-sprite hn1reso, 60, 40
+// Red Clear Wall Flow Sprite with Offset
+Sprite hn1reso, 60, 40
 {
-  sprite hn1res, 0, 0
+  Patch  hn1res, 0, 0
   Offset 30, 20
 }
 
-// Green Clear Wall Sprite with offset
-sprite hn1grno, 60, 40
+// Green Clear Wall Sprite with Offset
+Sprite hn1grno, 60, 40
 {
-  sprite hn1grn, 0, 0
+  Patch  hn1grn, 0, 0
   Offset 30, 20
 }
 
-// Blue Clear Wall Sprite with offset
-sprite hn1bluo, 60, 40
+// Blue Clear Wall Sprite with Offset
+Sprite hn1bluo, 60, 40
 {
-  sprite hn1blu, 0, 0
+  Patch  hn1blu, 0, 0
   Offset 30, 20
 }
 
-// End of Wall sprite section /////////////////////////////////////////////////
+// End of Wall Sprite section /////////////////////////////////////////////////
 
 // Compass section ////////////////////////////////////////////////////////////
 
 // Compass
-texture hncmpr1, 1248, 60
+Graphic hn_compass_ribbon_dark, 1248, 60
 {
-  sprite hncmpr1, 0, 0
+  Patch  hn_rdark, 0, 0
   XScale 4.0
   YScale 4.0
 }
 
-texture hncmpr2, 1248, 60
+Texture hn_compass_ribbon_transparent, 1248, 60
 {
-  sprite hncmpr2, 0, 0
+  Patch  hn_rtran, 0, 0
   XScale 4.0
   YScale 4.0
 }
 
-texture hncmpr3, 1248, 60
+Texture hn_compass_ribbon_blue, 1248, 60
 {
-  sprite hncmpr3, 0, 0
+  Patch  hn_rblue, 0, 0
   XScale 4.0
   YScale 4.0
 }
 
-texture hncmpb1, 440, 100
+Texture hn_compass_border_dark, 440, 100
 {
-  sprite hncmpb1, 0, 0
+  Patch  hn_bdark, 0, 0
   XScale 4.0
   YScale 4.0
 }
 
-texture hncmpb2, 440, 100
+Texture hn_compass_border_white, 440, 100
 {
-  sprite hncmpb2, 0, 0
+  Patch  hn_bwhit, 0, 0
   XScale 4.0
   YScale 4.0
 }
 
-texture hncmpb3, 440, 100
+Texture hn_compass_border_blue, 440, 100
 {
-  sprite hncmpb3, 0, 0
+  Patch  hn_bblue, 0, 0
   XScale 4.0
   YScale 4.0
 }
 
 // Compass pointers section ///////////////////////////////////////////////////
 
-texture hn_compass_pointer1, 20, 100
+Texture hn_compass_pointer_white, 20, 100
 {
-  sprite hncmptr1, 0, 0
+  Patch  hn_pwhit, 0, 0
   XScale 4.0
   YScale 4.0
-  offset 6, 0
+  Offset 6, 0
 }
 
-texture hn_compass_pointer2, 20, 100
+Texture hn_compass_pointer_blue, 20, 100
 {
-  sprite hncmptr1, 0, 0 { Translation Blue }
+  Patch  hn_pwhit, 0, 0 { Translation Blue }
   XScale 4.0
   YScale 4.0
-  offset 6, 0
+  Offset 6, 0
 }
 
-texture hn_compass_pointer3, 20, 100
+Texture hn_compass_pointer_gold, 20, 100
 {
-  sprite hncmptr1, 0, 0 { Translation Gold }
+  Patch  hn_pwhit, 0, 0 { Translation Gold }
   XScale 4.0
   YScale 4.0
-  offset 6, 0
+  Offset 6, 0
 }
 
-texture hn_compass_pointer4, 20, 100
+Texture hn_compass_pointer_green, 20, 100
 {
-  sprite hncmptr1, 0, 0 { Translation Green }
+  Patch  hn_pwhit, 0, 0 { Translation Green }
   XScale 4.0
   YScale 4.0
-  offset 6, 0
+  Offset 6, 0
 }
 
-texture hn_compass_pointer5, 20, 100
+Texture hn_compass_pointer_ice, 20, 100
 {
-  sprite hncmptr1, 0, 0 { Translation Ice }
+  Patch  hn_pwhit, 0, 0 { Translation Ice }
   XScale 4.0
   YScale 4.0
-  offset 6, 0
+  Offset 6, 0
 }
 
-texture hn_compass_pointer6, 20, 100
+Texture hn_compass_pointer_red, 20, 100
 {
-  sprite hncmptr1, 0, 0 { Translation Red }
+  Patch  hn_pwhit, 0, 0 { Translation Red }
   XScale 4.0
   YScale 4.0
-  offset 6, 0
+  Offset 6, 0
 }
 
 // End of compass pointers section ////////////////////////////////////////////
 
 // Quest marker
-sprite hnqub0, 200, 200
+Sprite hnqub0, 200, 200
 {
-  sprite hnqua0, 0, 0
+  Patch  hnqua0, 0, 0
   Offset 100, 100
   XScale 4.0
   YScale 4.0

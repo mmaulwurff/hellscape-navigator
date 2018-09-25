@@ -10,13 +10,17 @@ changelog.txt
 
 *~
 
+!graphics
+graphics/*
+!graphics/compass
+graphics/compass/*
+!graphics/compass/*.png
+
 !sprites
 sprites/*
-!sprites/*.png
-
-!sprites/compass
-sprites/compass/*
-!sprites/compass/*.png
+!sprites/*/
+sprites/*/*
+!sprites/*/*.png
 
 !zscript
 zscript/*

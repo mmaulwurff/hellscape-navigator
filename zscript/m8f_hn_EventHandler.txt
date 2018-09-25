@@ -389,15 +389,15 @@ class m8f_hn_EventHandler : EventHandler
   {
     static const string ribbons[] =
     {
-      "hncmpr1",
-      "hncmpr2",
-      "hncmpr3"
+      "hn_compass_ribbon_dark",
+      "hn_compass_ribbon_transparent",
+      "hn_compass_ribbon_blue"
     };
     static const string borders[] =
     {
-      "hncmpb1",
-      "hncmpb2",
-      "hncmpb3"
+      "hn_compass_border_dark",
+      "hn_compass_border_white",
+      "hn_compass_border_blue"
     };
 
     int screenWidth   = Screen.GetWidth();
@@ -426,7 +426,7 @@ class m8f_hn_EventHandler : EventHandler
     // draw the black screen just to test clip rect
 
     /*
-    TextureID black = TexMan.CheckForTexture("hntest1", TexMan.Type_Any);
+    TextureID black = TexMan.CheckForTexture("hn_black", TexMan.Type_Any);
 
     Screen.DrawTexture( black, false
                       , 0.0
@@ -668,18 +668,23 @@ class m8f_hn_EventHandler : EventHandler
     return (font.GetHeight() / scale) / Screen.GetHeight();
   }
 
-  ui void drawPointers( double x, double y, int width, int height
-                      , m8f_hn_Data data, vector3 center, double playerAngle
+  ui void drawPointers( double      x
+                      , double      y
+                      , int         width
+                      , int         height
+                      , m8f_hn_Data data
+                      , vector3     center
+                      , double      playerAngle
                       )
   {
     static const string pointerTextures[] =
     {
-      "hn_compass_pointer1",
-      "hn_compass_pointer2",
-      "hn_compass_pointer3",
-      "hn_compass_pointer4",
-      "hn_compass_pointer5",
-      "hn_compass_pointer6"
+      "hn_compass_pointer_white" ,
+      "hn_compass_pointer_blue"  ,
+      "hn_compass_pointer_gold"  ,
+      "hn_compass_pointer_green" ,
+      "hn_compass_pointer_ice"   ,
+      "hn_compass_pointer_red"
     };
 
     int nPointers = data.pointers.size();
