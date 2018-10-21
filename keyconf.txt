@@ -12,25 +12,3 @@ alias m8f_hn_make_sign_open   "openmenu m8f_hn_SignNoteMenu"
 alias m8f_hn_make_sign_close  "closemenu; test == $m8f_hn_sign_type 0 m8f_hn_summon_wooden_sign; test == $m8f_hn_sign_type 1 m8f_hn_summon_transparent_sign; test == $m8f_hn_sign_type 2 m8f_hn_summon_metal_sign; test $m8f_hn_sign_clear_after_make m8f_hn_make_sign_clear"
 alias m8f_hn_make_sign_cancel "closemenu"
 alias m8f_hn_make_sign_clear  "m8f_hn_sign_note1 \"\"; m8f_hn_sign_note2 \"\"; m8f_hn_sign_note3 \"\""
-
-// Wall prints section /////////////////////////////////////////////////////////
-
-alias m8f_hn_print_dead "closemenu; test == $m8f_hn_print_color 0 m8f_hn_print_red_dead; test == $m8f_hn_print_color 1 m8f_hn_print_green_dead; test == $m8f_hn_print_color 2 m8f_hn_print_blue_dead"
-
-alias m8f_hn_print_red_dead "m8f_hn_decal_name1 m8f_hn_reddeaddecal; m8f_hn_decal_name2 m8f_hn_reddeaddecalflow; pukename m8f_hn_SprayTwoPermanentDecals"
-
-alias m8f_hn_print_green_dead "m8f_hn_decal_name1 m8f_hn_GreenDeadDecal; pukename m8f_hn_SprayPermanentDecal"
-
-alias m8f_hn_print_blue_dead "m8f_hn_decal_name1 m8f_hn_BlueDeadDecal; pukename m8f_hn_SprayPermanentDecal"
-
-alias m8f_hn_print_clear "closemenu; test == $m8f_hn_print_color 0 m8f_hn_print_red_clear; test == $m8f_hn_print_color 1 m8f_hn_print_green_clear; test == $m8f_hn_print_color 2 m8f_hn_print_blue_clear"
-
-alias m8f_hn_print_red_clear "m8f_hn_decal_name1 m8f_hn_RedClearDecal; m8f_hn_decal_name2 m8f_hn_RedClearDecalFlow; pukename m8f_hn_SprayTwoPermanentDecals"
-
-alias m8f_hn_print_green_clear "m8f_hn_decal_name1 m8f_hn_GreenClearDecal; pukename m8f_hn_SprayPermanentDecal"
-
-alias m8f_hn_print_blue_clear "m8f_hn_decal_name1 m8f_hn_BlueClearDecal; pukename m8f_hn_SprayPermanentDecal"
-
-alias m8f_hn_wall_spray_open "openmenu m8f_hn_WallPrintMenu"
-
-alias m8f_hn_clear_walls "netevent m8f_hn_remove_decals; closemenu"

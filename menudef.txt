@@ -32,13 +32,6 @@ OptionMenu "m8f_hn_SignNoteMenu"
   StaticText "Shoot below sign to remove it.", "Black"
 }
 
-OptionValue "m8f_hn_print_color_values"
-{
-  0, "\cgBlood"
-  1, "\cdGlow"
-  2, "\cvNeon"
-}
-
 OptionValue "m8f_hn_sign_type_values"
 {
   0, "Wooden"
@@ -52,22 +45,6 @@ OptionValue "m8f_hn_update_period_values"
    0, "Immediately"
   35, "Every second"
  105, "Every three seconds"
-}
-
-OptionMenu "m8f_hn_WallPrintMenu"
-{
-  Title "New wall print"
-
-  StaticText ""
-  Option "Print type", "m8f_hn_print_color", "m8f_hn_print_color_values"
-
-  StaticText ""
-  Command "Dead"  , "m8f_hn_print_dead"
-  Command "Clear" , "m8f_hn_print_clear"
-
-  StaticText ""
-  StaticText "Commands", "Blue"
-  SafeCommand "Clear walls", "m8f_hn_clear_walls"
 }
 
 OptionMenu "m8f_hn_FootstepMarkerOptions"
@@ -179,7 +156,6 @@ OptionMenu    "m8f_hn_Options"
   StaticText  ""
   StaticText  "Controls"    , "Blue"
   Control     "Make a sign" , "m8f_hn_make_sign_open"
-  Control     "Wall Spray"  , "m8f_hn_wall_spray_open"
 
   StaticText  ""
   StaticText  "General Options", "Blue"
@@ -188,7 +164,6 @@ OptionMenu    "m8f_hn_Options"
   StaticText  ""
   StaticText  "Commands"         , "Blue"
   SafeCommand "Remove all signs" , "netevent m8f_hn_remove_signs"
-  SafeCommand "Clear walls"      , "netevent m8f_hn_remove_decals"
   SafeCommand "Clear footsteps"  , "netevent m8f_hn_remove_footsteps"
 
   StaticText  ""

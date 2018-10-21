@@ -40,45 +40,6 @@ Sprite hnmsm0, 52, 31
   Offset 26, 15
 }
 
-// Wall Sprite section ////////////////////////////////////////////////////////
-
-// Blue Dead Wall Sprite with Offset
-Sprite hn0bluo, 60, 40
-{
-  Patch  hn0blu, 0, 0
-  Offset 30, 20
-}
-
-// Red Clear Wall Sprite with offseet
-Sprite hn1redo, 60, 40
-{
-  Patch  hn1red, 0, 0
-  Offset 30, 20
-}
-
-// Red Clear Wall Flow Sprite with Offset
-Sprite hn1reso, 60, 40
-{
-  Patch  hn1res, 0, 0
-  Offset 30, 20
-}
-
-// Green Clear Wall Sprite with Offset
-Sprite hn1grno, 60, 40
-{
-  Patch  hn1grn, 0, 0
-  Offset 30, 20
-}
-
-// Blue Clear Wall Sprite with Offset
-Sprite hn1bluo, 60, 40
-{
-  Patch  hn1blu, 0, 0
-  Offset 30, 20
-}
-
-// End of Wall Sprite section /////////////////////////////////////////////////
-
 // Compass section ////////////////////////////////////////////////////////////
 
 // Compass

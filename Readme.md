@@ -26,20 +26,12 @@ complex maps.
   * A Sign can be configured to create custom area with name
   * Grid coordinates
 
-* Wall Prints
-  * Blood prints
-  * Glow prints: visible in the dark
-  * Neon prints: fade and disappear after 1 minute
-  * Available prints: "Dead", "Clear"
-  * All prints have blood, glow, and neon variants
-
 # Todo
 
 * map name at start (D64 style)
 * reveal map when it's explored only if map contains no automap
 * show if a map contains secret exits
 * fix item area names (don't name areas for dropped items)
-* remove wall print feature
 * ?
 
 # Thanks

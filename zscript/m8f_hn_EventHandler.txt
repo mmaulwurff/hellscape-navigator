@@ -358,8 +358,7 @@ class m8f_hn_EventHandler : EventHandler
 
   override void NetworkProcess(ConsoleEvent event)
   {
-    if      (event.name == "m8f_hn_remove_signs")     { removeSigns();     }
-    else if (event.name == "m8f_hn_remove_decals")    { removeDecals();    }
+    if (event.name == "m8f_hn_remove_signs") { removeSigns(); }
   }
 
   static void removeSigns()
@@ -369,16 +368,6 @@ class m8f_hn_EventHandler : EventHandler
     while (sign = Actor(iterator.Next()))
       {
         sign.Destroy();
-      }
-  }
-
-  static void removeDecals()
-  {
-    let     iterator = ThinkerIterator.Create("Thinker", Thinker.STAT_DECAL);
-    Thinker dec;
-    while (dec = iterator.Next())
-      {
-        dec.Destroy();
       }
   }
 
