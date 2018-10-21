@@ -17,22 +17,27 @@ complex maps.
   * Three kinds: wooden/metal/transparent to fit level theme
   * Can be configured to be indestructible or not
   * Present on automap
+  * Can be displayed on compass
 
 * Compass
   * Shows view direction
+  * Can show pointers for switches (only if close)
+  * Different styles
 
 * Area Names
   * Entrance/Exit/Outdoors/Secrets
   * A Sign can be configured to create custom area with name
-  * Grid coordinates
 
-* Other
-  * An option to reveal map when it is mostly explored.
-  * An option to display locked door status.
+* Miscellaneous
+  * Custom automap arrow
+  * Colored messages for keys and doors (Doom, Heretic)
+  * Grid coordinates
+  * Exploration status
+  * An option to reveal map when it is mostly explored
+  * An option to display locked door status
 
 # Todo
 
-* map name at start (D64 style)
 * show if a map contains secret exits
 * ?
 
