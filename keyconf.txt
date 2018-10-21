@@ -1,6 +1,5 @@
 AddKeySection "Hellscape Navigator Keys" "HellscapeNavitagor"
 AddMenuKey "Make a sign" "m8f_hn_make_sign_open"
-AddMenuKey "Wall Spray"  "m8f_hn_wall_spray_open"
 
 // Sign section ////////////////////////////////////////////////////////////////
 
