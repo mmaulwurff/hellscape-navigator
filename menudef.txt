@@ -162,6 +162,16 @@ OptionMenu    "m8f_hn_GameplayOptions"
   StaticText  ""
 }
 
+OptionMenu    "m8f_hn_OtherOptions"
+{
+  Title       "Other Hellscape Navigator Options"
+
+  StaticText  ""
+  Option      "Display Locked Door Access" , "m8f_hn_show_access", "OnOff"
+
+  StaticText  ""
+}
+
 OptionMenu    "m8f_hn_Options"
 {
   Title       "Hellscape Navigator Options"
@@ -187,6 +197,7 @@ OptionMenu    "m8f_hn_Options"
   Submenu     "Sign"             , "m8f_hn_SignOptions"
   Submenu     "Compass"          , "m8f_hn_CompassOptions"
   Submenu     "Gameplay"         , "m8f_hn_GameplayOptions"
+  Submenu     "Other"            , "m8f_hn_OtherOptions"
 
   StaticText  ""
 }

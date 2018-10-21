@@ -41,6 +41,8 @@ user bool  m8f_hn_compass_under      = false;
 user bool  m8f_hn_show_explored      = true;
 user bool  m8f_hn_show_switches      = true;
 
+user bool  m8f_hn_show_access        = true;
+
 user int   m8f_hn_update_period      = 35;
 
 user bool  m8f_hn_reveal_when_explored = false;

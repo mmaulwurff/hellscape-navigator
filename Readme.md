@@ -35,11 +35,11 @@ complex maps.
 
 # Todo
 
-* More Wall Prints ("Enemy", "Ammo", "Health", "Todo", "Done", "<-", "->",
-"v", "^")
-* An option to display signs on Compass
-* Format for external source of area names
-* (Maybe) breaking animation and damaged sprites for signs
+* map name at start (D64 style)
+* reveal map when it's explored only if map contains no automap
+* show if a map contains secret exits
+* fix item area names (don't name areas for dropped items)
+* remove wall print feature
 * ?
 
 # Thanks

@@ -93,6 +93,11 @@ class m8f_hn_EventHandler : EventHandler
   private bool    _isFirstTick;
   private bool    _isWorldLoaded;
 
+  private int    _currentLockAlphaPercent;
+  private int    _targetLockAlphaPercent;
+  private string _lockMessage;
+  private int    _lockColor;
+
   // returns unique pointer id
   int AddPointer(double x, double y, int type)
   {
@@ -128,6 +133,9 @@ class m8f_hn_EventHandler : EventHandler
     areaName           = "";
 
     _isWorldLoaded     = false;
+
+    _currentLockAlphaPercent = 0;
+    _targetLockAlphaPercent  = 0;
   }
 
   override void WorldLoaded(WorldEvent e)
@@ -161,7 +169,8 @@ class m8f_hn_EventHandler : EventHandler
       return;
     }
 
-    int nFoundSectors = countFoundSectors()  - _initialFoundSectorsCount;
+    int        nFoundSectors = countFoundSectors()  - _initialFoundSectorsCount;
+    PlayerInfo player        = players[consolePlayer];
 
     // leave place for unaccessible sectors
     _progress = nFoundSectors * 11 / nSectors;
@@ -169,7 +178,6 @@ class m8f_hn_EventHandler : EventHandler
 
     if (_oldProgress != _progress && _progress == 10)
     {
-      PlayerInfo player = players[consolePlayer];
       if (CVar.GetCVar("m8f_hn_reveal_when_explored", player).GetInt())
       {
         Console.Printf("Level is explored, map is revealed.");
@@ -178,6 +186,129 @@ class m8f_hn_EventHandler : EventHandler
     }
 
     _oldProgress = _progress;
+  }
+
+  play bool LineTraceConst( Actor  player
+                          , double angle
+                          , double distance
+                          , double pitch
+                          , int    flags
+                          , double offsetz
+                          , double offsetforward
+                          , double offsetside
+                          , out FLineTraceData data
+                          ) const
+  {
+    return player.LineTrace(angle, distance, pitch, flags, offsetz, offsetforward, offsetside, data);
+  }
+
+  ui int getDoorLockStatus(PlayerInfo player)
+  {
+    Actor  playerActor   = player.mo;
+    double angle         = playerActor.angle;
+    double distance      = 500;
+    double pitch         = playerActor.pitch;
+    int    flags         = 0;
+    double offsetz       = player.viewheight;
+    double offsetforward = 0.0;
+    double offsetside    = 0.0;
+    FLineTraceData data;
+
+    bool success = LineTraceConst( playerActor
+                                 , angle
+                                 , distance
+                                 , pitch
+                                 , flags
+                                 , offsetz
+                                 , offsetforward
+                                 , offsetside
+                                 , data
+                                 );
+    if (!success) { return 0; }
+
+    Line l = data.HitLine;
+    if (l == null)    { return 0; }
+    if (!isSwitch(l)) { return 0; }
+    if (!hasLock(l))  { return 0; }
+
+    int locknum = l.args[3];
+
+    if (locknum == 0) { return 0; }
+
+    bool hasKey = playerActor.CheckKeys(locknum, false, true);
+
+    return hasKey + 1;
+  }
+
+  ui void updateDoorLockStatus(PlayerInfo player)
+  {
+    int doorLockStatus = getDoorLockStatus(player);
+    switch (doorLockStatus)
+    {
+    case 0:
+      SetTargetLockAlpha(0);
+      break;
+
+    case 1:
+      SetTargetLockAlpha(100);
+      SetLockMessage("-");
+      SetLockColor(Font.CR_RED);
+      break;
+
+    case 2:
+      SetTargetLockAlpha(100);
+      SetLockMessage("+");
+      SetLockColor(Font.CR_GREEN);
+    }
+  }
+
+  play void SetTargetLockAlpha(int value) const
+  {
+    _targetLockAlphaPercent = value;
+  }
+
+  play void SetLockMessage(string text) const
+  {
+    _lockMessage = text;
+  }
+
+  play void SetLockColor(int lockColor) const
+  {
+    _lockColor = lockColor;
+  }
+
+  play void SetCurrentLockAlpha(int value) const
+  {
+    _currentLockAlphaPercent = value;
+  }
+
+  ui void drawDoorLockStatus(PlayerInfo player)
+  {
+    int fadeOutStep = 1;
+    int fadeInStep  = 10;
+    if (_currentLockAlphaPercent < _targetLockAlphaPercent)
+    {
+      SetCurrentLockAlpha(_currentLockAlphaPercent + fadeInStep);
+    }
+    else if (_currentLockAlphaPercent > _targetLockAlphaPercent)
+    {
+      SetCurrentLockAlpha(_currentLockAlphaPercent - fadeOutStep);
+    }
+    if (_currentLockAlphaPercent <= 0) { return; }
+
+    Font   font  = Font.GetFont("SMALLFONT");
+    double scale = 0.5;
+    double x     = 0.5;
+    double y     = 0.3;
+
+    double currentLockAlpha = _currentLockAlphaPercent * 0.01;
+
+    drawTextCenter(_lockMessage, _lockColor, scale, x, y, font, 0, currentLockAlpha);
+
+    // todo: remote activation?
+
+    //bool result = l.remoteactivate(playerActor, data.lineSide, SPAC_Use, playerActor.pos);
+    //console.printf("%d", result);
   }
 
   static bool contains(String s, String substring)
@@ -291,8 +422,7 @@ class m8f_hn_EventHandler : EventHandler
     if (automapActive && !settings.showOnAutomap) { return; }
 
     PlayerInfo player              = players[consolePlayer];
-    int        optionsUpdatePeriod =
-      CVar.GetCVar("m8f_hn_update_period", player).GetInt();
+    int        optionsUpdatePeriod = CVar.GetCVar("m8f_hn_update_period", player).GetInt();
 
     if (optionsUpdatePeriod == 0) { settings.read(player); }
     else if (optionsUpdatePeriod != -1
@@ -307,6 +437,12 @@ class m8f_hn_EventHandler : EventHandler
         SetRenderCounter(0);
       }
     else { SetRenderCounter(renderCounter + 1); }
+
+    if (settings.showLockAccess)
+    {
+      updateDoorLockStatus(player);
+      drawDoorLockStatus(player);
+    }
 
     Font    font        = Font.GetFont("SMALLFONT");
     int     normalcolor = Font.CR_GRAY;
@@ -648,6 +784,7 @@ class m8f_hn_EventHandler : EventHandler
                                  , double y
                                  , Font   font
                                  , int    xAdjustment = 0
+                                 , double alpha = 1.0
                                  )
   {
     int    width       = int(scale * Screen.GetWidth());
@@ -663,6 +800,7 @@ class m8f_hn_EventHandler : EventHandler
                    , DTA_KeepRatio,     true
                    , DTA_VirtualWidth,  width
                    , DTA_VirtualHeight, height
+                   , DTA_Alpha,         alpha
                    );
 
     return (font.GetHeight() / scale) / Screen.GetHeight();
@@ -750,6 +888,14 @@ class m8f_hn_EventHandler : EventHandler
                                       | SPAC_UseBack
                                       ));
     return (activation);
+  }
+
+  ui static bool hasLock(Line l)
+  {
+    int  special     = l.special;
+    bool lineHasLock = (special == 13 || special == 83 || special == 85);
+
+    return lineHasLock;
   }
 
   ui static void drawPointer( double x, double y, int width, int height

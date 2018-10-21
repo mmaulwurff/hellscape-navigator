@@ -36,4 +36,4 @@ gzdoom $IWAD \
        $name.pk3 \
        ~/Programs/Games/wads/maps/DOOMTEST.wad \
        "$1" "$2" \
-       +map test
+       +map map02 -nomonsters +noclip

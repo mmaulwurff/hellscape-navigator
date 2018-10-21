@@ -34,6 +34,8 @@ class m8f_hn_Settings
   int    compassStyle;
   bool   textAboveCompass;
 
+  bool   showLockAccess;
+
   void read(PlayerInfo player)
   {
     xStart            = CVar.GetCVar("m8f_hn_compass_x"          , player).GetFloat();
@@ -50,6 +52,8 @@ class m8f_hn_Settings
     compassScale      = CVar.GetCVar("m8f_hn_compass_scale"      , player).GetFloat();
     compassStyle      = CVar.GetCVar("m8f_hn_compass_style"      , player).GetInt();
     textAboveCompass  = CVar.GetCVar("m8f_hn_compass_under"      , player).GetInt();
+
+    showLockAccess    = CVar.GetCVar("m8f_hn_show_access"        , player).GetInt();
   }
 
   m8f_hn_Settings init(PlayerInfo player)
