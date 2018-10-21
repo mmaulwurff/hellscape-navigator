@@ -35,25 +35,27 @@ class m8f_hn_Settings
   bool   textAboveCompass;
 
   bool   showLockAccess;
+  bool   showIntroLevelName;
 
   void read(PlayerInfo player)
   {
-    xStart            = CVar.GetCVar("m8f_hn_compass_x"          , player).GetFloat();
-    yStart            = CVar.GetCVar("m8f_hn_compass_y"          , player).GetFloat();
-    showCompass       = CVar.GetCVar("m8f_hn_compass_show"       , player).GetInt();
-    levelName         = CVar.GetCVar("m8f_hn_compass_level_name" , player).GetInt();
-    showGridCoords    = CVar.GetCVar("m8f_hn_show_grid_coords"   , player).GetInt();
-    showOnAutomap     = CVar.GetCVar("m8f_hn_compass_automap"    , player).GetInt();
-    showAreaName      = CVar.GetCVar("m8f_hn_show_area"          , player).GetInt();
-    hideAutoAreaNames = CVar.GetCVar("m8f_hn_hide_auto_names"    , player).GetInt();
-    showExplored      = CVar.GetCVar("m8f_hn_show_explored"      , player).GetInt();
-    showSwitches      = CVar.GetCVar("m8f_hn_show_switches"      , player).GetInt();
+    xStart             = CVar.GetCVar("m8f_hn_compass_x"          , player).GetFloat();
+    yStart             = CVar.GetCVar("m8f_hn_compass_y"          , player).GetFloat();
+    showCompass        = CVar.GetCVar("m8f_hn_compass_show"       , player).GetInt();
+    levelName          = CVar.GetCVar("m8f_hn_compass_level_name" , player).GetInt();
+    showGridCoords     = CVar.GetCVar("m8f_hn_show_grid_coords"   , player).GetInt();
+    showOnAutomap      = CVar.GetCVar("m8f_hn_compass_automap"    , player).GetInt();
+    showAreaName       = CVar.GetCVar("m8f_hn_show_area"          , player).GetInt();
+    hideAutoAreaNames  = CVar.GetCVar("m8f_hn_hide_auto_names"    , player).GetInt();
+    showExplored       = CVar.GetCVar("m8f_hn_show_explored"      , player).GetInt();
+    showSwitches       = CVar.GetCVar("m8f_hn_show_switches"      , player).GetInt();
 
-    compassScale      = CVar.GetCVar("m8f_hn_compass_scale"      , player).GetFloat();
-    compassStyle      = CVar.GetCVar("m8f_hn_compass_style"      , player).GetInt();
-    textAboveCompass  = CVar.GetCVar("m8f_hn_compass_under"      , player).GetInt();
+    compassScale       = CVar.GetCVar("m8f_hn_compass_scale"      , player).GetFloat();
+    compassStyle       = CVar.GetCVar("m8f_hn_compass_style"      , player).GetInt();
+    textAboveCompass   = CVar.GetCVar("m8f_hn_compass_under"      , player).GetInt();
 
-    showLockAccess    = CVar.GetCVar("m8f_hn_show_access"        , player).GetInt();
+    showLockAccess     = CVar.GetCVar("m8f_hn_show_access"        , player).GetInt();
+    showIntroLevelName = CVar.GetCVar("m8f_hn_show_level_name"    , player).GetInt();
   }
 
   m8f_hn_Settings init(PlayerInfo player)

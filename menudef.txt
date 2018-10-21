@@ -141,6 +141,9 @@ OptionMenu    "m8f_hn_GameplayOptions"
   Option      "Display Locked Door Access" , "m8f_hn_show_access", "OnOff"
 
   StaticText  ""
+  Option      "Display Level Name on Entering" , "m8f_hn_show_level_name", "OnOff"
+
+  StaticText  ""
 }
 
 OptionMenu    "m8f_hn_Options"

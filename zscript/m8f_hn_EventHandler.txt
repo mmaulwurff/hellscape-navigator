@@ -38,6 +38,7 @@ class m8f_hn_EventHandler : EventHandler
     _targetLockAlphaPercent  = 0;
 
     _isMapRevealerOnMap = false;
+    _mapNameAlpha       = 1.0;
   }
 
   override void WorldLoaded(WorldEvent e)
@@ -239,9 +240,32 @@ class m8f_hn_EventHandler : EventHandler
         y += drawTextCenter(coords, normalColor, scale, x, y, font)
           * drawDirection;
       }
+
+    maybeDrawMapName();
   }
 
   // private methods section ///////////////////////////////////////////////////
+
+  private ui void maybeDrawMapName()
+  {
+    if (_settings.showIntroLevelName && _mapNameAlpha > 0.0)
+    {
+      Font   font    = Font.GetFont("BIGFONT");
+      double scale   = 0.5;
+      double x       = 0.5;
+      double y       = 0.2;
+      string mapName = level.levelName;
+
+      drawTextCenter(mapName, Font.CR_RED, scale, x, y, font, 0, _mapNameAlpha);
+    }
+
+    setMapNameAlpha(_mapNameAlpha - 0.005);
+  }
+
+  private play void setMapNameAlpha(double value) const
+  {
+    _mapNameAlpha = value;
+  }
 
   private play bool LineTraceConst( Actor  player
                                   , double angle
@@ -902,5 +926,7 @@ class m8f_hn_EventHandler : EventHandler
   private int     _lockColor;
 
   private bool    _isMapRevealerOnMap;
+
+  private double  _mapNameAlpha;
 
 } // class m8f_hn_EventHandler

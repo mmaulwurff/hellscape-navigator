@@ -42,6 +42,7 @@ user bool  m8f_hn_show_explored      = true;
 user bool  m8f_hn_show_switches      = true;
 
 user bool  m8f_hn_show_access        = true;
+user bool  m8f_hn_show_level_name    = true;
 
 user int   m8f_hn_update_period      = 35;
 
