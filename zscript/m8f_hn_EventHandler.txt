@@ -36,6 +36,8 @@ class m8f_hn_EventHandler : EventHandler
 
     _currentLockAlphaPercent = 0;
     _targetLockAlphaPercent  = 0;
+
+    _isMapRevealerOnMap = false;
   }
 
   override void WorldLoaded(WorldEvent e)
@@ -76,13 +78,13 @@ class m8f_hn_EventHandler : EventHandler
     _progress = nFoundSectors * 11 / nSectors;
     if (_progress > 10) { _progress = 10; }
 
-    if (_oldProgress != _progress && _progress == 10)
+    if (_oldProgress != _progress
+        && _progress == 10
+        && !_isMapRevealerOnMap
+        && CVar.GetCVar("m8f_hn_reveal_when_explored", player).GetInt())
     {
-      if (CVar.GetCVar("m8f_hn_reveal_when_explored", player).GetInt())
-      {
-        Console.Printf("Level is explored, map is revealed.");
-        player.mo.GiveInventory("MapRevealer", 1);
-      }
+      Console.Printf("Level is explored, map is revealed.");
+      player.mo.GiveInventory("MapRevealer", 1);
     }
 
     _oldProgress = _progress;
@@ -106,9 +108,14 @@ class m8f_hn_EventHandler : EventHandler
     // detect and store quest markers
     bool isQuestPointer = contains(spawnedClassName, "hn_QuestPointer");
     if (isQuestPointer)
-      {
-        _data.questPointers.push(item);
-      }
+    {
+      _data.questPointers.push(item);
+    }
+
+    if (item is "MapRevealer")
+    {
+      _isMapRevealerOnMap = true;
+    }
 
     if (_isWorldLoaded) { return; }
 
@@ -118,14 +125,14 @@ class m8f_hn_EventHandler : EventHandler
     int nAreaItems = _data.areaItems.size();
 
     for (int i = 0; i < nAreaItems; ++i)
-      {
-        if (!(item is _data.areaItems[i])) { continue; }
+    {
+      if (!(item is _data.areaItems[i])) { continue; }
 
-        _data.itemAreaPosX.push(int(item.pos.x));
-        _data.itemAreaPosY.push(int(item.pos.y));
-        _data.itemAreaPosZ.push(int(item.pos.z));
-        _data.itemAreaNames.push(item.GetTag());
-      }
+      _data.itemAreaPosX.push(int(item.pos.x));
+      _data.itemAreaPosY.push(int(item.pos.y));
+      _data.itemAreaPosZ.push(int(item.pos.z));
+      _data.itemAreaNames.push(item.GetTag());
+    }
   }
 
   override void NetworkProcess(ConsoleEvent event)

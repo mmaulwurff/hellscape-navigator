@@ -26,10 +26,13 @@ complex maps.
   * A Sign can be configured to create custom area with name
   * Grid coordinates
 
+* Other
+  * An option to reveal map when it is mostly explored.
+  * An option to display locked door status.
+
 # Todo
 
 * map name at start (D64 style)
-* reveal map when it's explored only if map contains no automap
 * show if a map contains secret exits
 * ?
 

@@ -135,13 +135,7 @@ OptionMenu    "m8f_hn_GameplayOptions"
 
   StaticText  ""
   Option      "Reveal map when it is explored" , "m8f_hn_reveal_when_explored" , "OnOff"
-
-  StaticText  ""
-}
-
-OptionMenu    "m8f_hn_OtherOptions"
-{
-  Title       "Other Hellscape Navigator Options"
+  StaticText  "Doesn't trigger if a map already contains a Map Revealer.", "Black"
 
   StaticText  ""
   Option      "Display Locked Door Access" , "m8f_hn_show_access", "OnOff"
@@ -154,12 +148,12 @@ OptionMenu    "m8f_hn_Options"
   Title       "Hellscape Navigator Options"
 
   StaticText  ""
-  StaticText  "Controls"    , "Blue"
-  Control     "Make a sign" , "m8f_hn_make_sign_open"
+  StaticText  "Controls"         , "Blue"
+  Control     "Make a sign"      , "m8f_hn_make_sign_open"
 
   StaticText  ""
-  StaticText  "General Options", "Blue"
-  Option      "Options update" , "m8f_hn_update_period" , "m8f_hn_update_period_values"
+  StaticText  "General Options"  , "Blue"
+  Option      "Options update"   , "m8f_hn_update_period" , "m8f_hn_update_period_values"
 
   StaticText  ""
   StaticText  "Commands"         , "Blue"
@@ -171,8 +165,7 @@ OptionMenu    "m8f_hn_Options"
   Submenu     "Footstep Markers" , "m8f_hn_FootstepMarkerOptions"
   Submenu     "Sign"             , "m8f_hn_SignOptions"
   Submenu     "Compass"          , "m8f_hn_CompassOptions"
-  Submenu     "Gameplay"         , "m8f_hn_GameplayOptions"
-  Submenu     "Other"            , "m8f_hn_OtherOptions"
+  Submenu     "Gameplay & Extra" , "m8f_hn_GameplayOptions"
 
   StaticText  ""
 }
