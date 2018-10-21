@@ -31,7 +31,6 @@ complex maps.
 * map name at start (D64 style)
 * reveal map when it's explored only if map contains no automap
 * show if a map contains secret exits
-* fix item area names (don't name areas for dropped items)
 * ?
 
 # Thanks

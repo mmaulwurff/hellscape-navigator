@@ -16,121 +16,21 @@
  * along with Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-class m8f_hn_Data
-{
-  Array<Sector>  secretSectors;
-  Array<int>     itemAreaPosX;
-  Array<int>     itemAreaPosY;
-  Array<int>     itemAreaPosZ;
-  Array<string>  itemAreaNames;
-  Array<string>  areaItems;
-  Array<Actor>   areaNameMarkers;
-  Array<Actor>   questPointers;
-
-  Array<m8f_hn_Pointer> pointers;
-  int pointerId;
-
-  m8f_hn_Data init()
-  {
-    int nSectors = level.sectors.size();
-    for (int i = 0; i < nSectors; ++i)
-      {
-        Sector s        = level.sectors[i];
-        bool   isSecret = (s.Flags & (Sector.SECF_SECRET | Sector.SECF_WASSECRET));
-        if (isSecret)
-          {
-            secretSectors.push(s);
-          }
-      }
-
-    areaItems.push("Key");
-    areaItems.push("Weapon"); // weapons
-    areaItems.push("Goonades");
-    areaItems.push("SPAMMineItem");
-    areaItems.push("PowerupGiver"); // powerups
-    areaItems.push("MegaSphere");
-    areaItems.push("SoulSphere");
-    areaItems.push("GreenArmor");
-    areaItems.push("BlueArmor");
-    areaItems.push("TBPowerupBase");
-    areaItems.push("MapRevealer");
-    areaItems.push("Berserk");
-    areaItems.push("Speeders");
-    areaItems.push("IcarusMk8");
-    areaItems.push("ProtectoBand");
-    areaItems.push("BigSPAMMine");
-    areaItems.push("GuardBoi");
-    areaItems.push("BadassGlasses");
-    areaItems.push("Mapisto");
-    areaItems.push("LovebirdTag");
-    areaItems.push("BigScorePresent");
-    areaItems.push("BackpackItem"); // backpacks
-    areaItems.push("Backpack2");
-    areaItems.push("BlueprintItem");
-    areaItems.push("NetronianBackpack");
-    areaItems.push("Big_Coin_pickup"); // other
-
-    pointerId = 0;
-
-    return self;
-  }
-}
-
 class m8f_hn_EventHandler : EventHandler
 {
-  private Array<m8f_hn_BaseAreaNameSource> areaNameSources;
-  private m8f_hn_Data data;
-  private m8f_hn_Settings settings;
-
-  private int     renderUpdatePeriod;
-  private int     renderCounter;
-  private string  areaName;
-  private bool    isTitlemap;
-  private int     _progress;
-  private int     _oldProgress;
-  private int     _initialFoundSectorsCount;
-
-  private bool    _isFirstTick;
-  private bool    _isWorldLoaded;
-
-  private int    _currentLockAlphaPercent;
-  private int    _targetLockAlphaPercent;
-  private string _lockMessage;
-  private int    _lockColor;
-
-  // returns unique pointer id
-  int AddPointer(double x, double y, int type)
-  {
-    ++data.pointerId;
-    data.pointers.push(new("m8f_hn_Pointer").init(x, y, type, data.pointerId));
-
-    return data.pointerId;
-  }
-
-  void RemovePointer(int id)
-  {
-    int nPointers = data.pointers.size();
-    for (int i = 0; i < nPointers; ++i)
-      {
-        if (data.pointers[i].id() == id)
-          {
-            data.pointers.delete(i);
-            break;
-          }
-      }
-  }
+  // overrides section /////////////////////////////////////////////////////////
 
   override void OnRegister()
   {
-    areaNameSources.push(new("m8f_hn_SignAreaNameSource"));
-    areaNameSources.push(new("m8f_hn_PlayerStartNameSource"));
-    areaNameSources.push(new("m8f_hn_ItemAreaNameSource"));
-    areaNameSources.push(new("m8f_hn_SectorAreaNameSource"));
-    areaNameSources.push(new("m8f_hn_BaseAreaNameSource"));
+    _areaNameSources.push(new("m8f_hn_SignAreaNameSource"));
+    _areaNameSources.push(new("m8f_hn_PlayerStartNameSource"));
+    _areaNameSources.push(new("m8f_hn_ItemAreaNameSource"));
+    _areaNameSources.push(new("m8f_hn_SectorAreaNameSource"));
+    _areaNameSources.push(new("m8f_hn_BaseAreaNameSource"));
 
-    renderUpdatePeriod = 20;
-    renderCounter      =  0;
-    areaName           = "";
+    _renderUpdatePeriod = 20;
+    _renderCounter      =  0;
+    _areaName           = "";
 
     _isWorldLoaded     = false;
 
@@ -140,9 +40,9 @@ class m8f_hn_EventHandler : EventHandler
 
   override void WorldLoaded(WorldEvent e)
   {
-    data       = new("m8f_hn_Data").init();
-    isTitlemap = CheckTitlemap();
-    settings   = new("m8f_hn_Settings").init(players[consolePlayer]);
+    _data       = new("m8f_hn_Data").init();
+    _isTitlemap = CheckTitlemap();
+    _settings   = new("m8f_hn_Settings").init(players[consolePlayer]);
 
     _progress    = 0;
     _oldProgress = 0;
@@ -188,21 +88,169 @@ class m8f_hn_EventHandler : EventHandler
     _oldProgress = _progress;
   }
 
-  play bool LineTraceConst( Actor  player
-                          , double angle
-                          , double distance
-                          , double pitch
-                          , int    flags
-                          , double offsetz
-                          , double offsetforward
-                          , double offsetside
-                          , out FLineTraceData data
-                          ) const
+  override void WorldThingSpawned(WorldEvent e)
+  {
+    if (e == null) { return; }
+
+    Actor item = e.thing;
+    if (item == null) { return; }
+
+    // detect and store area name markers
+    string spawnedClassName = item.GetClassName();
+    bool   isAreaNameMarker = contains(spawnedClassName, "hn_AreaNameMarker");
+    if (isAreaNameMarker)
+      {
+        _data.areaNameMarkers.push(item);
+      }
+
+    // detect and store quest markers
+    bool isQuestPointer = contains(spawnedClassName, "hn_QuestPointer");
+    if (isQuestPointer)
+      {
+        _data.questPointers.push(item);
+      }
+
+    if (_isWorldLoaded) { return; }
+
+    Inventory inv = Inventory(item);
+    if (inv && inv.owner) { return; }
+
+    int nAreaItems = _data.areaItems.size();
+
+    for (int i = 0; i < nAreaItems; ++i)
+      {
+        if (!(item is _data.areaItems[i])) { continue; }
+
+        _data.itemAreaPosX.push(int(item.pos.x));
+        _data.itemAreaPosY.push(int(item.pos.y));
+        _data.itemAreaPosZ.push(int(item.pos.z));
+        _data.itemAreaNames.push(item.GetTag());
+      }
+  }
+
+  override void NetworkProcess(ConsoleEvent event)
+  {
+    if (event.name == "m8f_hn_remove_signs") { removeSigns(); }
+  }
+
+  // public methods section ////////////////////////////////////////////////////
+
+  // returns unique pointer id
+  int AddPointer(double x, double y, int type)
+  {
+    ++_data.pointerId;
+    _data.pointers.push(new("m8f_hn_Pointer").init(x, y, type, _data.pointerId));
+
+    return _data.pointerId;
+  }
+
+  void RemovePointer(int id)
+  {
+    int nPointers = _data.pointers.size();
+    for (int i = 0; i < nPointers; ++i)
+      {
+        if (_data.pointers[i].id() == id)
+          {
+            _data.pointers.delete(i);
+            break;
+          }
+      }
+  }
+
+  override void RenderOverlay(RenderEvent e)
+  {
+    if (_isTitlemap) { return; }
+    if (automapActive && !_settings.showOnAutomap) { return; }
+
+    PlayerInfo player              = players[consolePlayer];
+    int        optionsUpdatePeriod = CVar.GetCVar("m8f_hn_update_period", player).GetInt();
+
+    if (optionsUpdatePeriod == 0) { _settings.read(player); }
+    else if (optionsUpdatePeriod != -1
+             && (level.time % optionsUpdatePeriod) == 0)
+      {
+        _settings.read(player);
+      }
+
+    if (_renderCounter >= _renderUpdatePeriod)
+      {
+        SetAreaName(GetAreaName(_data));
+        SetRenderCounter(0);
+      }
+    else { SetRenderCounter(_renderCounter + 1); }
+
+    if (_settings.showLockAccess)
+    {
+      updateDoorLockStatus(player);
+      drawDoorLockStatus(player);
+    }
+
+    Font    font        = Font.GetFont("SMALLFONT");
+    int     normalcolor = Font.CR_GRAY;
+    double  x           = _settings.xStart;
+    double  y           = _settings.yStart;
+    double  scale       = 1.0 / _settings.compassScale;
+    vector3 pos         = player.mo.pos;
+    double  playerAngle = player.mo.angle % 360.0;
+    double  drawDirection = _settings.textAboveCompass ? -1 : 1;
+
+    if (_settings.showCompass)
+    {
+      double offset = drawCompass(x, y, scale, _settings.compassStyle, _data, pos, playerAngle);
+      if (!_settings.textAboveCompass)
+      {
+        y += offset;
+      }
+      else
+      {
+        y -= double(font.GetHeight() * 2.5) / Screen.GetHeight();
+      }
+    }
+
+    if (_settings.levelName)
+      {
+        y += drawTextCenter(level.levelName, normalColor, scale, x, y, font)
+          * drawDirection;
+      }
+
+    if (_settings.showExplored)
+      {
+        string progress = StringStruct.Format("Explored: %d/10", _progress);
+        y += drawTextCenter(progress, normalColor, scale, x, y, font)
+          * drawDirection;
+      }
+
+    if (_settings.showAreaName && _areaName.length() != 0)
+      {
+        y += drawTextCenter(_areaName, normalColor, scale, x, y, font)
+          * drawDirection;
+      }
+
+    if (_settings.showGridCoords)
+      {
+        string coords = makeGridCoordinates(pos);
+        y += drawTextCenter(coords, normalColor, scale, x, y, font)
+          * drawDirection;
+      }
+  }
+
+  // private methods section ///////////////////////////////////////////////////
+
+  private play bool LineTraceConst( Actor  player
+                                  , double angle
+                                  , double distance
+                                  , double pitch
+                                  , int    flags
+                                  , double offsetz
+                                  , double offsetforward
+                                  , double offsetside
+                                  , out FLineTraceData data
+                                  ) const
   {
     return player.LineTrace(angle, distance, pitch, flags, offsetz, offsetforward, offsetside, data);
   }
 
-  ui int getDoorLockStatus(PlayerInfo player)
+  private ui int getDoorLockStatus(PlayerInfo player)
   {
     Actor  playerActor   = player.mo;
     double angle         = playerActor.angle;
@@ -240,7 +288,7 @@ class m8f_hn_EventHandler : EventHandler
     return hasKey + 1;
   }
 
-  ui void updateDoorLockStatus(PlayerInfo player)
+  private ui void updateDoorLockStatus(PlayerInfo player)
   {
     int doorLockStatus = getDoorLockStatus(player);
     switch (doorLockStatus)
@@ -262,27 +310,27 @@ class m8f_hn_EventHandler : EventHandler
     }
   }
 
-  play void SetTargetLockAlpha(int value) const
+  private play void SetTargetLockAlpha(int value) const
   {
     _targetLockAlphaPercent = value;
   }
 
-  play void SetLockMessage(string text) const
+  private play void SetLockMessage(string text) const
   {
     _lockMessage = text;
   }
 
-  play void SetLockColor(int lockColor) const
+  private play void SetLockColor(int lockColor) const
   {
     _lockColor = lockColor;
   }
 
-  play void SetCurrentLockAlpha(int value) const
+  private play void SetCurrentLockAlpha(int value) const
   {
     _currentLockAlphaPercent = value;
   }
 
-  ui void drawDoorLockStatus(PlayerInfo player)
+  private ui void drawDoorLockStatus(PlayerInfo player)
   {
     int fadeOutStep = 1;
     int fadeInStep  = 10;
@@ -307,78 +355,18 @@ class m8f_hn_EventHandler : EventHandler
 
     // todo: remote activation?
 
-    //bool result = l.remoteactivate(playerActor, data.lineSide, SPAC_Use, playerActor.pos);
+    //bool result = l.remoteactivate(playerActor, _data.lineSide, SPAC_Use, playerActor.pos);
     //console.printf("%d", result);
   }
 
-  static bool contains(String s, String substring)
-  {
-    return (s.IndexOf(substring) != -1);
-  }
-
-  override void WorldThingSpawned(WorldEvent e)
-  {
-    if (e == null) { return; }
-
-    Actor item = e.thing;
-    if (item == null) { return; }
-
-    // detect and store area name markers
-    string spawnedClassName = item.GetClassName();
-    bool   isAreaNameMarker = contains(spawnedClassName, "hn_AreaNameMarker");
-    if (isAreaNameMarker)
-      {
-        data.areaNameMarkers.push(item);
-      }
-
-    // detect and store quest markers
-    bool isQuestPointer = contains(spawnedClassName, "hn_QuestPointer");
-    if (isQuestPointer)
-      {
-        data.questPointers.push(item);
-      }
-
-    if (_isWorldLoaded) { return; }
-
-    Inventory inv = Inventory(item);
-    if (inv && inv.owner) { return; }
-
-    int nAreaItems = data.areaItems.size();
-
-    for (int i = 0; i < nAreaItems; ++i)
-      {
-        if (!(item is data.areaItems[i])) { continue; }
-
-        data.itemAreaPosX.push(int(item.pos.x));
-        data.itemAreaPosY.push(int(item.pos.y));
-        data.itemAreaPosZ.push(int(item.pos.z));
-        data.itemAreaNames.push(item.GetTag());
-      }
-  }
-
-  override void NetworkProcess(ConsoleEvent event)
-  {
-    if (event.name == "m8f_hn_remove_signs") { removeSigns(); }
-  }
-
-  static void removeSigns()
-  {
-    let   iterator = ThinkerIterator.Create("m8f_hn_Sign");
-    Actor sign;
-    while (sign = Actor(iterator.Next()))
-      {
-        sign.Destroy();
-      }
-  }
-
-  ui string GetAreaName(m8f_hn_Data data) const
+  private ui string GetAreaName(m8f_hn_Data data) const
   {
     string areaName = "no area name sources found";
-    int    size     = areaNameSources.size();
+    int    size     = _areaNameSources.size();
     for (int i = 0; i < size; ++i)
       {
-        let areaNameSource = areaNameSources[i];
-        if (settings.hideAutoAreaNames && areaNameSource.IsAutomatic())
+        let areaNameSource = _areaNameSources[i];
+        if (_settings.hideAutoAreaNames && areaNameSource.IsAutomatic())
           {
             continue;
           }
@@ -389,128 +377,25 @@ class m8f_hn_EventHandler : EventHandler
     return areaName;
   }
 
-  play void SetRenderCounter(int value) const
+  private play void SetRenderCounter(int value) const
   {
-    renderCounter = value;
+    _renderCounter = value;
   }
 
-  play void SetAreaName(string name) const
+  private play void SetAreaName(string name) const
   {
-    areaName = name;
-  }
-
-  static bool CheckTitlemap()
-  {
-    bool isTitlemap = (level.mapname == "TITLEMAP");
-    return isTitlemap;
-  }
-
-  override void RenderOverlay(RenderEvent e)
-  {
-    if (isTitlemap) { return; }
-    if (automapActive && !settings.showOnAutomap) { return; }
-
-    PlayerInfo player              = players[consolePlayer];
-    int        optionsUpdatePeriod = CVar.GetCVar("m8f_hn_update_period", player).GetInt();
-
-    if (optionsUpdatePeriod == 0) { settings.read(player); }
-    else if (optionsUpdatePeriod != -1
-             && (level.time % optionsUpdatePeriod) == 0)
-      {
-        settings.read(player);
-      }
-
-    if (renderCounter >= renderUpdatePeriod)
-      {
-        SetAreaName(GetAreaName(data));
-        SetRenderCounter(0);
-      }
-    else { SetRenderCounter(renderCounter + 1); }
-
-    if (settings.showLockAccess)
-    {
-      updateDoorLockStatus(player);
-      drawDoorLockStatus(player);
-    }
-
-    Font    font        = Font.GetFont("SMALLFONT");
-    int     normalcolor = Font.CR_GRAY;
-    double  x           = settings.xStart;
-    double  y           = settings.yStart;
-    double  scale       = 1.0 / settings.compassScale;
-    vector3 pos         = player.mo.pos;
-    double  playerAngle = player.mo.angle % 360.0;
-    double  drawDirection = settings.textAboveCompass ? -1 : 1;
-
-    if (settings.showCompass)
-    {
-      double offset = drawCompass(x, y, scale, settings.compassStyle, data, pos, playerAngle);
-      if (!settings.textAboveCompass)
-      {
-        y += offset;
-      }
-      else
-      {
-        y -= double(font.GetHeight() * 2.5) / Screen.GetHeight();
-      }
-    }
-
-    if (settings.levelName)
-      {
-        y += drawTextCenter(level.levelName, normalColor, scale, x, y, font)
-          * drawDirection;
-      }
-
-    if (settings.showExplored)
-      {
-        string progress = StringStruct.Format("Explored: %d/10", _progress);
-        y += drawTextCenter(progress, normalColor, scale, x, y, font)
-          * drawDirection;
-      }
-
-    if (settings.showAreaName && areaName.length() != 0)
-      {
-        y += drawTextCenter(areaName, normalColor, scale, x, y, font)
-          * drawDirection;
-      }
-
-    if (settings.showGridCoords)
-      {
-        string coords = makeGridCoordinates(pos);
-        y += drawTextCenter(coords, normalColor, scale, x, y, font)
-          * drawDirection;
-      }
-  }
-
-  ui static int round(double value)
-  {
-    int rounded = int(value + 0.5);
-    return rounded;
-  }
-
-  ui static double clamp(double value, double min, double max)
-  {
-    if      (value < min) { return min;   }
-    else if (value > max) { return max;   }
-    else                  { return value; }
-  }
-
-  ui static int clampInt(int value, int min, int max)
-  {
-    if      (value < min) { return min;   }
-    else if (value > max) { return max;   }
-    else                  { return value; }
+    _areaName = name;
   }
 
   // What a mess.
-  ui double drawCompass( double      relativeX
-                       , double      relativeY
-                       , double      scale
-                       , int         style
-                       , m8f_hn_Data data
-                       , vector3     center
-                       , double      angle
-                       )
+  private ui double drawCompass( double      relativeX
+                               , double      relativeY
+                               , double      scale
+                               , int         style
+                               , m8f_hn_Data data
+                               , vector3     center
+                               , double      angle
+                               )
   {
     static const string ribbons[] =
     {
@@ -683,126 +568,14 @@ class m8f_hn_EventHandler : EventHandler
     return relativeCompassHeight;
   }
 
-  // +--------------+
-  // |      1       |
-  // +--------------+
-  // +-++--------++-+
-  // |3||original||4|
-  // +-++--------++-+
-  // +--------------+
-  // |      2       |
-  // +--------------+
-
-  ui static void SetClipRectAroundTop(int x, int y, int width, int height, int border)
-  {
-    Screen.SetClipRect( x - border
-                      , y - border
-                      , width + border * 2
-                      , border
-                      );
-  }
-
-  ui static void SetClipRectAroundBottom(int x, int y, int width, int height, int border)
-  {
-    Screen.SetClipRect( x - border
-                      , y + height
-                      , width + border * 2
-                      , border
-                      );
-  }
-
-  ui static void SetClipRectAroundLeft(int x, int y, int width, int height, int border)
-  {
-    Screen.SetClipRect( x - border
-                      , y
-                      , border
-                      , height
-                      );
-  }
-
-  ui static void SetClipRectAroundRight(int x, int y, int width, int height, int border)
-  {
-    Screen.SetClipRect( x + width
-                      , y
-                      , border
-                      , height
-                      );
-  }
-
-  ui static string makeGridCoordinates(vector3 pos)
-  {
-    int     x        = int(pos.x);
-    int     y        = int(pos.y);
-    int     gridSize = 512;
-    if (x < 0) { x -= gridSize; }
-    if (y < 0) { y -= gridSize; }
-    string  xString  = intToStringAA(x / gridSize);
-    y                = (y + 64) / gridSize;
-    string  coords   = StringStruct.Format("%s %d", xString, y);
-    return coords;
-  }
-
-  ui static string intToStringAA(int value)
-  {
-    if (value == 0) { return "A"; }
-
-    bool negative;
-    if (value >= 0) { negative = false;}
-    else            { negative = true; value = -value - 1; }
-
-    string result = "";
-    while (true)
-      {
-        int small = value % 26;
-        result    = StringStruct.Format("%c%s", 65 + small, result);
-        value    /= 26;
-
-        if (value == 0) break;
-        --value;
-      }
-
-    if (negative) { result = StringStruct.Format("-%s", result); }
-
-    return result;
-  }
-
-  ui static double drawTextCenter( string text
-                                 , int    color
-                                 , double scale
-                                 , double x
-                                 , double y
-                                 , Font   font
-                                 , int    xAdjustment = 0
-                                 , double alpha = 1.0
-                                 )
-  {
-    int    width       = int(scale * Screen.GetWidth());
-    int    height      = int(scale * Screen.GetHeight());
-    double stringWidth = font.StringWidth(text);
-    x  = (width * x) - stringWidth / 2;
-    y *= height;
-    double margin = 4.0;
-    if      (x < margin)                       { x = margin; }
-    else if (x > width - stringWidth - margin) { x = width - stringWidth - margin; }
-
-    Screen.DrawText( font, color, x, y, text
-                   , DTA_KeepRatio,     true
-                   , DTA_VirtualWidth,  width
-                   , DTA_VirtualHeight, height
-                   , DTA_Alpha,         alpha
-                   );
-
-    return (font.GetHeight() / scale) / Screen.GetHeight();
-  }
-
-  ui void drawPointers( double      x
-                      , double      y
-                      , int         width
-                      , int         height
-                      , m8f_hn_Data data
-                      , vector3     center
-                      , double      playerAngle
-                      )
+  private ui void drawPointers( double      x
+                              , double      y
+                              , int         width
+                              , int         height
+                              , m8f_hn_Data data
+                              , vector3     center
+                              , double      playerAngle
+                              )
   {
     static const string pointerTextures[] =
     {
@@ -845,7 +618,7 @@ class m8f_hn_EventHandler : EventHandler
                  );
     }
 
-    if (settings.showSwitches)
+    if (_settings.showSwitches)
     {
       int nLines = level.lines.size();
       for (int i = 0; i < nLines; ++i)
@@ -868,7 +641,162 @@ class m8f_hn_EventHandler : EventHandler
     }
   }
 
-  ui static bool isSwitch(Line l)
+  // static functions section //////////////////////////////////////////////////
+
+  private static bool contains(String s, String substring)
+  {
+    return (s.IndexOf(substring) != -1);
+  }
+
+  private static void removeSigns()
+  {
+    let   iterator = ThinkerIterator.Create("m8f_hn_Sign");
+    Actor sign;
+    while (sign = Actor(iterator.Next()))
+      {
+        sign.Destroy();
+      }
+  }
+
+  private static bool CheckTitlemap()
+  {
+    bool isTitlemap = (level.mapname == "TITLEMAP");
+    return isTitlemap;
+  }
+
+  private ui static int round(double value)
+  {
+    int rounded = int(value + 0.5);
+    return rounded;
+  }
+
+  private ui static double clamp(double value, double min, double max)
+  {
+    if      (value < min) { return min;   }
+    else if (value > max) { return max;   }
+    else                  { return value; }
+  }
+
+  private ui static int clampInt(int value, int min, int max)
+  {
+    if      (value < min) { return min;   }
+    else if (value > max) { return max;   }
+    else                  { return value; }
+  }
+
+  // +--------------+
+  // |      1       |
+  // +--------------+
+  // +-++--------++-+
+  // |3||original||4|
+  // +-++--------++-+
+  // +--------------+
+  // |      2       |
+  // +--------------+
+
+  private ui static void SetClipRectAroundTop(int x, int y, int width, int height, int border)
+  {
+    Screen.SetClipRect( x - border
+                      , y - border
+                      , width + border * 2
+                      , border
+                      );
+  }
+
+  private ui static void SetClipRectAroundBottom(int x, int y, int width, int height, int border)
+  {
+    Screen.SetClipRect( x - border
+                      , y + height
+                      , width + border * 2
+                      , border
+                      );
+  }
+
+  private ui static void SetClipRectAroundLeft(int x, int y, int width, int height, int border)
+  {
+    Screen.SetClipRect( x - border
+                      , y
+                      , border
+                      , height
+                      );
+  }
+
+  private ui static void SetClipRectAroundRight(int x, int y, int width, int height, int border)
+  {
+    Screen.SetClipRect( x + width
+                      , y
+                      , border
+                      , height
+                      );
+  }
+
+  private ui static string makeGridCoordinates(vector3 pos)
+  {
+    int     x        = int(pos.x);
+    int     y        = int(pos.y);
+    int     gridSize = 512;
+    if (x < 0) { x -= gridSize; }
+    if (y < 0) { y -= gridSize; }
+    string  xString  = intToStringAA(x / gridSize);
+    y                = (y + 64) / gridSize;
+    string  coords   = StringStruct.Format("%s %d", xString, y);
+    return coords;
+  }
+
+  private ui static string intToStringAA(int value)
+  {
+    if (value == 0) { return "A"; }
+
+    bool negative;
+    if (value >= 0) { negative = false;}
+    else            { negative = true; value = -value - 1; }
+
+    string result = "";
+    while (true)
+      {
+        int small = value % 26;
+        result    = StringStruct.Format("%c%s", 65 + small, result);
+        value    /= 26;
+
+        if (value == 0) break;
+        --value;
+      }
+
+    if (negative) { result = StringStruct.Format("-%s", result); }
+
+    return result;
+  }
+
+  private ui static double drawTextCenter( string text
+                                         , int    color
+                                         , double scale
+                                         , double x
+                                         , double y
+                                         , Font   font
+                                         , int    xAdjustment = 0
+                                         , double alpha = 1.0
+                                         )
+  {
+    int    width       = int(scale * Screen.GetWidth());
+    int    height      = int(scale * Screen.GetHeight());
+    double stringWidth = font.StringWidth(text);
+    x  = (width * x) - stringWidth / 2;
+    y *= height;
+    double margin = 4.0;
+    if      (x < margin)                       { x = margin; }
+    else if (x > width - stringWidth - margin) { x = width - stringWidth - margin; }
+
+    Screen.DrawText( font, color, x, y, text
+                   , DTA_KeepRatio,     true
+                   , DTA_VirtualWidth,  width
+                   , DTA_VirtualHeight, height
+                   , DTA_Alpha,         alpha
+                   );
+
+    return (font.GetHeight() / scale) / Screen.GetHeight();
+  }
+
+  private ui static bool isSwitch(Line l)
   {
     bool activation = (l.activation & ( SPAC_Use
                                       | SPAC_Impact
@@ -879,7 +807,7 @@ class m8f_hn_EventHandler : EventHandler
     return (activation);
   }
 
-  ui static bool hasLock(Line l)
+  private ui static bool hasLock(Line l)
   {
     int  special     = l.special;
     bool lineHasLock = (special == 13 || special == 83 || special == 85);
@@ -887,11 +815,11 @@ class m8f_hn_EventHandler : EventHandler
     return lineHasLock;
   }
 
-  ui static void drawPointer( double x, double y, int width, int height
-                            , vector3 center, double playerAngle
-                            , double xPointer, double yPointer, TextureID pointerTex
-                            , bool closeFormula
-                            )
+  private ui static void drawPointer( double x, double y, int width, int height
+                                    , vector3 center, double playerAngle
+                                    , double xPointer, double yPointer, TextureID pointerTex
+                                    , bool closeFormula
+                                    )
   {
 
     double xDiff = xPointer - center.x;
@@ -929,7 +857,7 @@ class m8f_hn_EventHandler : EventHandler
                       );
   }
 
-  static int countFoundSectors()
+  private static int countFoundSectors()
   {
     int foundSectors = 0;
     int nSectors     = level.sectors.size();
@@ -944,4 +872,28 @@ class m8f_hn_EventHandler : EventHandler
     return foundSectors;
   }
 
-} // m8f_hn_EventHandler
+  // private attributes section ////////////////////////////////////////////////
+
+  private Array<m8f_hn_BaseAreaNameSource> _areaNameSources;
+  private m8f_hn_Data     _data;
+  private m8f_hn_Settings _settings;
+
+  private int     _renderUpdatePeriod;
+  private int     _renderCounter;
+  private string  _areaName;
+  private bool    _isTitlemap;
+  private int     _progress;
+  private int     _oldProgress;
+  private int     _initialFoundSectorsCount;
+
+  private bool    _isFirstTick;
+  private bool    _isWorldLoaded;
+
+  private int     _currentLockAlphaPercent;
+  private int     _targetLockAlphaPercent;
+  private string  _lockMessage;
+  private int     _lockColor;
+
+  private bool    _isMapRevealerOnMap;
+
+} // class m8f_hn_EventHandler
