@@ -6,8 +6,6 @@ name=hellscape-navigator
 
 #IWAD="-iwad /home/allkromm/Programs/Games/wads/doom/freedoom1.wad"
 
-acc source/$name.acs acs/$name.o \
-&& \
 rm -f $name.pk3 \
 && \
 git log --date=short --pretty=format:"-%d %ad %s%n" | \
@@ -24,9 +22,7 @@ zip $name.pk3 \
     *.md \
     sprites/*/*.png \
     graphics/*/*.png \
-    source/*.acs \
     zscript/*.txt \
-    acs/*.o \
     language.enu \
 && \
 cp $name.pk3 $name-$(git describe --abbrev=0 --tags).pk3 \
