@@ -215,6 +215,13 @@ class m8f_hn_EventHandler : EventHandler
       }
     }
 
+    if (_settings.isTextSeparate)
+    {
+      x = _settings.textX;
+      y = _settings.textY;
+      drawDirection = 1;
+    }
+
     if (_settings.levelName)
       {
         y += drawTextCenter(level.levelName, normalColor, scale, x, y, font)

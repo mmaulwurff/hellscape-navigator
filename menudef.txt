@@ -127,6 +127,11 @@ OptionMenu "m8f_hn_CompassOptions"
   Option     "Text above compass"  , "m8f_hn_compass_under" , "OnOff"
 
   StaticText ""
+  Option     "Map Info is separate", "m8f_hn_text_separate" , "OnOff"
+  Slider     "Horizontal position" , "m8f_hn_text_x"        , 0.0, 1.0,  0.01, 2
+  Slider     "Vertical position"   , "m8f_hn_text_y"        , 0.0, 0.95, 0.01, 2
+
+  StaticText ""
 }
 
 OptionMenu    "m8f_hn_GameplayOptions"

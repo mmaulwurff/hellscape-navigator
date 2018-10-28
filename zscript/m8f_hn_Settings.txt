@@ -37,6 +37,10 @@ class m8f_hn_Settings
   bool   showLockAccess;
   bool   showIntroLevelName;
 
+  bool   isTextSeparate;
+  double textX;
+  double textY;
+
   void read(PlayerInfo player)
   {
     xStart             = CVar.GetCVar("m8f_hn_compass_x"          , player).GetFloat();
@@ -56,6 +60,10 @@ class m8f_hn_Settings
 
     showLockAccess     = CVar.GetCVar("m8f_hn_show_access"        , player).GetInt();
     showIntroLevelName = CVar.GetCVar("m8f_hn_show_level_name"    , player).GetInt();
+
+    isTextSeparate     = CVar.GetCVar("m8f_hn_text_separate"      , player).GetInt();
+    textX              = CVar.GetCVar("m8f_hn_text_x"             , player).GetFloat();
+    textY              = CVar.GetCVar("m8f_hn_text_y"             , player).GetFloat();
   }
 
   m8f_hn_Settings init(PlayerInfo player)
