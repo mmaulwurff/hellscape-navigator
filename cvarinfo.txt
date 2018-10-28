@@ -51,3 +51,7 @@ user bool  m8f_hn_show_level_name    = true;
 user int   m8f_hn_update_period      = 35;
 
 user bool  m8f_hn_reveal_when_explored = false;
+user bool  m8f_hn_reveal_scanner       = false;
+
+user bool  m8f_hn_reveal_on_start      = false;
+user bool  m8f_hn_scanner_start        = false;

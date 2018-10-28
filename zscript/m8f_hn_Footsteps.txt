@@ -173,6 +173,7 @@ class m8f_hn_FadingMarker : MapMarker
       RenderStyle "Translucent";
       XScale 0.04;
       YScale 0.04;
+      +NOTONAUTOMAP;
     }
 
   float fadeStep;

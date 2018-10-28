@@ -41,15 +41,28 @@ class m8f_hn_EventHandler : EventHandler
     _mapNameAlpha       = 1.0;
   }
 
-  override void WorldLoaded(WorldEvent e)
+  override void PlayerEntered(PlayerEvent event)
   {
+    if (event.playerNumber != consolePlayer) { return; }
+
     _data       = new("m8f_hn_Data").init();
     _isTitlemap = CheckTitlemap();
-    _settings   = new("m8f_hn_Settings").init(players[consolePlayer]);
+    _settings   = new("m8f_hn_Settings").init(players[event.playerNumber]);
 
     _progress    = 0;
     _oldProgress = 0;
     _initialFoundSectorsCount = 0;
+
+    if (_settings.revealOnStart)
+    {
+      Actor playerActor = players[event.playerNumber].mo;
+      playerActor.GiveInventory("MapRevealer", 1);
+
+      if (_settings.scannerOnStart)
+      {
+        playerActor.GiveInventory("m8f_hn_Scanner", 1);
+      }
+    }
   }
 
   override void WorldTick()
@@ -82,10 +95,17 @@ class m8f_hn_EventHandler : EventHandler
     if (_oldProgress != _progress
         && _progress == 10
         && !_isMapRevealerOnMap
-        && CVar.GetCVar("m8f_hn_reveal_when_explored", player).GetInt())
+        && _settings.revealExploredMap)
     {
       Console.Printf("Level is explored, map is revealed.");
-      player.mo.GiveInventory("MapRevealer", 1);
+
+      Actor playerActor = player.mo;
+      playerActor.GiveInventory("MapRevealer", 1);
+
+      if (_settings.scannerExploredMap)
+      {
+        playerActor.GiveInventory("m8f_hn_Scanner", 1);
+      }
     }
 
     _oldProgress = _progress;

@@ -41,6 +41,11 @@ class m8f_hn_Settings
   double textX;
   double textY;
 
+  bool   revealExploredMap;
+  bool   scannerExploredMap;
+  bool   revealOnStart;
+  bool   scannerOnStart;
+
   void read(PlayerInfo player)
   {
     xStart             = CVar.GetCVar("m8f_hn_compass_x"          , player).GetFloat();
@@ -64,6 +69,12 @@ class m8f_hn_Settings
     isTextSeparate     = CVar.GetCVar("m8f_hn_text_separate"      , player).GetInt();
     textX              = CVar.GetCVar("m8f_hn_text_x"             , player).GetFloat();
     textY              = CVar.GetCVar("m8f_hn_text_y"             , player).GetFloat();
+
+    revealExploredMap  = CVar.GetCVar("m8f_hn_reveal_when_explored", player).GetInt();
+    scannerExploredMap = CVar.GetCVar("m8f_hn_reveal_scanner"      , player).GetInt();
+
+    revealOnStart      = CVar.GetCVar("m8f_hn_reveal_on_start"     , player).GetInt();
+    scannerOnStart     = CVar.GetCVar("m8f_hn_scanner_start"       , player).GetInt();
   }
 
   m8f_hn_Settings init(PlayerInfo player)

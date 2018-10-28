@@ -139,14 +139,22 @@ OptionMenu    "m8f_hn_GameplayOptions"
   Title       "Hellscape Navigator Gameplay"
 
   StaticText  ""
+  StaticText  "Map Revealing", "Blue"
   Option      "Reveal map when it is explored" , "m8f_hn_reveal_when_explored" , "OnOff"
   StaticText  "Doesn't trigger if a map already contains a Map Revealer.", "Black"
+  StaticText  ""
+  Option      "Also give Scanner"              , "m8f_hn_reveal_scanner" , "OnOff"
 
   StaticText  ""
-  Option      "Display Locked Door Access" , "m8f_hn_show_access", "OnOff"
+  Option      "Reveal map on level start"      , "m8f_hn_reveal_on_start", "OnOff"
+  Option      "Also give Scanner"              , "m8f_hn_scanner_start"  , "OnOff"
 
   StaticText  ""
-  Option      "Display Level Name on Entering" , "m8f_hn_show_level_name", "OnOff"
+  StaticText  "Display", "Blue"
+  Option      "Locked Door Access"     , "m8f_hn_show_access", "OnOff"
+
+  StaticText  ""
+  Option      "Level Name on Entering" , "m8f_hn_show_level_name", "OnOff"
 
   StaticText  ""
 }
