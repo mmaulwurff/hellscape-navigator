@@ -1,5 +1,9 @@
+// Keys
+
 AddKeySection "Hellscape Navigator Keys" "HellscapeNavitagor"
-AddMenuKey "Make a sign" "m8f_hn_make_sign_open"
+
+AddMenuKey "Make a sign"   "m8f_hn_make_sign_open"
+AddMenuKey "Press Automap" "+press_map"
 
 // Sign section ////////////////////////////////////////////////////////////////
 
@@ -11,3 +15,8 @@ alias m8f_hn_make_sign_open   "openmenu m8f_hn_SignNoteMenu"
 alias m8f_hn_make_sign_close  "closemenu; test == $m8f_hn_sign_type 0 m8f_hn_summon_wooden_sign; test == $m8f_hn_sign_type 1 m8f_hn_summon_transparent_sign; test == $m8f_hn_sign_type 2 m8f_hn_summon_metal_sign; test $m8f_hn_sign_clear_after_make m8f_hn_make_sign_clear"
 alias m8f_hn_make_sign_cancel "closemenu"
 alias m8f_hn_make_sign_clear  "m8f_hn_sign_note1 \"\"; m8f_hn_sign_note2 \"\"; m8f_hn_sign_note3 \"\""
+
+// Automap
+
+alias +press_map "togglemap; wait 1; test == $am_overlay 1 togglemap"
+alias -press_map "togglemap"
