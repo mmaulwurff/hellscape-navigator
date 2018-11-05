@@ -97,19 +97,9 @@ class m8f_hn_EventHandler : EventHandler
     if (_progress > 10) { _progress = 10; }
 
     if (_oldProgress != _progress
-        && _progress == 10
-        && !_isMapRevealerOnMap
-        && _settings.revealExploredMap)
+        && _progress == 10)
     {
-      Console.Printf("Level is explored, map is revealed.");
-
-      Actor playerActor = player.mo;
-      playerActor.GiveInventory("MapRevealer", 1);
-
-      if (_settings.scannerExploredMap)
-      {
-        playerActor.GiveInventory("m8f_hn_Scanner", 1);
-      }
+      OnMapExplored(player);
     }
 
     _oldProgress = _progress;
@@ -932,6 +922,26 @@ class m8f_hn_EventHandler : EventHandler
       }
 
     return foundSectors;
+  }
+
+  private void OnMapExplored(PlayerInfo player)
+  {
+    Actor playerActor = player.mo;
+    if (playerActor == null) { return; }
+
+    playerActor.GiveInventory("m8f_hn_EntrywayTranslocator", _settings.nTranslocatorExp);
+
+    if (_isMapRevealerOnMap && _settings.revealExploredMap)
+    {
+      Console.Printf("Level is explored, map is revealed.");
+
+      playerActor.GiveInventory("MapRevealer", 1);
+
+      if (_settings.scannerExploredMap)
+      {
+        playerActor.GiveInventory("m8f_hn_Scanner", 1);
+      }
+    }
   }
 
   // private attributes section ////////////////////////////////////////////////

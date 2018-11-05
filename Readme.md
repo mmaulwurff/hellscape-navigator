@@ -51,6 +51,10 @@ complex maps.
 * Clifford21 for feature suggestions;
 * Enjay for testing, bug reports, and feature suggestions.
 
+# Credits
+* Entryway Translocator graphics: [Freedoom](https://freedoom.github.io/) (modified).
+  Copyright © 2001-2017 Contributors to the Freedoom project. All rights reserved.
+
 # Links and contacts
 
 [Git Repository](https://github.com/mmaulwurff/hellscape-navigator)

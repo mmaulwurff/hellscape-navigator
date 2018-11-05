@@ -150,7 +150,8 @@ OptionMenu    "m8f_hn_GameplayOptions"
   Option      "Also give Scanner"              , "m8f_hn_scanner_start"  , "OnOff"
 
   StaticText  ""
-  Slider      "Give Entryway Translocator on Start x" , "m8f_hn_n_translocator", 0, 10, 1, 0
+  Slider      "Entryway Translocator on Start"      , "m8f_hn_n_translocator",          0, 10, 1, 0
+  Slider      "Entryway Translocator when Explored" , "m8f_hn_n_translocator_explored", 0, 10, 1, 0
 
   StaticText  ""
   StaticText  "Display", "Blue"
