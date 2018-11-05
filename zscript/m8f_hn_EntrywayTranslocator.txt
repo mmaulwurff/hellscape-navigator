@@ -1,0 +1,17 @@
+class m8f_hn_EntrywayTranslocator : ArtiTeleport
+{
+  Default
+  {
+    Inventory.Icon "nheyb1";
+    Tag "Entryway Translocator";
+    
+    -FLOATBOB;
+  }
+
+  States
+  {
+  Spawn:
+    hney b 1;
+    loop;
+  }
+}

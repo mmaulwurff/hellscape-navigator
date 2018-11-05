@@ -145,3 +145,10 @@ Sprite hnqub0, 200, 200
   XScale 4.0
   YScale 4.0
 }
+
+// Entryway Translocator
+Sprite hneyb0, 32, 28
+{
+  Patch  hneya0, 0, 0
+  Offset 16, 20
+}

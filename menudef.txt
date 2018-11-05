@@ -150,6 +150,9 @@ OptionMenu    "m8f_hn_GameplayOptions"
   Option      "Also give Scanner"              , "m8f_hn_scanner_start"  , "OnOff"
 
   StaticText  ""
+  Slider      "Give Entryway Translocator on Start x" , "m8f_hn_n_translocator", 0, 10, 1, 0
+
+  StaticText  ""
   StaticText  "Display", "Blue"
   Option      "Locked Door Access"     , "m8f_hn_show_access", "OnOff"
 

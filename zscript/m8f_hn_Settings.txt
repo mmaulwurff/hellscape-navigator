@@ -46,6 +46,8 @@ class m8f_hn_Settings
   bool   revealOnStart;
   bool   scannerOnStart;
 
+  int    nTranslocator;
+
   void read(PlayerInfo player)
   {
     xStart             = CVar.GetCVar("m8f_hn_compass_x"          , player).GetFloat();
@@ -75,6 +77,8 @@ class m8f_hn_Settings
 
     revealOnStart      = CVar.GetCVar("m8f_hn_reveal_on_start"     , player).GetInt();
     scannerOnStart     = CVar.GetCVar("m8f_hn_scanner_start"       , player).GetInt();
+
+    nTranslocator      = CVar.GetCVar("m8f_hn_n_translocator"      , player).GetInt();
   }
 
   m8f_hn_Settings init(PlayerInfo player)

@@ -1,12 +1,23 @@
 version "3.2.0"
 
-#include "zscript/m8f_hn_AreaNameSources.txt"
-#include "zscript/m8f_hn_EventHandler.txt"
-#include "zscript/m8f_hn_Footsteps.txt"
-#include "zscript/m8f_hn_Settings.txt"
-#include "zscript/m8f_hn_Signs.txt"
 #include "zscript/m8f_hn_AreaNameMarkerExample.txt"
-#include "zscript/m8f_hn_Pointers.txt"
-#include "zscript/m8f_hn_QuestPointer.txt"
+
+#include "zscript/m8f_hn_AreaNameSources.txt"
+
 #include "zscript/m8f_hn_Data.txt"
+
+#include "zscript/m8f_hn_EntrywayTranslocator.txt"
+
+#include "zscript/m8f_hn_EventHandler.txt"
+
+#include "zscript/m8f_hn_Footsteps.txt"
+
+#include "zscript/m8f_hn_Pointers.txt"
+
+#include "zscript/m8f_hn_QuestPointer.txt"
+
 #include "zscript/m8f_hn_Scanner.txt"
+
+#include "zscript/m8f_hn_Settings.txt"
+
+#include "zscript/m8f_hn_Signs.txt"

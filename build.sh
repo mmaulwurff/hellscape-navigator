@@ -21,6 +21,7 @@ zip $name.pk3 \
     *.txt \
     *.md \
     sprites/*/*.png \
+    sprites/*.png \
     graphics/*/*.png \
     zscript/*.txt \
     language.enu \

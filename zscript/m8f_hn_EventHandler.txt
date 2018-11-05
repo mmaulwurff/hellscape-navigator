@@ -45,6 +45,9 @@ class m8f_hn_EventHandler : EventHandler
   {
     if (event.playerNumber != consolePlayer) { return; }
 
+    Actor playerActor = players[event.playerNumber].mo;
+    if (playerActor == null) { return; }
+
     _data       = new("m8f_hn_Data").init();
     _isTitlemap = CheckTitlemap();
     _settings   = new("m8f_hn_Settings").init(players[event.playerNumber]);
@@ -55,7 +58,6 @@ class m8f_hn_EventHandler : EventHandler
 
     if (_settings.revealOnStart)
     {
-      Actor playerActor = players[event.playerNumber].mo;
       playerActor.GiveInventory("MapRevealer", 1);
 
       if (_settings.scannerOnStart)
@@ -63,6 +65,8 @@ class m8f_hn_EventHandler : EventHandler
         playerActor.GiveInventory("m8f_hn_Scanner", 1);
       }
     }
+
+    playerActor.GiveInventory("m8f_hn_EntrywayTranslocator", _settings.nTranslocator);
   }
 
   override void WorldTick()

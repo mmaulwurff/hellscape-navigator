@@ -55,3 +55,5 @@ user bool  m8f_hn_reveal_scanner       = false;
 
 user bool  m8f_hn_reveal_on_start      = false;
 user bool  m8f_hn_scanner_start        = false;
+
+user int   m8f_hn_n_translocator       = 0;

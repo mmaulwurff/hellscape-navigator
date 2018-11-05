@@ -33,8 +33,11 @@ complex maps.
   * Colored messages for keys and doors (Doom, Heretic)
   * Grid coordinates
   * Exploration status
+  * An option to reveal map on level start
   * An option to reveal map when it is mostly explored
+  * Options to also give scanner on map revealing
   * An option to display locked door status
+  * Optional Entryway Translocator (teleport to start)
 
 # Todo
 
