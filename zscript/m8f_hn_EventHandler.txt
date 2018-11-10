@@ -116,9 +116,9 @@ class m8f_hn_EventHandler : EventHandler
     string spawnedClassName = item.GetClassName();
     bool   isAreaNameMarker = contains(spawnedClassName, "hn_AreaNameMarker");
     if (isAreaNameMarker)
-      {
-        _data.areaNameMarkers.push(item);
-      }
+    {
+      _data.areaNameMarkers.push(item);
+    }
 
     // detect and store quest markers
     bool isQuestPointer = contains(spawnedClassName, "hn_QuestPointer");
@@ -657,8 +657,11 @@ class m8f_hn_EventHandler : EventHandler
     int nQuestPointers = data.questPointers.size();
     for (int i = 0; i < nQuestPointers; ++i)
     {
-      double    xPointer   = data.questPointers[i].pos.x;
-      double    yPointer   = data.questPointers[i].pos.y;
+      let questPointer = data.questPointers[i];
+      if (questPointer == null) { continue; }
+
+      double    xPointer   = questPointer.pos.x;
+      double    yPointer   = questPointer.pos.y;
       TextureID pointerTex = TexMan.CheckForTexture( pointerTextures[m8f_hn_Pointer.POINTER_GOLD]
                                                    , TexMan.Type_Any
                                                    );

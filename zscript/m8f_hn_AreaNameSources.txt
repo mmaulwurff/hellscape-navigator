@@ -65,32 +65,35 @@ class m8f_hn_SignAreaNameSource : m8f_hn_BaseAreaNameSource
     m8f_hn_Sign sign;
 
     while (sign = m8f_hn_Sign(iterator.Next()))
+    {
+      if (sign.areaName.length() == 0) { continue; }
+
+      double distance;
+      bool   isInRadius;
+      [distance, isInRadius] = m8f_hn_Lib.calculateDistance( sign.pos
+                                                           , playerPos
+                                                           , sign.areaRadiusSq
+                                                           );
+
+      if (isInRadius && (distance < minDistance || minDistance < 0.0))
       {
-        if (sign.areaName.length() == 0) { continue; }
-
-        double distance;
-        bool   isInRadius;
-        [distance, isInRadius] = m8f_hn_Lib.calculateDistance( sign.pos
-                                                             , playerPos
-                                                             , sign.areaRadiusSq
-                                                             );
-
-        if (isInRadius && (distance < minDistance || minDistance < 0.0))
-          {
-            minDistance = distance;
-            closestSign = sign;
-          }
+        minDistance = distance;
+        closestSign = sign;
       }
+    }
 
-    int    nAreaNameMarkers = data.areaNameMarkers.size();
+    int nAreaNameMarkers = data.areaNameMarkers.size();
 
     for (int i = 0; i < nAreaNameMarkers; ++i)
       {
+        let areaNameMarker = data.areaNameMarkers[i];
+        if (areaNameMarker == null) { continue; }
+
+        vector3 pos            = areaNameMarker.pos;
+        double  areaRadius     = areaNameMarker.health;
+        double  areaRadiusSq   = areaRadius * areaRadius;
         double  distance;
         bool    isInRadius;
-        vector3 pos            = data.areaNameMarkers[i].pos;
-        double  areaRadius     = data.areaNameMarkers[i].health;
-        double  areaRadiusSq   = areaRadius * areaRadius;
         [distance, isInRadius] = m8f_hn_Lib.calculateDistance( pos
                                                              , playerPos
                                                              , areaRadiusSq
