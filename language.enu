@@ -66,3 +66,29 @@ TXT_NEEDYELLOWKEY = "You need a \ckYellow Key\c- to open this door";
 TXT_GOTBLUEKEY    = "\chBlue Key";
 TXT_GOTYELLOWKEY  = "\ckYellow Key";
 TXT_GOTGREENKEY   = "\cdGreen Key";
+
+// Hexen
+
+TXT_KEY_STEEL   = "\ccSteel Key";
+Txt_Key_Cave    = "\csCave Key";
+Txt_Key_Axe     = "\cuAxe Key";
+Txt_Key_Fire    = "\cgFire Key";
+Txt_Key_Emerald = "\cdEmerald Key";
+Txt_Key_Dungeon = "\cuDungeon Key";
+Txt_Key_Silver  = "\cjSilver Key";
+Txt_Key_Rusted  = "\ceRusted Key";
+Txt_Key_Horn    = "\ceHorn Key";
+Txt_Key_Swamp   = "\cpSwamp Key";
+Txt_Key_Castle  = "\cfCastle Key";
+
+Txt_Need_Key_Steel   = "You need the \ccSteel Key";
+Txt_Need_Key_Cave    = "You need the \csCave Key";
+Txt_Need_Key_Axe     = "You need the \cuAxe Key";
+Txt_Need_Key_Fire    = "You need the \cgFire Key";
+Txt_Need_Key_Emerald = "You need the \cdEmerald Key";
+Txt_Need_Key_Dungeon = "You need the \cuDungeon Key";
+Txt_Need_Key_Silver  = "You need the \cjSilver Key";
+Txt_Need_Key_Rusted  = "You need the \ceRusted Key";
+Txt_Need_Key_Horn    = "You need the \ceHorn Key";
+Txt_Need_Key_Swamp   = "You need the \cpSwamp Key";
+Txt_Need_Key_Castle  = "You need the \cfCastle Key";
