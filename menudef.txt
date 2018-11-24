@@ -192,7 +192,7 @@ OptionMenu    "m8f_hn_Options"
   Submenu     "Footstep Markers" , "m8f_hn_FootstepMarkerOptions"
   Submenu     "Sign"             , "m8f_hn_SignOptions"
   Submenu     "Compass"          , "m8f_hn_CompassOptions"
-  Submenu     "Gameplay & Extra" , "m8f_hn_GameplayOptions"
+  Submenu     "Gameplay and Extra" , "m8f_hn_GameplayOptions"
 
   StaticText  ""
 }
