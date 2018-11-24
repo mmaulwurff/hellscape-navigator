@@ -38,7 +38,7 @@ class m8f_hn_EventHandler : EventHandler
     _targetLockAlphaPercent  = 0;
 
     _isMapRevealerOnMap = false;
-    _mapNameAlpha       = 1.0;
+    _mapNameAlpha       = 1.5;
   }
 
   override void PlayerEntered(PlayerEvent event)
