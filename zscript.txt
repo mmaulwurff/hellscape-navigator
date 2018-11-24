@@ -7,6 +7,7 @@ version "3.2.0"
 #include "zscript/m8f_hn_Data.txt"
 
 #include "zscript/m8f_hn_EntrywayTranslocator.txt"
+#include "zscript/m8f_hn_SpaceTunnelingDevice.txt"
 
 #include "zscript/m8f_hn_EventHandler.txt"
 

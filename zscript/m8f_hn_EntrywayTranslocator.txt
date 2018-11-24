@@ -1,10 +1,10 @@
 class m8f_hn_EntrywayTranslocator : ArtiTeleport
 {
+
   Default
   {
-    Inventory.Icon "nheyb1";
     Tag "Entryway Translocator";
-    
+
     -FLOATBOB;
   }
 
@@ -14,4 +14,5 @@ class m8f_hn_EntrywayTranslocator : ArtiTeleport
     hney b 1;
     loop;
   }
-}
+
+} // m8f_hn_EntrywayTranslocator

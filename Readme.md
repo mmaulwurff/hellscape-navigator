@@ -52,7 +52,7 @@ complex maps.
 * Enjay for testing, bug reports, and feature suggestions.
 
 # Credits
-* Entryway Translocator graphics: [Freedoom](https://freedoom.github.io/) (modified).
+* Entryway Translocator and Space Tunneling Device graphics: [Freedoom](https://freedoom.github.io/)
   Copyright © 2001-2017 Contributors to the Freedoom project. All rights reserved.
 
 # Links and contacts

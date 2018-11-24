@@ -49,6 +49,9 @@ class m8f_hn_Settings
   int    nTranslocator;
   int    nTranslocatorExp;
 
+  int    nTunneling;
+  int    nTunnelingExp;
+
   void read(PlayerInfo player)
   {
     xStart             = CVar.GetCVar("m8f_hn_compass_x"          , player).GetFloat();
@@ -81,6 +84,9 @@ class m8f_hn_Settings
 
     nTranslocator      = CVar.GetCVar("m8f_hn_n_translocator"      , player).GetInt();
     nTranslocatorExp   = CVar.GetCVar("m8f_hn_n_translocator_explored", player).GetInt();
+
+    nTunneling         = CVar.GetCVar("m8f_hn_n_tunneling"         , player).GetInt();
+    nTunnelingExp      = CVar.GetCVar("m8f_hn_n_tunneling_explored", player).GetInt();
   }
 
   m8f_hn_Settings init(PlayerInfo player)

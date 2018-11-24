@@ -66,7 +66,15 @@ class m8f_hn_EventHandler : EventHandler
       }
     }
 
-    playerActor.GiveInventory("m8f_hn_EntrywayTranslocator", _settings.nTranslocator);
+    if (_settings.nTranslocatorExp)
+    {
+      playerActor.GiveInventory("m8f_hn_EntrywayTranslocator", _settings.nTranslocator);
+    }
+
+    if (_settings.nTunneling)
+    {
+      playerActor.GiveInventory("m8f_hn_SpaceTunnelingDevice", _settings.nTunneling);
+    }
   }
 
   override void WorldTick()
@@ -932,7 +940,15 @@ class m8f_hn_EventHandler : EventHandler
     Actor playerActor = player.mo;
     if (playerActor == null) { return; }
 
-    playerActor.GiveInventory("m8f_hn_EntrywayTranslocator", _settings.nTranslocatorExp);
+    if (_settings.nTranslocatorExp)
+    {
+      playerActor.GiveInventory("m8f_hn_EntrywayTranslocator", _settings.nTranslocatorExp);
+    }
+
+    if (_settings.nTunnelingExp)
+    {
+      playerActor.GiveInventory("m8f_hn_SpaceTunnelingDevice", _settings.nTunnelingExp);
+    }
 
     if (_isMapRevealerOnMap && _settings.revealExploredMap)
     {

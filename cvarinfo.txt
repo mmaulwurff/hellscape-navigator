@@ -58,3 +58,6 @@ user bool  m8f_hn_scanner_start        = false;
 
 user int   m8f_hn_n_translocator          = 0;
 user int   m8f_hn_n_translocator_explored = 0;
+
+user int   m8f_hn_n_tunneling             = 0;
+user int   m8f_hn_n_tunneling_explored    = 0;

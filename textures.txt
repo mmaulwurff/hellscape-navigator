@@ -152,3 +152,10 @@ Sprite hneyb0, 32, 28
   Patch  hneya0, 0, 0
   Offset 16, 20
 }
+
+// Space Tunneling Device
+Sprite hnstb0, 25, 25
+{
+  Patch  hnsta0, 0, 0
+  Offset 12, 12
+}

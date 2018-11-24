@@ -139,6 +139,13 @@ OptionMenu    "m8f_hn_GameplayOptions"
   Title       "Hellscape Navigator Gameplay"
 
   StaticText  ""
+  StaticText  "Display", "Blue"
+  Option      "Locked Door Access"     , "m8f_hn_show_access", "OnOff"
+
+  StaticText  ""
+  Option      "Level Name on Entering" , "m8f_hn_show_level_name", "OnOff"
+
+  StaticText  ""
   StaticText  "Map Revealing", "Blue"
   Option      "Reveal map when it is explored" , "m8f_hn_reveal_when_explored" , "OnOff"
   StaticText  "Doesn't trigger if a map already contains a Map Revealer.", "Black"
@@ -152,13 +159,12 @@ OptionMenu    "m8f_hn_GameplayOptions"
   StaticText  ""
   Slider      "Entryway Translocator on Start"      , "m8f_hn_n_translocator",          0, 10, 1, 0
   Slider      "Entryway Translocator when Explored" , "m8f_hn_n_translocator_explored", 0, 10, 1, 0
+  StaticText  "Entryway Translocator teleports to the level start.", "Black"
 
   StaticText  ""
-  StaticText  "Display", "Blue"
-  Option      "Locked Door Access"     , "m8f_hn_show_access", "OnOff"
-
-  StaticText  ""
-  Option      "Level Name on Entering" , "m8f_hn_show_level_name", "OnOff"
+  Slider      "Space Tunneling Device on Start"      , "m8f_hn_n_tunneling",          0, 10, 1, 0
+  Slider      "Space Tunneling Device when Explored" , "m8f_hn_n_tunneling_explored", 0, 10, 1, 0
+  StaticText  "Don't get stuck out of the level boundaries!", "Black"
 
   StaticText  ""
 }
