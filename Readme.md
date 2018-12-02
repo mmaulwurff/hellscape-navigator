@@ -28,16 +28,19 @@ complex maps.
   * Entrance/Exit/Outdoors/Secrets
   * A Sign can be configured to create custom area with name
 
-* Miscellaneous
+* Miscellaneous (mostly optional)
   * Custom automap arrow
-  * Colored messages for keys and doors (Doom, Heretic)
+  * Colored messages for keys and doors (Doom, Heretic, Hexen)
   * Grid coordinates
   * Exploration status
-  * An option to reveal map on level start
-  * An option to reveal map when it is mostly explored
-  * Options to also give scanner on map revealing
-  * An option to display locked door status
-  * Optional Entryway Translocator (teleport to start)
+  * Reveal map on level start
+  * Reveal map when it is mostly explored
+  * Give scanner on map revealing
+  * Display locked door status
+  * Entryway Translocator (teleport to start)
+  * SpaceTunnelingDevice (temporary noclip)
+  * Use automap markers (via binded key)
+  * Displaying map name on level start
 
 # Todo
 
