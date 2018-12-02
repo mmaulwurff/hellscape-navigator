@@ -177,6 +177,7 @@ OptionMenu    "m8f_hn_Options"
   StaticText  "Controls"         , "Blue"
   Control     "Make a sign"      , "m8f_hn_make_sign_open"
   Control     "Automap: hold"    , "+press_map"
+  Control     "Use and mark"     , "+m8f_hn_use"
 
   StaticText  ""
   StaticText  "General Options"  , "Blue"
