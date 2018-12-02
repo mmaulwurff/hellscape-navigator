@@ -4,6 +4,7 @@ AddKeySection "Hellscape Navigator Keys" "HellscapeNavitagor"
 
 AddMenuKey "Make a sign"   "m8f_hn_make_sign_open"
 AddMenuKey "Press Automap" "+press_map"
+AddMenuKey "Use and mark"  "+m8f_hn_use"
 
 // Sign section ////////////////////////////////////////////////////////////////
 
@@ -20,3 +21,8 @@ alias m8f_hn_make_sign_clear  "m8f_hn_sign_note1 \"\"; m8f_hn_sign_note2 \"\"; m
 
 alias +press_map "togglemap; wait 1; test == $am_overlay 1 togglemap"
 alias -press_map "togglemap"
+
+// Use
+
+alias +m8f_hn_use "+use; netevent m8f_hn_use"
+alias -m8f_hn_use "-use"

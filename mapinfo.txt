@@ -5,5 +5,6 @@ gameinfo
 
   AddEventHandlers = "m8f_hn_EventHandler"
                    , "m8f_hn_FootstepHandler"
+                   , "m8f_hn_UseMarkerEventHandler"
 
 }

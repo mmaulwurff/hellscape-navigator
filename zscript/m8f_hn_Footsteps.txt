@@ -55,12 +55,7 @@ class m8f_hn_FootstepSettings
 class m8f_hn_FootstepHandler : EventHandler
 {
 
-  m8f_hn_FootstepSettings _settings;
-
-  bool    _left;
-  vector3 _oldPos;
-  bool    _isFirstTick;
-  bool    _isWorldLoaded;
+  // override section //////////////////////////////////////////////////////////
 
   override void OnRegister()
   {
@@ -77,10 +72,19 @@ class m8f_hn_FootstepHandler : EventHandler
 
   override void WorldTick()
   {
+    maybeUpdateSettings();
+
     makeFootstepMarks();
   }
 
-  void makeFootstepMarks()
+  override void NetworkProcess(ConsoleEvent event)
+  {
+    if (event.name == "m8f_hn_remove_footsteps") { removeFootsteps(); }
+  }
+
+  // private methods section ///////////////////////////////////////////////////
+
+  private void makeFootstepMarks()
   {
     if (_settings.markerType == _settings.MARKER_OFF) { return; }
     if (level.time % _settings.footstepPeriod != 0)  { return; }
@@ -135,12 +139,7 @@ class m8f_hn_FootstepHandler : EventHandler
                                     );
   }
 
-  override void NetworkProcess(ConsoleEvent event)
-  {
-    if (event.name == "m8f_hn_remove_footsteps") { removeFootsteps(); }
-  }
-
-  static void removeFootsteps()
+  private static void removeFootsteps()
   {
     let   iterator = ThinkerIterator.Create("m8f_hn_FadingMarker");
     Actor sign;
@@ -150,7 +149,7 @@ class m8f_hn_FootstepHandler : EventHandler
       }
   }
 
-  static string AngleLetter(float angle)
+  private static string AngleLetter(float angle)
   {
     static const string letters[] =
       {
@@ -162,6 +161,27 @@ class m8f_hn_FootstepHandler : EventHandler
     angle %= 360.0;
     return letters[int(angle / 22.5)];
   }
+
+  private void maybeUpdateSettings()
+  {
+    PlayerInfo player              = players[consolePlayer];
+    int        optionsUpdatePeriod = CVar.GetCVar("m8f_hn_update_period", player).GetInt();
+    if (optionsUpdatePeriod == 0) { _settings.read(player); }
+    else if (optionsUpdatePeriod != -1
+             && (level.time % optionsUpdatePeriod) == 0)
+    {
+      _settings.read(player);
+    }
+  }
+
+  // private attributes section ////////////////////////////////////////////////
+
+  private m8f_hn_FootstepSettings _settings;
+
+  private bool    _left;
+  private vector3 _oldPos;
+  private bool    _isFirstTick;
+  private bool    _isWorldLoaded;
 
 } // class m8f_hn_FootstepHandler
 

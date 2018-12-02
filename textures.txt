@@ -159,3 +159,11 @@ Sprite hnstb0, 25, 25
   Patch  hnsta0, 0, 0
   Offset 12, 12
 }
+
+// Automap marks
+
+Sprite hnumb0, 81, 81
+{
+  Patch  hnuma0, 0, 0
+  Offset 40, 40
+}

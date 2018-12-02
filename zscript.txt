@@ -12,6 +12,7 @@ version "3.2.0"
 #include "zscript/m8f_hn_EventHandler.txt"
 
 #include "zscript/m8f_hn_Footsteps.txt"
+#include "zscript/m8f_hn_UseMark.txt"
 
 #include "zscript/m8f_hn_Pointers.txt"
 
@@ -22,3 +23,5 @@ version "3.2.0"
 #include "zscript/m8f_hn_Settings.txt"
 
 #include "zscript/m8f_hn_Signs.txt"
+
+#include "zscript/m8f_hn_Utils.txt"

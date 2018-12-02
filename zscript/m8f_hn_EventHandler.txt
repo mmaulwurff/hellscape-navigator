@@ -163,30 +163,6 @@ class m8f_hn_EventHandler : EventHandler
     if (event.name == "m8f_hn_remove_signs") { removeSigns(); }
   }
 
-  // public methods section ////////////////////////////////////////////////////
-
-  // returns unique pointer id
-  int AddPointer(double x, double y, int type)
-  {
-    ++_data.pointerId;
-    _data.pointers.push(new("m8f_hn_Pointer").init(x, y, type, _data.pointerId));
-
-    return _data.pointerId;
-  }
-
-  void RemovePointer(int id)
-  {
-    int nPointers = _data.pointers.size();
-    for (int i = 0; i < nPointers; ++i)
-      {
-        if (_data.pointers[i].id() == id)
-          {
-            _data.pointers.delete(i);
-            break;
-          }
-      }
-  }
-
   override void RenderOverlay(RenderEvent e)
   {
     if (_isTitlemap) { return; }
@@ -198,9 +174,9 @@ class m8f_hn_EventHandler : EventHandler
     if (optionsUpdatePeriod == 0) { _settings.read(player); }
     else if (optionsUpdatePeriod != -1
              && (level.time % optionsUpdatePeriod) == 0)
-      {
-        _settings.read(player);
-      }
+    {
+      _settings.read(player);
+    }
 
     if (_renderCounter >= _renderUpdatePeriod)
       {
@@ -273,6 +249,30 @@ class m8f_hn_EventHandler : EventHandler
     maybeDrawMapName();
   }
 
+  // public methods section ////////////////////////////////////////////////////
+
+  // returns unique pointer id
+  int AddPointer(double x, double y, int type)
+  {
+    ++_data.pointerId;
+    _data.pointers.push(new("m8f_hn_Pointer").init(x, y, type, _data.pointerId));
+
+    return _data.pointerId;
+  }
+
+  void RemovePointer(int id)
+  {
+    int nPointers = _data.pointers.size();
+    for (int i = 0; i < nPointers; ++i)
+    {
+      if (_data.pointers[i].id() == id)
+      {
+        _data.pointers.delete(i);
+        break;
+      }
+    }
+  }
+
   // private methods section ///////////////////////////////////////////////////
 
   private ui void maybeDrawMapName()
@@ -296,46 +296,17 @@ class m8f_hn_EventHandler : EventHandler
     _mapNameAlpha = value;
   }
 
-  private play bool LineTraceConst( Actor  player
-                                  , double angle
-                                  , double distance
-                                  , double pitch
-                                  , int    flags
-                                  , double offsetz
-                                  , double offsetforward
-                                  , double offsetside
-                                  , out FLineTraceData data
-                                  ) const
-  {
-    return player.LineTrace(angle, distance, pitch, flags, offsetz, offsetforward, offsetside, data);
-  }
-
   private ui int getDoorLockStatus(PlayerInfo player)
   {
-    Actor  playerActor   = player.mo;
-    double angle         = playerActor.angle;
-    double distance      = 500;
-    double pitch         = playerActor.pitch;
-    int    flags         = 0;
-    double offsetz       = player.viewheight;
-    double offsetforward = 0.0;
-    double offsetside    = 0.0;
-    FLineTraceData data;
+    double         distance = 500;
+    FLineTraceData lineData;
+    bool           success = _utils.getPlayerViewLine(player, distance, lineData);
 
-    bool success = LineTraceConst( playerActor
-                                 , angle
-                                 , distance
-                                 , pitch
-                                 , flags
-                                 , offsetz
-                                 , offsetforward
-                                 , offsetside
-                                 , data
-                                 );
     if (!success) { return 0; }
 
-    Line l = data.HitLine;
-    if (l == null)    { return 0; }
+    Line l = lineData.HitLine;
+    if (l == null) { return 0; }
+
     if (!isSwitch(l)) { return 0; }
     if (!hasLock(l))  { return 0; }
 
@@ -343,7 +314,8 @@ class m8f_hn_EventHandler : EventHandler
 
     if (locknum == 0) { return 0; }
 
-    bool hasKey = playerActor.CheckKeys(locknum, false, true);
+    Actor playerActor = player.mo;
+    bool  hasKey      = playerActor.CheckKeys(locknum, false, true);
 
     return hasKey + 1;
   }
@@ -968,6 +940,7 @@ class m8f_hn_EventHandler : EventHandler
   private Array<m8f_hn_BaseAreaNameSource> _areaNameSources;
   private m8f_hn_Data     _data;
   private m8f_hn_Settings _settings;
+  private m8f_hn_Utils    _utils;
 
   private int     _renderUpdatePeriod;
   private int     _renderCounter;
