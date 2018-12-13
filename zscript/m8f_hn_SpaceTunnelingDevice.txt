@@ -4,10 +4,11 @@ class m8f_hn_SpaceTunnelingDevice : Inventory
 
   Default
   {
-    +INVENTORY.INVBAR
-
+    Inventory.Icon "hnstc0";
     Inventory.DefMaxAmount;
     Tag "Space TunnelingDevice";
+
+    +INVENTORY.INVBAR
   }
 
   override bool Use(bool pickup)
