@@ -47,6 +47,7 @@ class m8f_hn_SpaceTunnelingDevicePowerup : Powerup
 
   override void EndEffect()
   {
+    if (!owner) { return; }
     PlayerInfo p = owner.player;
     p.cheats &= ~(CF_NOCLIP | CF_NOCLIP2);
   }
