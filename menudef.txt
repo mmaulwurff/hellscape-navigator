@@ -17,7 +17,7 @@ OptionMenu "m8f_hn_SignNoteMenu"
   Command "Clear note now" , "m8f_hn_make_sign_clear"
 
   StaticText ""
-  StaticText "Options", "Blue"
+  StaticText "Options", 1
   Option "Sign Type"                , "m8f_hn_sign_type", "m8f_hn_sign_type_values"
   Option "Clear note on Done"       , "m8f_hn_sign_clear_after_make" , "OnOff"
   Option "Add level time to note"   , "m8f_hn_sign_add_time"         , "OnOff"
@@ -101,7 +101,7 @@ OptionMenu "m8f_hn_CompassOptions"
   Title "Compass Options"
 
   StaticText ""
-  StaticText "Visibility"          , "Blue"
+  StaticText "Visibility"          , 1
   Option     "Compass"             , "m8f_hn_compass_show"       , "OnOff"
   Option     "Level Name"          , "m8f_hn_compass_level_name" , "OnOff"
   Option     "Area Name"           , "m8f_hn_show_area"          , "OnOff"
@@ -139,32 +139,37 @@ OptionMenu    "m8f_hn_GameplayOptions"
   Title       "Hellscape Navigator Gameplay"
 
   StaticText  ""
-  StaticText  "Display", "Blue"
+  StaticText  "Display", 1
   Option      "Locked Door Access"     , "m8f_hn_show_access", "OnOff"
 
   StaticText  ""
   Option      "Level Name on Entering" , "m8f_hn_show_level_name", "OnOff"
 
   StaticText  ""
-  StaticText  "Map Revealing", "Blue"
+  StaticText  "Map Revealing", 1
+  Option      "Reveal map on level start"      , "m8f_hn_reveal_on_start"      , "OnOff"
   Option      "Reveal map when it is explored" , "m8f_hn_reveal_when_explored" , "OnOff"
   StaticText  "Doesn't trigger if a map already contains a Map Revealer.", "Black"
-  StaticText  ""
-  Option      "Also give Scanner"              , "m8f_hn_reveal_scanner" , "OnOff"
 
   StaticText  ""
-  Option      "Reveal map on level start"      , "m8f_hn_reveal_on_start", "OnOff"
-  Option      "Also give Scanner"              , "m8f_hn_scanner_start"  , "OnOff"
+  StaticText  "Give at level start:", 1
+  Option      "Scanner"                , "m8f_hn_scanner_start"     , "OnOff"
+  Slider      "Entryway Translocator"  , "m8f_hn_n_translocator"    , 0, 10, 1, 0
+  StaticText  "Entryway Translocator teleports to the level start." , "Black"
+  StaticText  ""
+  Slider      "Space Tunneling Device" , "m8f_hn_n_tunneling" , 0, 10, 1, 0
+  StaticText  "Don't get stuck out of the level boundaries!"  , "Black"
 
   StaticText  ""
-  Slider      "Entryway Translocator on Start"      , "m8f_hn_n_translocator",          0, 10, 1, 0
-  Slider      "Entryway Translocator when Explored" , "m8f_hn_n_translocator_explored", 0, 10, 1, 0
-  StaticText  "Entryway Translocator teleports to the level start.", "Black"
+  StaticText  "Give when map is revealed:", 1
+  Option      "Scanner"                 , "m8f_hn_reveal_scanner"          , "OnOff"
+  Slider      "Entryway Translocator"   , "m8f_hn_n_translocator_explored ", 0, 10, 1, 0
+  Slider      "Space Tunneling Device " , "m8f_hn_n_tunneling_explored"    , 0, 10, 1, 0
 
   StaticText  ""
-  Slider      "Space Tunneling Device on Start"      , "m8f_hn_n_tunneling",          0, 10, 1, 0
-  Slider      "Space Tunneling Device when Explored" , "m8f_hn_n_tunneling_explored", 0, 10, 1, 0
-  StaticText  "Don't get stuck out of the level boundaries!", "Black"
+  StaticText  "Auto Use", 1
+  Option      "Automatic Use by looking" , "m8f_hn_auto_switch_enabled" , "OnOff"
+  StaticText  "Works for doors and switches.", "Black"
 
   StaticText  ""
 }
@@ -174,22 +179,22 @@ OptionMenu    "m8f_hn_Options"
   Title       "Hellscape Navigator Options"
 
   StaticText  ""
-  StaticText  "Controls"         , "Blue"
+  StaticText  "Controls"         , 1
   Control     "Make a sign"      , "m8f_hn_make_sign_open"
   Control     "Automap: hold"    , "+press_map"
   Control     "Use and mark"     , "+m8f_hn_use"
 
   StaticText  ""
-  StaticText  "General Options"  , "Blue"
+  StaticText  "General Options"  , 1
   Option      "Options update"   , "m8f_hn_update_period" , "m8f_hn_update_period_values"
 
   StaticText  ""
-  StaticText  "Commands"         , "Blue"
+  StaticText  "Commands"         , 1
   SafeCommand "Remove all signs" , "netevent m8f_hn_remove_signs"
   SafeCommand "Clear footsteps"  , "netevent m8f_hn_remove_footsteps"
 
   StaticText  ""
-  StaticText  "Options"          , "Blue"
+  StaticText  "Options"          , 1
   Submenu     "Footstep Markers" , "m8f_hn_FootstepMarkerOptions"
   Submenu     "Sign"             , "m8f_hn_SignOptions"
   Submenu     "Compass"          , "m8f_hn_CompassOptions"

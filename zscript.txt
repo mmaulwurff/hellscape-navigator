@@ -4,6 +4,8 @@ version "3.2.0"
 
 #include "zscript/m8f_hn_AreaNameSources.txt"
 
+#include "zscript/m8f_hn_AutoSwitch.txt"
+
 #include "zscript/m8f_hn_Data.txt"
 
 #include "zscript/m8f_hn_EntrywayTranslocator.txt"
