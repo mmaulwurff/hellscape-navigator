@@ -163,8 +163,8 @@ OptionMenu    "m8f_hn_GameplayOptions"
   StaticText  ""
   StaticText  "Give when map is revealed:", 1
   Option      "Scanner"                 , "m8f_hn_reveal_scanner"          , "OnOff"
-  Slider      "Entryway Translocator"   , "m8f_hn_n_translocator_explored ", 0, 10, 1, 0
-  Slider      "Space Tunneling Device " , "m8f_hn_n_tunneling_explored"    , 0, 10, 1, 0
+  Slider      "Entryway Translocator"   , "m8f_hn_n_translocator_explored" , 0, 10, 1, 0
+  Slider      "Space Tunneling Device"  , "m8f_hn_n_tunneling_explored"    , 0, 10, 1, 0
 
   StaticText  ""
   StaticText  "Auto Use", 1
