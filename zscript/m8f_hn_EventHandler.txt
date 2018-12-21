@@ -191,8 +191,7 @@ class m8f_hn_EventHandler : EventHandler
       drawDoorLockStatus(player);
     }
 
-    Font    font        = Font.GetFont("SMALLFONT");
-    int     normalcolor = Font.CR_GRAY;
+    Font    font        = smallFont;
     double  x           = _settings.xStart;
     double  y           = _settings.yStart;
     double  scale       = 1.0 / _settings.compassScale;
@@ -247,6 +246,7 @@ class m8f_hn_EventHandler : EventHandler
       }
 
     maybeDrawMapName();
+    maybeDrawSpeed(player);
   }
 
   // public methods section ////////////////////////////////////////////////////
@@ -279,7 +279,7 @@ class m8f_hn_EventHandler : EventHandler
   {
     if (_settings.showIntroLevelName && _mapNameAlpha > 0.0)
     {
-      Font   font    = Font.GetFont("BIGFONT");
+      Font   font    = bigFont;
       double scale   = 0.5;
       double x       = 0.5;
       double y       = 0.2;
@@ -376,7 +376,7 @@ class m8f_hn_EventHandler : EventHandler
     }
     if (_currentLockAlphaPercent <= 0) { return; }
 
-    Font   font  = Font.GetFont("SMALLFONT");
+    Font   font  = smallFont;
     double scale = 0.5;
     double x     = 0.5;
     double y     = 0.3;
@@ -935,6 +935,32 @@ class m8f_hn_EventHandler : EventHandler
     }
   }
 
+  private ui void maybeDrawSpeed(PlayerInfo player)
+  {
+    if (automapActive)        { return; }
+    if (!_settings.showSpeed) { return; }
+
+    vector3 vel   = player.mo.vel;
+    double  speed = sqrt(vel.x * vel.x + vel.y * vel.y) * 583.33 / 15.104167;
+
+    // https://doomwiki.org/wiki/Player
+    string speedLevel;
+    if      (speed ==    0.00) { speedLevel = ".";      }
+    else if (speed <=  291.65) { speedLevel = ">";      }
+    else if (speed <=  583.32) { speedLevel = ">>";     }
+    else if (speed <=  747.02) { speedLevel = ">>>";    }
+    else if (speed <=  824.93) { speedLevel = ">>>>";   }
+    else if (speed <= 1235.11) { speedLevel = ">>>>>";  }
+    else                       { speedLevel = ">>>>>>"; }
+
+    string speedStr = StringStruct.Format("%.2f", speed);
+    double scale    = 0.5;
+    double y        = 0.6;
+
+    y += drawTextCenter(speedLevel, normalColor, scale, 0.5, y, smallfont);
+    drawTextCenter(speedStr, normalColor, scale, 0.5, y, smallfont);
+  }
+
   // private attributes section ////////////////////////////////////////////////
 
   private Array<m8f_hn_BaseAreaNameSource> _areaNameSources;
@@ -961,5 +987,9 @@ class m8f_hn_EventHandler : EventHandler
   private bool    _isMapRevealerOnMap;
 
   private double  _mapNameAlpha;
+
+  // const section
+
+  const normalcolor = Font.CR_GRAY;
 
 } // class m8f_hn_EventHandler

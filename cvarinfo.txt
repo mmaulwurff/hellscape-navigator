@@ -63,3 +63,5 @@ user int   m8f_hn_n_tunneling             = 0;
 user int   m8f_hn_n_tunneling_explored    = 0;
 
 user bool  m8f_hn_auto_switch_enabled     = false;
+
+user bool  m8f_hn_show_speed = false;

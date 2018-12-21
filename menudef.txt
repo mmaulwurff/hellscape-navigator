@@ -134,16 +134,23 @@ OptionMenu "m8f_hn_CompassOptions"
   StaticText ""
 }
 
+OptionMenu    "m8f_hn_DisplayOptions"
+{
+  Title       "Hellscape Navigator Display"
+
+  StaticText  ""
+  Option      "Locked Door Access"     , "m8f_hn_show_access"     , "OnOff"
+  StaticText  ""
+  Option      "Level Name on Entering" , "m8f_hn_show_level_name" , "OnOff"
+  StaticText  ""
+  Option      "Show Speed"             , "m8f_hn_show_speed"      , "OnOff"
+
+  StaticText  ""
+}
+
 OptionMenu    "m8f_hn_GameplayOptions"
 {
   Title       "Hellscape Navigator Gameplay"
-
-  StaticText  ""
-  StaticText  "Display", 1
-  Option      "Locked Door Access"     , "m8f_hn_show_access", "OnOff"
-
-  StaticText  ""
-  Option      "Level Name on Entering" , "m8f_hn_show_level_name", "OnOff"
 
   StaticText  ""
   StaticText  "Map Revealing", 1
@@ -198,6 +205,7 @@ OptionMenu    "m8f_hn_Options"
   Submenu     "Footstep Markers" , "m8f_hn_FootstepMarkerOptions"
   Submenu     "Sign"             , "m8f_hn_SignOptions"
   Submenu     "Compass"          , "m8f_hn_CompassOptions"
+  Submenu     "Display"          , "m8f_hn_DisplayOptions"
   Submenu     "Gameplay and Extra" , "m8f_hn_GameplayOptions"
 
   StaticText  ""

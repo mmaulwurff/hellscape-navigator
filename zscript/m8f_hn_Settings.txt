@@ -52,6 +52,8 @@ class m8f_hn_Settings
   int    nTunneling;
   int    nTunnelingExp;
 
+  bool   showSpeed;
+
   void read(PlayerInfo player)
   {
     xStart             = CVar.GetCVar("m8f_hn_compass_x"          , player).GetFloat();
@@ -87,6 +89,8 @@ class m8f_hn_Settings
 
     nTunneling         = CVar.GetCVar("m8f_hn_n_tunneling"         , player).GetInt();
     nTunnelingExp      = CVar.GetCVar("m8f_hn_n_tunneling_explored", player).GetInt();
+
+    showSpeed          = CVar.GetCVar("m8f_hn_show_speed"          , player).GetInt();
   }
 
   m8f_hn_Settings init(PlayerInfo player)
