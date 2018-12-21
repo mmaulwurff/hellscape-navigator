@@ -58,7 +58,7 @@ class m8f_hn_AutoSwitchEventHandler : EventHandler
     FLineTraceData lineData;
     bool           success  = _utils.getPlayerViewLine(player, useRange, lineData);
 
-    if (!success || lineData.hitLine == null) { _lastLineIndex = -1; return; }
+    if (!success || lineData.hitLine == null) { return; }
 
     int lineIndex = lineData.hitLine.Index();
 

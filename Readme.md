@@ -41,6 +41,7 @@ complex maps.
   * SpaceTunnelingDevice (temporary noclip)
   * Use automap markers (via binded key)
   * Displaying map name on level start
+  * Auto use
 
 # Todo
 
