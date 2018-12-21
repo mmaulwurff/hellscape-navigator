@@ -6,11 +6,12 @@ complex maps.
 
 # Features
 
-* Automap Footstep Markers
-  * Display visited places
+* Automap Markers
+  * Footsteps: display visited places
   * Fade with time
   * Configurable looks: footsteps/arrow/point
   * Configurable lifetime and generation period
+  * Use markers (via binded key)
 
 * Signs
   * A Sign can be placed to leave a note on level (use Sign to read the note)
@@ -28,20 +29,23 @@ complex maps.
   * Entrance/Exit/Outdoors/Secrets
   * A Sign can be configured to create custom area with name
 
-* Miscellaneous (mostly optional)
-  * Custom automap arrow
-  * Colored messages for keys and doors (Doom, Heretic, Hexen)
-  * Grid coordinates
-  * Exploration status
+* Helper items
   * Reveal map on level start
   * Reveal map when it is mostly explored
   * Give scanner on map revealing
-  * Display locked door status
   * Entryway Translocator (teleport to start)
   * SpaceTunnelingDevice (temporary noclip)
-  * Use automap markers (via binded key)
+
+* UI/Display
+  * Colored messages for keys and doors (Doom, Heretic, Hexen)
+  * Grid coordinates
+  * Exploration status
+  * Display locked door status
+  * Custom automap arrow
   * Displaying map name on level start
-  * Auto use
+
+* Miscellaneous
+  * Auto use (doors, switches)
 
 # Todo
 
