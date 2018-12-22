@@ -1,35 +1,35 @@
 OptionMenu "m8f_hn_SignNoteMenu"
 {
-  Title "New sign"
+  Title "$m8f_hn_new_sign"
 
   StaticText ""
-  TextField "Note:" , "m8f_hn_sign_note1"
-  TextField ":"     , "m8f_hn_sign_note2"
-  TextField ":"     , "m8f_hn_sign_note3"
+  TextField "$m8f_hn_sign_note1" , "m8f_hn_sign_note1"
+  TextField "$m8f_hn_sign_note2" , "m8f_hn_sign_note2"
+  TextField "$m8f_hn_sign_note3" , "m8f_hn_sign_note3"
 
   StaticText ""
-  TextField "Area name"   , "m8f_hn_area_name"
-  Slider    "Area radius" , "m8f_hn_area_radius", 100.0, 10000.0, 100.0, 0
+  TextField "$m8f_hn_area_name"   , "m8f_hn_area_name"
+  Slider    "$m8f_hn_area_radius" , "m8f_hn_area_radius", 100.0, 10000.0, 100.0, 0
 
   StaticText ""
-  Command "Done"           , "m8f_hn_make_sign_close"
-  Command "Cancel"         , "m8f_hn_make_sign_cancel"
-  Command "Clear note now" , "m8f_hn_make_sign_clear"
+  Command "$m8f_hn_make_sign_close"  , "m8f_hn_make_sign_close"
+  Command "$m8f_hn_make_sign_cancel" , "m8f_hn_make_sign_cancel"
+  Command "$m8f_hn_make_sign_clear"  , "m8f_hn_make_sign_clear"
 
   StaticText ""
-  StaticText "Options", 1
-  Option "Sign Type"                , "m8f_hn_sign_type", "m8f_hn_sign_type_values"
-  Option "Clear note on Done"       , "m8f_hn_sign_clear_after_make" , "OnOff"
-  Option "Add level time to note"   , "m8f_hn_sign_add_time"         , "OnOff"
-  Option "Make this sign shootable" , "m8f_hn_sign_shootable"        , "OnOff"
-  Option "Add to Compass"           , "m8f_hn_sign_with_pointer"     , "OnOff"
-  Slider "Automap Sign Marker Size" , "m8f_hn_sign_map_scale" , 0.5, 2.0, 0.1, 1
+  StaticText "$m8f_hn_options", 1
+  Option "$m8f_hn_sign_type"             , "m8f_hn_sign_type"             , "m8f_hn_sign_type_values"
+  Option "$m8f_hn_sign_clear_after_make" , "m8f_hn_sign_clear_after_make" , "OnOff"
+  Option "$m8f_hn_sign_add_time"         , "m8f_hn_sign_add_time"         , "OnOff"
+  Option "$m8f_hn_sign_shootable"        , "m8f_hn_sign_shootable"        , "OnOff"
+  Option "$m8f_hn_sign_with_pointer"     , "m8f_hn_sign_with_pointer"     , "OnOff"
+  Slider "$m8f_hn_sign_map_scale"        , "m8f_hn_sign_map_scale"        , 0.5, 2.0, 0.1, 1
 
   StaticText ""
-  SafeCommand "Remove all signs" , "netevent m8f_hn_remove_signs"
+  SafeCommand "$m8f_hn_remove_signs" , "m8f_hn_remove_signs"
 
   StaticText ""
-  StaticText "Shoot below sign to remove it.", "Black"
+  StaticText "$m8f_hn_remove_sign_note", "Black"
 }
 
 OptionValue "m8f_hn_sign_type_values"
