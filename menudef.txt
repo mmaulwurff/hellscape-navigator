@@ -176,7 +176,14 @@ OptionMenu    "m8f_hn_GameplayOptions"
   StaticText  ""
   StaticText  "Auto Use", 1
   Option      "Automatic Use by looking" , "m8f_hn_auto_switch_enabled" , "OnOff"
-  StaticText  "Works for doors and switches.", "Black"
+  StaticText  "Works for doors and switches at use distance.", "Black"
+
+  StaticText  ""
+  StaticText  "Shootable Switches", 1
+  Option      "Switches and doors are shootable" , "m8f_hn_shootable_switches" , "OnOff"
+  Option      "Exit switches are shootable"      , "m8f_hn_shootable_exit_switches" , "OnOff"
+  StaticText  "Changes take effect on level start or new game.", "Black"
+  StaticText  "These two options may break intended map flow.", "Black"
 
   StaticText  ""
 }

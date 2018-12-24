@@ -7,5 +7,6 @@ gameinfo
                    , "m8f_hn_FootstepHandler"
                    , "m8f_hn_UseMarkerEventHandler"
                    , "m8f_hn_AutoSwitchEventHandler"
+                   , "m8f_hn_MapTunerEventHandler"
 
 }

@@ -1,0 +1,31 @@
+
+class m8f_hn_MapTunerEventHandler : EventHandler
+{
+
+  override void WorldLoaded(WorldEvent e)
+  {
+    bool shootableExitSwitches = CVar.FindCVar("m8f_hn_shootable_exit_switches").GetInt();
+    bool shootableSwitches     = CVar.FindCVar("m8f_hn_shootable_switches").GetInt();
+
+    int nLines = level.Lines.size();
+    for (int i = 0; i < nLines; ++i)
+    {
+      Line l = level.Lines[i];
+
+      if (l.special == 243 || l.special == 244 || l.special == 75)
+      {
+        if (shootableExitSwitches)
+        {
+          l.activation |= SPAC_Impact;
+        }
+        continue;
+      }
+
+      if (shootableSwitches && (l.activation & SPAC_Use))
+      {
+        l.activation |= SPAC_Impact;
+      }
+    }
+  }
+
+} // m8f_hn_MapTunerEventHandler
