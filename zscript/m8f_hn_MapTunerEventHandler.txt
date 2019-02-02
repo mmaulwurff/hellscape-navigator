@@ -26,7 +26,7 @@ class m8f_hn_MapTunerEventHandler : EventHandler
     maybeMakeSwitchesShootable();
     maybeHighlightExitSector();
 
-    _step = 10;
+    _step = 5;
   }
 
   // private: //////////////////////////////////////////////////////////////////
@@ -71,6 +71,7 @@ class m8f_hn_MapTunerEventHandler : EventHandler
       {
         _exitSectors.push(i);
         level.sectors[i].lightLevel = startExitLightLevel;
+        level.sectors[i].SetColor("ff 00 00");
       }
     }
   }
