@@ -43,9 +43,11 @@ complex maps.
   * Display locked door status
   * Custom automap arrow
   * Displaying map name on level start
+  * Moving speed
 
 * Miscellaneous
   * Auto use (doors, switches)
+  * Backtrack key
 
 # Todo
 
@@ -57,6 +59,7 @@ complex maps.
 * ramon.dexter for testing and feature suggestions;
 * ShockwaveS08 for bug reports and feature suggestions;
 * Clifford21 for feature suggestions;
+* Cyanide for feature suggestions;
 * Enjay for testing, bug reports, and feature suggestions.
 
 # Credits
