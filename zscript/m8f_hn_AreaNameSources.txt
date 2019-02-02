@@ -335,16 +335,8 @@ class m8f_hn_SectorAreaNameSource : m8f_hn_BaseAreaNameSource
     bool isSky = (currentSector.GetTexture(1) == skyflatnum);
     if (isSky) { return "Outdoors"; }
 
-    int nLines = currentSector.lines.size();
-    for (int i = 0; i < nLines; ++i)
-      {
-        Line l = currentSector.lines[i];
-        int  s = l.special;
-        if (s == 74 || s == 75 || s == 243 || s == 244)
-          {
-            return "Exit";
-          }
-      }
+    bool isExit = m8f_hn_Utils.isExit(currentSector);
+    if (isExit) { return "Exit"; }
 
     return "";
   }

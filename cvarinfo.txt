@@ -66,7 +66,9 @@ user bool  m8f_hn_auto_switch_enabled     = false;
 
 user bool  m8f_hn_show_speed = false;
 
-server bool m8f_hn_shootable_switches = false;
-server bool m8f_hn_shootable_exit_switches = false;
+user bool m8f_hn_shootable_switches = false;
+user bool m8f_hn_shootable_exit_switches = false;
 
 user bool m8f_hn_crumbs_enabled = false;
+
+user bool m8f_hn_exit_highlight_enabled = false;

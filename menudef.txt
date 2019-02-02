@@ -148,9 +148,9 @@ OptionMenu    "m8f_hn_DisplayOptions"
   StaticText  ""
 }
 
-OptionMenu    "m8f_hn_GameplayOptions"
+OptionMenu    "m8f_hn_HelperOptions"
 {
-  Title       "Hellscape Navigator Gameplay"
+  Title       "Map Helpers"
 
   StaticText  ""
   StaticText  "Map Revealing", 1
@@ -161,6 +161,8 @@ OptionMenu    "m8f_hn_GameplayOptions"
   StaticText  ""
   StaticText  "Give at level start:", 1
   Option      "Scanner"                , "m8f_hn_scanner_start"     , "OnOff"
+  StaticText  "Scanner only works if the map is revealed."          , "Black"
+  StaticText  ""
   Slider      "Entryway Translocator"  , "m8f_hn_n_translocator"    , 0, 10, 1, 0
   StaticText  "Entryway Translocator teleports to the level start." , "Black"
   StaticText  ""
@@ -170,8 +172,17 @@ OptionMenu    "m8f_hn_GameplayOptions"
   StaticText  ""
   StaticText  "Give when map is revealed:", 1
   Option      "Scanner"                 , "m8f_hn_reveal_scanner"          , "OnOff"
+  StaticText  "Scanner only works if the map is revealed."                 , "Black"
+  StaticText  ""
   Slider      "Entryway Translocator"   , "m8f_hn_n_translocator_explored" , 0, 10, 1, 0
   Slider      "Space Tunneling Device"  , "m8f_hn_n_tunneling_explored"    , 0, 10, 1, 0
+
+  StaticText  ""
+}
+
+OptionMenu    "m8f_hn_GameplayOptions"
+{
+  Title       "Gameplay Options"
 
   StaticText  ""
   StaticText  "Auto Use", 1
@@ -184,16 +195,19 @@ OptionMenu    "m8f_hn_GameplayOptions"
   Option      "Exit switches are shootable"      , "m8f_hn_shootable_exit_switches" , "OnOff"
   StaticText  "Changes take effect on level start or new game.", "Black"
   StaticText  "These two options may break intended map flow.", "Black"
-
-  StaticText  ""
 }
 
-OptionMenu    "m8f_hn_BacktrackingOptions"
+OptionMenu    "m8f_hn_VisualOptions"
 {
-  Title       "Backtracking Options"
+  Title       "Visual Options"
+
+  StaticText  ""
+  Option      "Highlight Exit Sectors" , "m8f_hn_exit_highlight_enabled" , "OnOff"
+  StaticText  "Changes take effect on level start or new game.", "Black"
 
   StaticText  ""
   Option      "Breadcrumbs Enabled", "m8f_hn_crumbs_enabled", "OnOff"
+
   StaticText  ""
 }
 
@@ -222,8 +236,9 @@ OptionMenu    "m8f_hn_Options"
   Submenu     "Sign"             , "m8f_hn_SignOptions"
   Submenu     "Compass"          , "m8f_hn_CompassOptions"
   Submenu     "Display"          , "m8f_hn_DisplayOptions"
-  Submenu     "Gameplay and Extra" , "m8f_hn_GameplayOptions"
-  Submenu     "Backtracking"     , "m8f_hn_BacktrackingOptions"
+  Submenu     "Map Helpers"      , "m8f_hn_HelperOptions"
+  Submenu     "Gameplay"         , "m8f_hn_GameplayOptions"
+  Submenu     "Visuals"          , "m8f_hn_VisualOptions"
 
   StaticText  ""
 }

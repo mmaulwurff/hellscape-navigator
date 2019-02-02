@@ -45,6 +45,22 @@ class m8f_hn_Utils
     return success;
   }
 
+  static bool isExit(Sector s)
+  {
+    int nLines = s.lines.size();
+    for (int i = 0; i < nLines; ++i)
+    {
+      Line l = s.lines[i];
+      int  s = l.special;
+      if (s == 74 || s == 75 || s == 243 || s == 244)
+      {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   // private methods section ///////////////////////////////////////////////////
 
   private play bool LineTraceConst( Actor  player
