@@ -72,3 +72,7 @@ user bool m8f_hn_shootable_exit_switches = false;
 user bool m8f_hn_crumbs_enabled = false;
 
 user bool m8f_hn_exit_highlight_enabled = false;
+
+user float m8f_hn_speedometer_scale = 2;
+user float m8f_hn_speedometer_x     = 0.5;
+user float m8f_hn_speedometer_y     = 0.6;

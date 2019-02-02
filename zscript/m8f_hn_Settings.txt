@@ -53,6 +53,9 @@ class m8f_hn_Settings
   int    nTunnelingExp;
 
   bool   showSpeed;
+  double speedometerScale;
+  double speedometerX;
+  double speedometerY;
 
   void read(PlayerInfo player)
   {
@@ -91,6 +94,9 @@ class m8f_hn_Settings
     nTunnelingExp      = CVar.GetCVar("m8f_hn_n_tunneling_explored", player).GetInt();
 
     showSpeed          = CVar.GetCVar("m8f_hn_show_speed"          , player).GetInt();
+    speedometerScale   = CVar.GetCVar("m8f_hn_speedometer_scale"   , player).GetFloat();
+    speedometerX       = CVar.GetCVar("m8f_hn_speedometer_x"       , player).GetFloat();
+    speedometerY       = CVar.GetCVar("m8f_hn_speedometer_y"       , player).GetFloat();
   }
 
   m8f_hn_Settings init(PlayerInfo player)

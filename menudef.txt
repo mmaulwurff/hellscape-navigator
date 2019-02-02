@@ -144,6 +144,9 @@ OptionMenu    "m8f_hn_DisplayOptions"
   Option      "Level Name on Entering" , "m8f_hn_show_level_name" , "OnOff"
   StaticText  ""
   Option      "Show Speed"             , "m8f_hn_show_speed"      , "OnOff"
+  Slider      "Speedometer Scale"      , "m8f_hn_speedometer_scale" , 0.5, 3.0,  0.1,  1
+  Slider      "Horizontal position"    , "m8f_hn_speedometer_x"     , 0.0, 1.0,  0.01, 2
+  Slider      "Vertical position"      , "m8f_hn_speedometer_y"     , 0.0, 1.0,  0.01, 2
 
   StaticText  ""
 }

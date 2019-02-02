@@ -954,11 +954,12 @@ class m8f_hn_EventHandler : EventHandler
     else                       { speedLevel = ">>>>>>"; }
 
     string speedStr = StringStruct.Format("%.2f", speed);
-    double scale    = 0.5;
-    double y        = 0.6;
+    double scale    = 1.0 / _settings.speedometerScale;
+    double y        = _settings.speedometerY;
+    double x        = _settings.speedometerX;
 
-    y += drawTextCenter(speedLevel, normalColor, scale, 0.5, y, smallfont);
-    drawTextCenter(speedStr, normalColor, scale, 0.5, y, smallfont);
+    y += drawTextCenter(speedLevel, normalColor, scale, x, y, smallfont);
+    drawTextCenter(speedStr, normalColor, scale, x, y, smallfont);
   }
 
   // private attributes section ////////////////////////////////////////////////
