@@ -35,7 +35,7 @@ class m8f_hn_QuestPointer_Example : MapMarker
 
   override void BeginPlay()
   {
-    float mapScale = CVar.GetCVar("m8f_hn_quest_marker_scale").GetFloat();
+    double mapScale = CVar.GetCVar("m8f_hn_quest_marker_scale").GetFloat();
     scale.x = mapScale * 0.2;
     scale.y = mapScale * 0.2;
     super.BeginPlay();

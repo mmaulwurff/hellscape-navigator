@@ -97,9 +97,9 @@ class m8f_hn_FootstepHandler : EventHandler
     vector3    pos         = playerActor.pos;
     if (_oldPos == pos) { return; }
 
-    float xdiff = _oldPos.x - pos.x;
-    float ydiff = _oldPos.y - pos.y;
-    float dist  = xdiff * xdiff + ydiff * ydiff;
+    double xdiff = _oldPos.x - pos.x;
+    double ydiff = _oldPos.y - pos.y;
+    double dist  = xdiff * xdiff + ydiff * ydiff;
     if (dist < 400) { return; }
 
     _oldPos = pos;
@@ -109,7 +109,7 @@ class m8f_hn_FootstepHandler : EventHandler
       {
       case _settings.MARKER_FOOTSTEP:
         {
-          float  angle  = playerActor.angle;
+          double angle  = playerActor.angle;
           string letter = AngleLetter(angle);
           markerClass   = _left ? "m8f_hn_FadingLeft" : "m8f_hn_FadingRight";
           markerClass.AppendFormat(letter);
@@ -123,7 +123,7 @@ class m8f_hn_FootstepHandler : EventHandler
 
       case _settings.MARKER_ARROW:
         {
-          float  angle  = playerActor.angle;
+          double angle  = playerActor.angle;
           string letter = AngleLetter(angle);
           markerClass   = "m8f_hn_FadingArrow";
           markerClass.AppendFormat(letter);
@@ -149,7 +149,7 @@ class m8f_hn_FootstepHandler : EventHandler
       }
   }
 
-  private static string AngleLetter(float angle)
+  private static string AngleLetter(double angle)
   {
     static const string letters[] =
       {
@@ -196,8 +196,8 @@ class m8f_hn_FadingMarker : MapMarker
       +NOTONAUTOMAP;
     }
 
-  float fadeStep;
-  bool  forever;
+  double fadeStep;
+  bool   forever;
 
   m8f_hn_FadingMarker init(int lifetime, double initAlpha, bool f, double s)
   {
