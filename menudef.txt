@@ -188,6 +188,15 @@ OptionMenu    "m8f_hn_GameplayOptions"
   StaticText  ""
 }
 
+OptionMenu    "m8f_hn_BacktrackingOptions"
+{
+  Title       "Backtracking Options"
+
+  StaticText  ""
+  Option      "Breadcrumbs Enabled", "m8f_hn_crumbs_enabled", "OnOff"
+  StaticText  ""
+}
+
 OptionMenu    "m8f_hn_Options"
 {
   Title       "Hellscape Navigator Options"
@@ -214,6 +223,7 @@ OptionMenu    "m8f_hn_Options"
   Submenu     "Compass"          , "m8f_hn_CompassOptions"
   Submenu     "Display"          , "m8f_hn_DisplayOptions"
   Submenu     "Gameplay and Extra" , "m8f_hn_GameplayOptions"
+  Submenu     "Backtracking"     , "m8f_hn_BacktrackingOptions"
 
   StaticText  ""
 }
