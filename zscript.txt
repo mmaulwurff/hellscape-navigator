@@ -33,3 +33,6 @@ version "3.2.0"
 
 #include "zscript/m8f_hn_BacktrackEventHandler.txt"
 #include "zscript/m8f_hn_BacktrackSettings.txt"
+
+#include "zscript/m8f_hn_StrafeRunAimEventHandler.txt"
+#include "zscript/m8f_hn_StrafeRunAimSettings.txt"
