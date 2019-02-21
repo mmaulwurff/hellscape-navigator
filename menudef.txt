@@ -190,7 +190,9 @@ OptionMenu    "m8f_hn_GameplayOptions"
   StaticText  ""
   StaticText  "Auto Use", 1
   Option      "Automatic Use by looking" , "m8f_hn_auto_switch_enabled" , "OnOff"
-  StaticText  "Works for doors and switches at use distance.", "Black"
+  StaticText  "Works for doors and switches at use distance."           , "Black"
+  StaticText  ""
+  Option      "Set Use Mark on Auto Use" , "m8f_hn_auto_switch_mark"    , "OnOff"
 
   StaticText  ""
   StaticText  "Shootable Switches", 1

@@ -86,13 +86,19 @@ class m8f_hn_AutoSwitchEventHandler : EventHandler
 
     if (!isLineFound) { return; }
 
-    lineData.hitLine.activate(pawn, lineData.lineside, 2);
+    bool useSuccess = lineData.hitLine.activate(pawn, lineData.lineside, 2);
+
+    if (_settings.isMarkEnabled && useSuccess)
+    {
+        EventHandler.SendNetworkEvent("m8f_hn_use");
+    }
   }
 
   // private attributes section ////////////////////////////////////////////////
 
   m8f_hn_Utils _utils;
   int          _lastLineIndex;
+
   m8f_hn_AutoSwitchSettings _settings;
 
 } // class m8f_hn_AutoSwitchEventHandler
@@ -101,10 +107,12 @@ class m8f_hn_AutoSwitchSettings
 {
 
   bool isEnabled;
+  bool isMarkEnabled;
 
   void read(PlayerInfo player)
   {
-    isEnabled = CVar.GetCVar("m8f_hn_auto_switch_enabled", player).GetInt();
+    isEnabled     = CVar.GetCVar("m8f_hn_auto_switch_enabled" , player).GetInt();
+    isMarkEnabled = CVar.GetCVar("m8f_hn_auto_switch_mark"    , player).GetInt();
   }
 
   m8f_hn_AutoSwitchSettings init(PlayerInfo player)
