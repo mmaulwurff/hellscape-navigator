@@ -24,6 +24,9 @@ alias m8f_hn_remove_signs     "netevent m8f_hn_remove_signs"
 alias +press_map "togglemap; wait 1; test == $am_overlay 1 togglemap"
 alias -press_map "togglemap"
 
+// I don't know how and why this works. Most probably this is a terrible hack.
+alias m8f_hn_close_map ""
+
 // Use
 
 alias +m8f_hn_use "+use; netevent m8f_hn_use"

@@ -219,15 +219,32 @@ OptionMenu    "m8f_hn_VisualOptions"
   StaticText  ""
 }
 
+OptionMenu    "m8f_hn_Controls"
+{
+  Title       "Hellscape Navigator Controls"
+  ScrollTop   2
+  StaticTextSwitchable "$CNTRLMNU_SWITCHTEXT1", "$CNTRLMNU_SWITCHTEXT2", "ControlMessage"
+
+  StaticText  ""
+  Control     "Make a sign"      , "m8f_hn_make_sign_open"
+
+  StaticText  ""
+  Control     "Use and mark"     , "+m8f_hn_use"
+
+  StaticText  ""
+  Control     "Automap: hold"    , "+press_map"
+  MapControl  "Automap: close"   , "m8f_hn_close_map"
+  StaticText  "These two controls must be assigned to the same key" , "Black"
+  StaticText  "so the automap can be switched off in all cases."    , "Black"
+
+  StaticText  ""
+}
+
 OptionMenu    "m8f_hn_Options"
 {
   Title       "Hellscape Navigator Options"
 
-  StaticText  ""
-  StaticText  "Controls"         , 1
-  Control     "Make a sign"      , "m8f_hn_make_sign_open"
-  Control     "Automap: hold"    , "+press_map"
-  Control     "Use and mark"     , "+m8f_hn_use"
+  Submenu     "Controls"         , "m8f_hn_Controls"
 
   StaticText  ""
   StaticText  "General Options"  , 1
