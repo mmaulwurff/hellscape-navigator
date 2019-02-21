@@ -28,13 +28,23 @@ class m8f_hn_AutoSwitchEventHandler : EventHandler
 
   override void PlayerEntered(PlayerEvent event)
   {
-    _settings = new("m8f_hn_AutoSwitchSettings").init(players[event.playerNumber]);
+    if (event.playerNumber != consolePlayer) { return; }
+
+    PlayerInfo player = players[consolePlayer];
+    PlayerPawn pawn   = player.mo;
+
+    _settings = new("m8f_hn_AutoSwitchSettings").init(player);
+
+    FLineTraceData lineData;
+    bool           isLineFound = LookLine(player, pawn, lineData);
   }
 
   override void WorldTick()
   {
-    PlayerInfo player              = players[consolePlayer];
-    int        optionsUpdatePeriod = CVar.GetCVar("m8f_hn_update_period", player).GetInt();
+    PlayerInfo player = players[consolePlayer];
+    if (player == null) { return; }
+
+    int optionsUpdatePeriod = CVar.GetCVar("m8f_hn_update_period", player).GetInt();
 
     if (optionsUpdatePeriod == 0) { _settings.read(player); }
     else if (optionsUpdatePeriod != -1
@@ -45,27 +55,38 @@ class m8f_hn_AutoSwitchEventHandler : EventHandler
 
     if (_settings.isEnabled)
     {
-      PlayerUseLine();
+      PlayerUseLine(player);
     }
   }
 
   // private methods section ///////////////////////////////////////////////////
 
-  private void PlayerUseLine()
+  private bool LookLine(PlayerInfo player, PlayerPawn pawn, out FLineTraceData lineData)
   {
-    PlayerInfo     player   = players[consolePlayer];
-    double         useRange = player.mo.useRange;
-    FLineTraceData lineData;
-    bool           success  = _utils.getPlayerViewLine(player, useRange, lineData);
+    double useRange = pawn.useRange;
+    bool   success  = _utils.getPlayerViewLine(player, useRange, lineData);
 
-    if (!success || lineData.hitLine == null) { return; }
+    if (!success || lineData.hitLine == null) { return false; }
 
     int lineIndex = lineData.hitLine.Index();
 
-    if (_lastLineIndex == lineIndex) { return; }
+    if (_lastLineIndex == lineIndex) { return false; }
     _lastLineIndex = lineIndex;
 
-    lineData.hitLine.activate(player.mo, lineData.lineside, 2);
+    return true;
+  }
+
+  private void PlayerUseLine(PlayerInfo player)
+  {
+    PlayerPawn pawn = player.mo;
+    if (pawn == null) { return; }
+
+    FLineTraceData lineData;
+    bool           isLineFound = LookLine(player, pawn, lineData);
+
+    if (!isLineFound) { return; }
+
+    lineData.hitLine.activate(pawn, lineData.lineside, 2);
   }
 
   // private attributes section ////////////////////////////////////////////////

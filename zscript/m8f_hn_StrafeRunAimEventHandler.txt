@@ -74,11 +74,6 @@ class m8f_hn_StrafeRunAimEventHandler : EventHandler
     Actor playerActor = player.mo;
     if (playerActor == null) { return; }
 
-    Vector3 velocity = playerActor.vel;
-    velocity.z = 0;
-
-    Vector3 pos = playerActor.pos;
-
     double angle = playerActor.angle;
     if (_isMoveRightPressed) { angle -= _sr40Angle; }
     else                     { angle += _sr40Angle; }
@@ -94,7 +89,6 @@ class m8f_hn_StrafeRunAimEventHandler : EventHandler
                                  , xOffset, yOffset, _aimZOffset, 0, 0, 0, 0, 0, 0, 1.0
                                  );
     }
-
   }
 
   private static ui bool isForwardKey  (InputEvent event) { return isKeyForCommand(event, "+forward"  ); }
