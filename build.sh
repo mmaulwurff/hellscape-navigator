@@ -3,6 +3,7 @@
 #./make-sprites.sh
 
 name=hellscape-navigator
+lasttag=$(git describe --abbrev=0 --tags)
 
 #IWAD="-iwad /home/allkromm/Programs/Games/wads/doom/freedoom1.wad"
 
@@ -17,6 +18,8 @@ git log --date=short --pretty=format:"-%d %ad %s%n" | \
     sed "s/- (tag: \(v\?[0-9.]*\))/\n\1\n-/" \
     > changelog.txt \
 && \
+sed -i 's/Version.*/Version '$lasttag'/' Readme.md \
+&& \
 zip $name.pk3 \
     *.txt \
     *.md \
@@ -26,7 +29,7 @@ zip $name.pk3 \
     zscript/*.txt \
     language.enu \
 && \
-cp $name.pk3 $name-$(git describe --abbrev=0 --tags).pk3 \
+cp $name.pk3 $name-$lasttag.pk3 \
 && \
 gzdoom $IWAD \
        -file \
