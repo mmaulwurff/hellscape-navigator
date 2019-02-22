@@ -1,10 +1,11 @@
 # Hellscape Navigator
+
 (singleplayer GZDoom mod)
 
 Hellscape Navigator is a collection of tools designed to help navigation in
 complex maps.
 
-# Features
+## Features
 
 * Automap Markers
   * Footsteps: display visited places
@@ -44,29 +45,34 @@ complex maps.
   * Custom automap arrow
   * Displaying map name on level start
   * Moving speed
+  * Breadcrumbs
+  * SR40 aim helper
 
 * Miscellaneous
   * Auto use (doors, switches)
   * Backtrack key
 
-# Todo
+## Todo
 
 * show if a map contains secret exits
 * ?
 
-# Thanks
+## Thanks
 
+* all GZDoom developers for GZDoom;
+* Doom community for thousands of maps to play;
 * ramon.dexter for testing and feature suggestions;
 * ShockwaveS08 for bug reports and feature suggestions;
 * Clifford21 for feature suggestions;
 * Cyanide for feature suggestions;
 * Enjay for testing, bug reports, and feature suggestions.
 
-# Credits
+## Credits
+
 * Entryway Translocator and Space Tunneling Device graphics: [Freedoom](https://freedoom.github.io/)
   Copyright © 2001-2017 Contributors to the Freedoom project. All rights reserved.
 
-# Links and contacts
+## Links and Contacts
 
 [Git Repository](https://github.com/mmaulwurff/hellscape-navigator)
 
