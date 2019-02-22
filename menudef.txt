@@ -232,6 +232,9 @@ OptionMenu    "m8f_hn_Controls"
   Control     "Use and mark"     , "+m8f_hn_use"
 
   StaticText  ""
+  Control     "Backtrack"        , "+m8f_hn_backtrack"
+
+  StaticText  ""
   Control     "Automap: hold"    , "+press_map"
   MapControl  "Automap: close"   , "m8f_hn_close_map"
   StaticText  "These two controls must be assigned to the same key" , "Black"
