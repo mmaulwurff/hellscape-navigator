@@ -33,6 +33,7 @@ class m8f_hn_BaseAreaNameSource
 
 class m8f_hn_PlayerStartNameSource : m8f_hn_BaseAreaNameSource
 {
+
   override string GetAreaName(m8f_hn_Data data)
   {
     vector3    playerStart;
@@ -47,10 +48,12 @@ class m8f_hn_PlayerStartNameSource : m8f_hn_BaseAreaNameSource
 
     return isCloseToStart ? "Entrance" : "";
   }
+
 } // m8f_hn_PlayerStartNameSource
 
 class m8f_hn_SignAreaNameSource : m8f_hn_BaseAreaNameSource
 {
+
   override bool IsAutomatic() const
   {
     return false;
@@ -85,34 +88,34 @@ class m8f_hn_SignAreaNameSource : m8f_hn_BaseAreaNameSource
     int nAreaNameMarkers = data.areaNameMarkers.size();
 
     for (int i = 0; i < nAreaNameMarkers; ++i)
+    {
+      let areaNameMarker = data.areaNameMarkers[i];
+      if (areaNameMarker == null) { continue; }
+
+      vector3 pos            = areaNameMarker.pos;
+      double  areaRadius     = areaNameMarker.health;
+      double  areaRadiusSq   = areaRadius * areaRadius;
+      double  distance;
+      bool    isInRadius;
+      [distance, isInRadius] = m8f_hn_Lib.calculateDistance( pos
+                                                           , playerPos
+                                                           , areaRadiusSq
+                                                           );
+
+      if (isInRadius && (distance < minDistance || minDistance < 0.0))
       {
-        let areaNameMarker = data.areaNameMarkers[i];
-        if (areaNameMarker == null) { continue; }
-
-        vector3 pos            = areaNameMarker.pos;
-        double  areaRadius     = areaNameMarker.health;
-        double  areaRadiusSq   = areaRadius * areaRadius;
-        double  distance;
-        bool    isInRadius;
-        [distance, isInRadius] = m8f_hn_Lib.calculateDistance( pos
-                                                             , playerPos
-                                                             , areaRadiusSq
-                                                             );
-
-        if (isInRadius && (distance < minDistance || minDistance < 0.0))
-          {
-            minDistance = distance;
-            closestSign = data.areaNameMarkers[i];
-          }
+        minDistance = distance;
+        closestSign = data.areaNameMarkers[i];
       }
+    }
 
     if (closestSign)
-      {
-        m8f_hn_Sign sign = m8f_hn_Sign(closestSign);
-        return sign
-          ? sign.areaName
-          : closestSign.GetTag();
-      }
+    {
+      m8f_hn_Sign sign = m8f_hn_Sign(closestSign);
+      return sign
+        ? sign.areaName
+        : closestSign.GetTag();
+    }
 
     return "";
   }
@@ -132,15 +135,15 @@ class m8f_hn_Lib
                                        , vector3 pos2
                                        , double  radiusSq
                                        )
-    {
-      double dx         = pos1.x - pos2.x;
-      double dy         = pos1.y - pos2.y;
-      double dz         = pos1.z - pos2.z;
-      double distance   = dx * dx + dy * dy + dz * dz;
-      bool   isInRadius = distance < radiusSq;
+  {
+    double dx         = pos1.x - pos2.x;
+    double dy         = pos1.y - pos2.y;
+    double dz         = pos1.z - pos2.z;
+    double distance   = dx * dx + dy * dy + dz * dz;
+    bool   isInRadius = distance < radiusSq;
 
-      return distance, isInRadius;
-    }
+    return distance, isInRadius;
+  }
 
 } // m8f_hn_Lib
 
@@ -160,14 +163,11 @@ class m8f_hn_CalculateDistanceBenchmark : Actor
       vector3 pos1 = (0, 0, 0);
       vector3 pos2 = (1, 1, 1);
       for (int i = 0; i < iterations; ++i)
-        {
-          double distance;
-          bool   isInRadius;
-          [distance, isInRadius] = m8f_hn_Lib.calculateDistance( pos1
-                                                               , pos2
-                                                               , radiusSq
-                                                               );
-        }
+      {
+        double distance;
+        bool   isInRadius;
+        [distance, isInRadius] = m8f_hn_Lib.calculateDistance(pos1, pos2, radiusSq);
+      }
     }
 
     // x is out of radius
@@ -175,14 +175,11 @@ class m8f_hn_CalculateDistanceBenchmark : Actor
       vector3 pos1 = (0, 0, 0);
       vector3 pos2 = (400, 1, 1);
       for (int i = 0; i < iterations; ++i)
-        {
-          double distance;
-          bool   isInRadius;
-          [distance, isInRadius] = m8f_hn_Lib.calculateDistance( pos1
-                                                               , pos2
-                                                               , radiusSq
-                                                               );
-        }
+      {
+        double distance;
+        bool   isInRadius;
+        [distance, isInRadius] = m8f_hn_Lib.calculateDistance(pos1, pos2, radiusSq);
+      }
     }
 
     // y is out of radius
@@ -190,14 +187,11 @@ class m8f_hn_CalculateDistanceBenchmark : Actor
       vector3 pos1 = (0, 0, 0);
       vector3 pos2 = (0, 400, 1);
       for (int i = 0; i < iterations; ++i)
-        {
-          double distance;
-          bool   isInRadius;
-          [distance, isInRadius] = m8f_hn_Lib.calculateDistance( pos1
-                                                               , pos2
-                                                               , radiusSq
-                                                               );
-        }
+      {
+        double distance;
+        bool   isInRadius;
+        [distance, isInRadius] = m8f_hn_Lib.calculateDistance(pos1, pos2, radiusSq);
+      }
     }
 
     // z is out of radius
@@ -239,24 +233,24 @@ class m8f_hn_ItemAreaNameSource : m8f_hn_BaseAreaNameSource
     int     nAreaItems     = data.itemAreaPosX.size();
 
     for (int i = 0; i < nAreaItems; ++i)
-      {
-        double dx       = data.itemAreaPosX[i] - playerPos.x;
-        double dy       = data.itemAreaPosY[i] - playerPos.y;
-        double dz       = data.itemAreaPosZ[i] - playerPos.z;
-        double distance = dx * dx + dy * dy + dz * dz;
+    {
+      double dx       = data.itemAreaPosX[i] - playerPos.x;
+      double dy       = data.itemAreaPosY[i] - playerPos.y;
+      double dz       = data.itemAreaPosZ[i] - playerPos.z;
+      double distance = dx * dx + dy * dy + dz * dz;
 
-        if ((distance < minDistance || minDistance < 0.0)
-            && distance < itemAreaRadius)
-          {
-            minDistance = distance;
-            closestItem = data.itemAreaNames[i];
-          }
+      if ((distance < minDistance || minDistance < 0.0)
+          && distance < itemAreaRadius)
+      {
+        minDistance = distance;
+        closestItem = data.itemAreaNames[i];
       }
+    }
 
     if (closestItem.length())
-      {
-        return StringStruct.Format("%s Area", beautify(closestItem));
-      }
+    {
+      return String.Format("%s Area", beautify(closestItem));
+    }
 
     return "";
   }
@@ -276,18 +270,18 @@ class m8f_hn_ItemAreaNameSource : m8f_hn_BaseAreaNameSource
     string letter2;
 
     for (int i = 1; i < sourceLength; ++i)
+    {
+      letter2 = source.CharAt(i);
+      if (IsSmallLetter(letter1) && IsBigLetter(letter2))
       {
-        letter2 = source.CharAt(i);
-        if (IsSmallLetter(letter1) && IsBigLetter(letter2))
-          {
-            result.AppendFormat("%s ", letter1);
-          }
-        else
-          {
-            result.AppendFormat(letter1);
-          }
-        letter1 = letter2;
+        result.AppendFormat("%s ", letter1);
       }
+      else
+      {
+        result.AppendFormat(letter1);
+      }
+      letter1 = letter2;
+    }
     result.AppendFormat(letter2);
 
     return result;
@@ -322,15 +316,15 @@ class m8f_hn_SectorAreaNameSource : m8f_hn_BaseAreaNameSource
 
     bool isSecret = (currentSector.Flags & (Sector.SECF_SECRET | Sector.SECF_WASSECRET));
     if (isSecret)
+    {
+      int nSecretSectors = data.secretSectors.size();
+      int i = 0;
+      for (; i < nSecretSectors; ++i)
       {
-        int nSecretSectors = data.secretSectors.size();
-        int i = 0;
-        for (; i < nSecretSectors; ++i)
-          {
-            if (currentSector == data.secretSectors[i]) { break; }
-          }
-        return StringStruct.Format("Secret #%d", i + 1);
+        if (currentSector == data.secretSectors[i]) { break; }
       }
+      return String.Format("Secret #%d", i + 1);
+    }
 
     bool isSky = (currentSector.GetTexture(1) == skyflatnum);
     if (isSky) { return "Outdoors"; }

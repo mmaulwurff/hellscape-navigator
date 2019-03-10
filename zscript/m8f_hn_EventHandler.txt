@@ -227,7 +227,7 @@ class m8f_hn_EventHandler : EventHandler
 
     if (_settings.showExplored)
       {
-        string progress = StringStruct.Format("Explored: %d/10", _progress);
+        string progress = String.Format("Explored: %d/10", _progress);
         y += drawTextCenter(progress, normalColor, scale, x, y, font)
           * drawDirection;
       }
@@ -774,7 +774,7 @@ class m8f_hn_EventHandler : EventHandler
     if (y < 0) { y -= gridSize; }
     string  xString  = intToStringAA(x / gridSize);
     y                = (y + 64) / gridSize;
-    string  coords   = StringStruct.Format("%s %d", xString, y);
+    string  coords   = String.Format("%s %d", xString, y);
     return coords;
   }
 
@@ -790,14 +790,14 @@ class m8f_hn_EventHandler : EventHandler
     while (true)
       {
         int small = value % 26;
-        result    = StringStruct.Format("%c%s", 65 + small, result);
+        result    = String.Format("%c%s", 65 + small, result);
         value    /= 26;
 
         if (value == 0) break;
         --value;
       }
 
-    if (negative) { result = StringStruct.Format("-%s", result); }
+    if (negative) { result = String.Format("-%s", result); }
 
     return result;
   }
@@ -953,7 +953,7 @@ class m8f_hn_EventHandler : EventHandler
     else if (speed <= 1235.11) { speedLevel = ">>>>>";  }
     else                       { speedLevel = ">>>>>>"; }
 
-    string speedStr = StringStruct.Format("%.2f", speed);
+    string speedStr = String.Format("%.2f", speed);
     double scale    = 1.0 / _settings.speedometerScale;
     double y        = _settings.speedometerY;
     double x        = _settings.speedometerX;
