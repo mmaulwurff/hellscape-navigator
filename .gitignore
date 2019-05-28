@@ -1,27 +1,33 @@
+# Ignore everything, but not directories: ######################################
 *
+!**/
 
-!*.txt
-!*.sh
-!*.md
+# Don't ignore the following files: ############################################
+
+# This file
 !.gitignore
-!*.xcf
-!language.*
+
+# Plain text documents
+!**.txt
+
+# Markdown text documents
+!**.md
+
+# Shell scripts
+!**.sh
+
+# GIMP images
+!**.xcf
+
+# PNG images
+!**.png
+
+# GZDoom language lumps
+!**.enu
+
+# ZScript source code
+!**.zs
+
+# But still ignore the following files: ########################################
+
 changelog.txt
-
-*~
-
-!graphics
-graphics/*
-!graphics/compass
-graphics/compass/*
-!graphics/compass/*.png
-
-!sprites
-sprites/*
-!sprites/*/
-sprites/*/*
-!sprites/*/*.png
-
-!zscript
-zscript/*
-!zscript/*.txt

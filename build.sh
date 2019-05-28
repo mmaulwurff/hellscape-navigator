@@ -22,12 +22,13 @@ sed -i 's/Version.*/Version '$lasttag'/' Readme.md \
 && \
 zip $name.pk3 \
     *.txt \
-    *.md \
-    sprites/*/*.png \
-    sprites/*.png \
+    *.md  \
+    *.zs  \
+    sprites/*/*.png  \
+    sprites/*.png    \
     graphics/*/*.png \
-    zscript/*.txt \
-    language.enu \
+    zscript/*.zs     \
+    language.enu     \
 && \
 cp $name.pk3 $name-$lasttag.pk3 \
 && \
