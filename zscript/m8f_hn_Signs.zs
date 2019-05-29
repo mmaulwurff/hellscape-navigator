@@ -33,15 +33,23 @@ class m8f_hn_Sign : Actor
     Tag "Sign";
   }
 
+  // public: ///////////////////////////////////////////////////////////////////
+
   m8f_hn_SignMarker marker;
-  string note;
-  int    spawnTime;
   string areaName;
   double areaRadiusSq;
   double mapMarkerScale;
   int    id;
 
-  override void BeginPlay()
+  // private: //////////////////////////////////////////////////////////////////
+
+  private string note;
+  private int    spawnTime;
+
+  // public: ///////////////////////////////////////////////////////////////////
+
+  override
+  void BeginPlay()
   {
     string line1 = CVar.GetCVar("m8f_hn_sign_note1").GetString();
     string line2 = CVar.GetCVar("m8f_hn_sign_note2").GetString();
@@ -69,7 +77,8 @@ class m8f_hn_Sign : Actor
     id = 0;
   }
 
-  override bool Used(Actor user)
+  override
+  bool Used(Actor user)
   {
     string text    = note;
     int    sec     = Thinker.Tics2Seconds(spawnTime);
@@ -83,16 +92,17 @@ class m8f_hn_Sign : Actor
     return true;
   }
 
-  override void Die(Actor source, Actor inflictor, int dmgflags)
+  override
+  void Die(Actor source, Actor inflictor, int dmgflags)
   {
     if (marker != null) { marker.Destroy(); }
     super.Die(source, inflictor, dmgflags);
 
     if (id != 0)
-      {
-        let eventHandler = m8f_hn_EventHandler(StaticEventHandler.Find("m8f_hn_EventHandler"));
-        eventHandler.RemovePointer(id);
-      }
+    {
+      let eventHandler = m8f_hn_EventHandler(EventHandler.Find("m8f_hn_EventHandler"));
+      eventHandler.RemovePointer(id);
+    }
   }
 
 } // m8f_hn_Sign
@@ -107,7 +117,8 @@ class m8f_hn_WoodenSign : m8f_hn_Sign
       Stop;
   }
 
-  override void BeginPlay()
+  override
+  void BeginPlay()
   {
     super.BeginPlay();
     marker = m8f_hn_SignMarker(Spawn("m8f_hn_WoodenSignMarker", pos));
@@ -133,7 +144,8 @@ class m8f_hn_TransparentSign : m8f_hn_Sign
       Stop;
   }
 
-  override void BeginPlay()
+  override
+  void BeginPlay()
   {
     super.BeginPlay();
     marker = m8f_hn_SignMarker(Spawn("m8f_hn_TransparentSignMarker", pos));
@@ -159,7 +171,8 @@ class m8f_hn_MetalSign : m8f_hn_Sign
       Stop;
   }
 
-  override void BeginPlay()
+  override
+  void BeginPlay()
   {
     super.BeginPlay();
     marker = m8f_hn_SignMarker(Spawn("m8f_hn_MetalSignMarker", pos));
