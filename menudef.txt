@@ -241,6 +241,9 @@ OptionMenu    "m8f_hn_Controls"
   StaticText  "so the automap can be switched off in all cases."    , "Black"
 
   StaticText  ""
+  Control     "Throw Sign"       , "m8f_hn_throw_sign"
+
+  StaticText  ""
 }
 
 OptionMenu    "m8f_hn_Options"

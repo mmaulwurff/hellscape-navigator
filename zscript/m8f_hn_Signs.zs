@@ -26,11 +26,11 @@ class m8f_hn_Sign : Actor
     Health 30;
     Height 10;
     Radius  3;
-    +SOLID;
-    +NOBLOOD;
-    +NOTONAUTOMAP;
-    +DONTTHRUST;
-    Tag "Sign";
+    Tag    "Sign";
+
+    +NOBLOOD
+    +NOTONAUTOMAP
+    +DONTTHRUST
   }
 
   // public: ///////////////////////////////////////////////////////////////////
@@ -122,7 +122,7 @@ class m8f_hn_WoodenSign : m8f_hn_Sign
   {
     super.BeginPlay();
     marker = m8f_hn_SignMarker(Spawn("m8f_hn_WoodenSignMarker", pos));
-    marker.init(mapMarkerScale);
+    marker.init(mapMarkerScale, self);
 
     bool addToCompass = CVar.GetCVar("m8f_hn_sign_with_pointer").GetInt();
     if (addToCompass)
@@ -149,7 +149,7 @@ class m8f_hn_TransparentSign : m8f_hn_Sign
   {
     super.BeginPlay();
     marker = m8f_hn_SignMarker(Spawn("m8f_hn_TransparentSignMarker", pos));
-    marker.init(mapMarkerScale);
+    marker.init(mapMarkerScale, self);
 
     bool addToCompass = CVar.GetCVar("m8f_hn_sign_with_pointer").GetInt();
     if (addToCompass)
@@ -176,7 +176,7 @@ class m8f_hn_MetalSign : m8f_hn_Sign
   {
     super.BeginPlay();
     marker = m8f_hn_SignMarker(Spawn("m8f_hn_MetalSignMarker", pos));
-    marker.init(mapMarkerScale);
+    marker.init(mapMarkerScale, self);
 
     bool addToCompass = CVar.GetCVar("m8f_hn_sign_with_pointer").GetInt();
     if (addToCompass)
@@ -191,17 +191,34 @@ class m8f_hn_MetalSign : m8f_hn_Sign
 class m8f_hn_SignMarker : MapMarker
 {
 
+  // public: ///////////////////////////////////////////////////////////////////
+
   Default
   {
     XScale 0.2;
     YScale 0.2;
   }
 
-  void init(double mapScale)
+  void init(double mapScale, m8f_hn_Sign sign)
   {
     scale.x *= mapScale;
     scale.y *= mapScale;
+
+    _sign = sign;
   }
+
+  // public: ///////////////////////////////////////////////////////////////////
+
+  override
+  void Tick()
+  {
+    if (_sign) { SetOrigin(_sign.pos, true); }
+    super.Tick();
+  }
+
+  // private: //////////////////////////////////////////////////////////////////
+
+  private m8f_hn_Sign _sign;
 
 } // m8f_hn_SignMarker
 

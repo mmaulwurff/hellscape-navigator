@@ -1,13 +1,14 @@
-// Keys
+// Keys ////////////////////////////////////////////////////////////////////////
 
-AddKeySection "Hellscape Navigator Keys" "HellscapeNavitagor"
+AddKeySection "Hellscape Navigator Keys" HellscapeNavitagor
 
-AddMenuKey "Make a sign"   "m8f_hn_make_sign_open"
-AddMenuKey "Press Automap" "+press_map"
-AddMenuKey "Use and mark"  "+m8f_hn_use"
-AddMenuKey "Backtrack"     "+m8f_hn_backtrack"
+AddMenuKey "Make a sign"   m8f_hn_make_sign_open
+AddMenuKey "Press Automap" +press_map
+AddMenuKey "Use and mark"  +m8f_hn_use
+AddMenuKey "Backtrack"     +m8f_hn_backtrack
+AddMenuKey "Throw Sign"    m8f_hn_throw_sign
 
-// Sign section ////////////////////////////////////////////////////////////////
+// Signs ///////////////////////////////////////////////////////////////////////
 
 alias m8f_hn_summon_wooden_sign      "summon m8f_hn_WoodenSign"
 alias m8f_hn_summon_transparent_sign "summon m8f_hn_TransparentSign"
@@ -19,7 +20,7 @@ alias m8f_hn_make_sign_cancel "closemenu"
 alias m8f_hn_make_sign_clear  "m8f_hn_sign_note1 \"\"; m8f_hn_sign_note2 \"\"; m8f_hn_sign_note3 \"\""
 alias m8f_hn_remove_signs     "netevent m8f_hn_remove_signs"
 
-// Automap
+// Automap /////////////////////////////////////////////////////////////////////
 
 alias +press_map "togglemap; wait 1; test == $am_overlay 1 togglemap"
 alias -press_map "togglemap"
@@ -27,12 +28,16 @@ alias -press_map "togglemap"
 // I don't know how and why this works. Most probably this is a terrible hack.
 alias m8f_hn_close_map ""
 
-// Use
+// Use /////////////////////////////////////////////////////////////////////////
 
 alias +m8f_hn_use "+use; netevent m8f_hn_use"
 alias -m8f_hn_use "-use"
 
-// Backtrack
+// Backtrack ///////////////////////////////////////////////////////////////////
 
 alias +m8f_hn_backtrack "netevent m8f_hn_backtrack_on"
 alias -m8f_hn_backtrack "netevent m8f_hn_backtrack_off"
+
+// Throwable Sign ////////////////////////////////////////////////////////////
+
+alias m8f_hn_throw_sign "netevent m8f_hn_throw_sign"
