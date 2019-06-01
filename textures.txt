@@ -64,6 +64,13 @@ Texture "hn_compass_ribbon_blue", 1248, 60
   YScale 4.0
 }
 
+Texture "hn_compass_ribbon_doom", 1248, 60
+{
+  Patch  hn_rdoom, 0, 0
+  XScale 4.0
+  YScale 4.0
+}
+
 Texture "hn_compass_border_dark", 440, 100
 {
   Patch  hn_bdark, 0, 0
@@ -81,6 +88,13 @@ Texture "hn_compass_border_white", 440, 100
 Texture "hn_compass_border_blue", 440, 100
 {
   Patch  hn_bblue, 0, 0
+  XScale 4.0
+  YScale 4.0
+}
+
+Texture "hn_compass_border_doom", 440, 100
+{
+  Patch  hn_bdoom, 0, 0
   XScale 4.0
   YScale 4.0
 }

@@ -22,6 +22,7 @@ complex maps.
   * Can be configured to be indestructible or not
   * Present on automap
   * Can be displayed on compass
+  * Can be thrown (useful for testing teleports)
 
 * Compass
   * Shows view direction
@@ -73,6 +74,7 @@ complex maps.
 
 * Entryway Translocator and Space Tunneling Device graphics: [Freedoom](https://freedoom.github.io/)
   Copyright © 2001-2017 Contributors to the Freedoom project. All rights reserved.
+* "Doom" style for compass grahpics: id Software.
 
 ## Links and Contacts
 
