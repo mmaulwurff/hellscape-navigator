@@ -1,6 +1,6 @@
-/* Copyright Alexander Kromm (mmaulwurff@gmail.com) 2018-2019
+/* Copyright Alexander 'm8f' Kromm (mmaulwurff@gmail.com) 2019
  *
- * This file is part of Hellscape Navigator.
+ * This file is a part of Hellscape Navigator.
  *
  * Hellscape Navigator is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by the Free
@@ -16,29 +16,35 @@
  * Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-class m8f_hn_BacktrackSettings : m8f_hn_SettingsPack
+/**
+ * This class represents a single setting.
+ */
+class m8f_hn_CvarSetting : m8f_hn_SettingsBase
 {
 
   // public: ///////////////////////////////////////////////////////////////////
 
-  bool isCrumbsEnabled() { checkInit(); return _isCrumbsEnabled.value(); }
-
-  // private: //////////////////////////////////////////////////////////////////
-
-  private
-  void checkInit()
+  m8f_hn_CvarSetting init(string cvarName, PlayerInfo p)
   {
-    if (_isInitialized) { return; }
-
-    clear();
-
-    push(_isCrumbsEnabled = new("m8f_hn_BoolSetting").init("m8f_hn_crumbs_enabled", _player));
-
-    _isInitialized = true;
+    _cvar = CVar.GetCvar(cvarName, p);
+    return self;
   }
 
+  // public: ///////////////////////////////////////////////////////////////////
+
+  override
+  void resetCvarsToDefaults()
+  {
+    _cvar.ResetToDefault();
+  }
+
+  // protected: ////////////////////////////////////////////////////////////////
+
+  protected
+  Cvar variable() { return _cvar; }
+
   // private: //////////////////////////////////////////////////////////////////
 
-  private m8f_hn_BoolSetting _isCrumbsEnabled;
+  private transient CVar _cvar;
 
-} // class m8f_hn_BacktrackSettings
+} // class m8f_hn_CvarSetting

@@ -3,17 +3,17 @@
  * This file is part of Hellscape Navigator.
  *
  * Hellscape Navigator is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * Hellscape Navigator is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * Hellscape Navigator is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 class m8f_hn_EventHandler : EventHandler
@@ -52,30 +52,31 @@ class m8f_hn_EventHandler : EventHandler
 
     _data       = new("m8f_hn_Data").init();
     _isTitlemap = CheckTitlemap();
-    _settings   = new("m8f_hn_Settings").init(players[event.playerNumber]);
+    _settings   = new("m8f_hn_Settings");
+    _settings.init(players[event.playerNumber]);
 
     _progress    = 0;
     _oldProgress = 0;
     _initialFoundSectorsCount = 0;
 
-    if (_settings.revealOnStart)
+    if (_settings.revealOnStart())
     {
       playerActor.GiveInventory("MapRevealer", 1);
 
-      if (_settings.scannerOnStart)
+      if (_settings.scannerOnStart())
       {
         playerActor.GiveInventory("m8f_hn_Scanner", 1);
       }
     }
 
-    if (_settings.nTranslocator)
+    if (_settings.nTranslocator())
     {
-      playerActor.GiveInventory("m8f_hn_EntrywayTranslocator", _settings.nTranslocator);
+      playerActor.GiveInventory("m8f_hn_EntrywayTranslocator", _settings.nTranslocator());
     }
 
-    if (_settings.nTunneling)
+    if (_settings.nTunneling())
     {
-      playerActor.GiveInventory("m8f_hn_SpaceTunnelingDevice", _settings.nTunneling);
+      playerActor.GiveInventory("m8f_hn_SpaceTunnelingDevice", _settings.nTunneling());
     }
   }
 
@@ -173,17 +174,9 @@ class m8f_hn_EventHandler : EventHandler
   void RenderOverlay(RenderEvent e)
   {
     if (_isTitlemap) { return; }
-    if (automapActive && !_settings.showOnAutomap) { return; }
+    if (automapActive && !_settings.showOnAutomap()) { return; }
 
-    PlayerInfo player              = players[consolePlayer];
-    int        optionsUpdatePeriod = CVar.GetCVar("m8f_hn_update_period", player).GetInt();
-
-    if (optionsUpdatePeriod == 0) { _settings.read(player); }
-    else if (optionsUpdatePeriod != -1
-             && (level.time % optionsUpdatePeriod) == 0)
-    {
-      _settings.read(player);
-    }
+    PlayerInfo player = players[consolePlayer];
 
     if (_renderCounter >= _renderUpdatePeriod)
       {
@@ -192,24 +185,24 @@ class m8f_hn_EventHandler : EventHandler
       }
     else { SetRenderCounter(_renderCounter + 1); }
 
-    if (_settings.showLockAccess)
+    if (_settings.showLockAccess())
     {
       updateDoorLockStatus(player);
       drawDoorLockStatus(player);
     }
 
     Font    font        = smallFont;
-    double  x           = _settings.xStart;
-    double  y           = _settings.yStart;
-    double  scale       = 1.0 / _settings.compassScale;
+    double  x           = _settings.xStart();
+    double  y           = _settings.yStart();
+    double  scale       = 1.0 / _settings.compassScale();
     vector3 pos         = player.mo.pos;
     double  playerAngle = player.mo.angle % 360.0;
-    double  drawDirection = _settings.textAboveCompass ? -1 : 1;
+    double  drawDirection = _settings.textAboveCompass() ? -1 : 1;
 
-    if (_settings.showCompass)
+    if (_settings.showCompass())
     {
-      double offset = drawCompass(x, y, scale, _settings.compassStyle, _data, pos, playerAngle);
-      if (!_settings.textAboveCompass)
+      double offset = drawCompass(x, y, scale, _settings.compassStyle(), _data, pos, playerAngle);
+      if (!_settings.textAboveCompass())
       {
         y += offset;
       }
@@ -219,33 +212,33 @@ class m8f_hn_EventHandler : EventHandler
       }
     }
 
-    if (_settings.isTextSeparate)
+    if (_settings.isTextSeparate())
     {
-      x = _settings.textX;
-      y = _settings.textY;
+      x = _settings.textX();
+      y = _settings.textY();
       drawDirection = 1;
     }
 
-    if (_settings.levelName)
+    if (_settings.levelName())
     {
       y += drawTextCenter(level.levelName, normalColor, scale, x, y, font)
         * drawDirection;
     }
 
-    if (_settings.showExplored)
+    if (_settings.showExplored())
     {
       string progress = String.Format("Explored: %d/10", _progress);
       y += drawTextCenter(progress, normalColor, scale, x, y, font)
         * drawDirection;
     }
 
-    if (_settings.showAreaName && _areaName.length() != 0)
+    if (_settings.showAreaName() && _areaName.length() != 0)
     {
       y += drawTextCenter(_areaName, normalColor, scale, x, y, font)
         * drawDirection;
     }
 
-    if (_settings.showGridCoords)
+    if (_settings.showGridCoords())
     {
       string coords = makeGridCoordinates(pos);
       y += drawTextCenter(coords, normalColor, scale, x, y, font)
@@ -285,7 +278,7 @@ class m8f_hn_EventHandler : EventHandler
   private ui
   void MaybeDrawMapName()
   {
-    if (_settings.showIntroLevelName && _mapNameAlpha > 0.0)
+    if (_settings.showIntroLevelName() && _mapNameAlpha > 0.0)
     {
       Font   font    = bigFont;
       double scale   = 0.5;
@@ -415,7 +408,7 @@ class m8f_hn_EventHandler : EventHandler
     for (int i = 0; i < size; ++i)
       {
         let areaNameSource = _areaNameSources[i];
-        if (_settings.hideAutoAreaNames && areaNameSource.IsAutomatic())
+        if (_settings.hideAutoAreaNames() && areaNameSource.IsAutomatic())
           {
             continue;
           }
@@ -676,7 +669,7 @@ class m8f_hn_EventHandler : EventHandler
                  );
     }
 
-    if (_settings.showSwitches)
+    if (_settings.showSwitches())
     {
       int nLines = level.lines.size();
       for (int i = 0; i < nLines; ++i)
@@ -958,23 +951,23 @@ class m8f_hn_EventHandler : EventHandler
     Actor playerActor = player.mo;
     if (playerActor == null) { return; }
 
-    if (_settings.nTranslocatorExp)
+    if (_settings.nTranslocatorExp())
     {
-      playerActor.GiveInventory("m8f_hn_EntrywayTranslocator", _settings.nTranslocatorExp);
+      playerActor.GiveInventory("m8f_hn_EntrywayTranslocator", _settings.nTranslocatorExp());
     }
 
-    if (_settings.nTunnelingExp)
+    if (_settings.nTunnelingExp())
     {
-      playerActor.GiveInventory("m8f_hn_SpaceTunnelingDevice", _settings.nTunnelingExp);
+      playerActor.GiveInventory("m8f_hn_SpaceTunnelingDevice", _settings.nTunnelingExp());
     }
 
-    if (_isMapRevealerOnMap && _settings.revealExploredMap)
+    if (_isMapRevealerOnMap && _settings.revealExploredMap())
     {
       Console.Printf("Level is explored, map is revealed.");
 
       playerActor.GiveInventory("MapRevealer", 1);
 
-      if (_settings.scannerExploredMap)
+      if (_settings.scannerExploredMap())
       {
         playerActor.GiveInventory("m8f_hn_Scanner", 1);
       }
@@ -984,8 +977,8 @@ class m8f_hn_EventHandler : EventHandler
   private ui
   void MaybeDrawSpeed(PlayerInfo player)
   {
-    if (automapActive)        { return; }
-    if (!_settings.showSpeed) { return; }
+    if (automapActive)          { return; }
+    if (!_settings.showSpeed()) { return; }
 
     vector3 vel   = player.mo.vel;
     double  speed = sqrt(vel.x * vel.x + vel.y * vel.y) * 583.33 / 15.104167;
@@ -1001,9 +994,9 @@ class m8f_hn_EventHandler : EventHandler
     else                       { speedLevel = ">>>>>>"; }
 
     string speedStr = String.Format("%.2f", speed);
-    double scale    = 1.0 / _settings.speedometerScale;
-    double y        = _settings.speedometerY;
-    double x        = _settings.speedometerX;
+    double scale    = 1.0 / _settings.speedometerScale();
+    double y        = _settings.speedometerY();
+    double x        = _settings.speedometerX();
 
     y += drawTextCenter(speedLevel, normalColor, scale, x, y, smallfont);
     drawTextCenter(speedStr, normalColor, scale, x, y, smallfont);

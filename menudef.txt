@@ -241,10 +241,6 @@ OptionMenu    "m8f_hn_Options"
   Submenu     "Controls"         , "m8f_hn_Controls"
 
   StaticText  ""
-  StaticText  "General Options"  , 1
-  Option      "Options update"   , "m8f_hn_update_period" , "m8f_hn_update_period_values"
-
-  StaticText  ""
   StaticText  "Commands"         , 1
   SafeCommand "Remove all signs" , "netevent m8f_hn_remove_signs"
   SafeCommand "Clear footsteps"  , "netevent m8f_hn_remove_footsteps"
@@ -277,14 +273,6 @@ OptionValue "m8f_hn_sign_type_values"
   0, "Wooden"
   1, "Transparent"
   2, "Metal"
-}
-
-OptionValue "m8f_hn_update_period_values"
-{
-  -1, "Never"
-   0, "Immediately"
-  35, "Every second"
- 105, "Every three seconds"
 }
 
 OptionValue "m8f_hn_style_options"

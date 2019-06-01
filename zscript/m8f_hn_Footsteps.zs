@@ -3,21 +3,23 @@
  * This file is part of Hellscape Navigator.
  *
  * Hellscape Navigator is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * Hellscape Navigator is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * Hellscape Navigator is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-class m8f_hn_FootstepSettings
+class m8f_hn_FootstepSettings : m8f_hn_SettingsPack
 {
+
+  // public: ///////////////////////////////////////////////////////////////////
 
   enum FootstepMarkerTypes
   {
@@ -27,28 +29,42 @@ class m8f_hn_FootstepSettings
     MARKER_OFF,
   }
 
-  int    footstepPeriod; // tics
-  int    markerType;     // FootstepMarkerTypes
-  int    markerLifetime; // tics
-  double markerAlpha;
-  bool   markerForever;
-  double markerScale;
+  // public: ///////////////////////////////////////////////////////////////////
 
-  void read(PlayerInfo player)
+  int    footstepPeriod() { checkInit(); return _footstepPeriod.value()     ; } // tics
+  int    markerType    () { checkInit(); return _markerType.value()         ; } // FootstepMarkerTypes
+  int    markerLifetime() { checkInit(); return _markerLifetime.value() * 35; } // tics
+  double markerAlpha   () { checkInit(); return _markerAlpha.value()        ; }
+  bool   markerForever () { checkInit(); return _markerForever.value()      ; }
+  double markerScale   () { checkInit(); return _markerScale.value()        ; }
+
+  // private: //////////////////////////////////////////////////////////////////
+
+  private
+  void checkInit()
   {
-    footstepPeriod = CVar.GetCVar("m8f_hn_marker_spawn_period", player).GetInt();
-    markerType     = CVar.GetCVar("m8f_hn_marker_type"        , player).GetInt();
-    markerLifetime = CVar.GetCVar("m8f_hn_marker_lifetime"    , player).GetInt() * 35;
-    markerAlpha    = CVar.GetCVar("m8f_hn_marker_alpha"       , player).GetFloat();
-    markerForever  = CVar.GetCVar("m8f_hn_marker_forever"     , player).GetInt();
-    markerScale    = CVar.GetCVar("m8f_hn_marker_scale"       , player).GetFloat();
+    if (_isInitialized) { return; }
+
+    clear();
+
+    push(_footstepPeriod = new("m8f_hn_IntSetting"   ).init("m8f_hn_marker_spawn_period", _player));
+    push(_markerType     = new("m8f_hn_IntSetting"   ).init("m8f_hn_marker_type"        , _player));
+    push(_markerLifetime = new("m8f_hn_IntSetting"   ).init("m8f_hn_marker_lifetime"    , _player));
+    push(_markerAlpha    = new("m8f_hn_DoubleSetting").init("m8f_hn_marker_alpha"       , _player));
+    push(_markerForever  = new("m8f_hn_BoolSetting"  ).init("m8f_hn_marker_forever"     , _player));
+    push(_markerScale    = new("m8f_hn_DoubleSetting").init("m8f_hn_marker_scale"       , _player));
+
+    _isInitialized = true;
   }
 
-  m8f_hn_FootstepSettings init(PlayerInfo player)
-  {
-    read(player);
-    return self;
-  }
+  // private: //////////////////////////////////////////////////////////////////
+
+  private m8f_hn_IntSetting    _footstepPeriod;
+  private m8f_hn_IntSetting    _markerType    ;
+  private m8f_hn_IntSetting    _markerLifetime;
+  private m8f_hn_DoubleSetting _markerAlpha   ;
+  private m8f_hn_BoolSetting   _markerForever ;
+  private m8f_hn_DoubleSetting _markerScale   ;
 
 } // class m8f_hn_FootstepSettings
 
@@ -67,13 +83,12 @@ class m8f_hn_FootstepHandler : EventHandler
 
   override void WorldLoaded(WorldEvent e)
   {
-    _settings = new("m8f_hn_FootstepSettings").init(players[consolePlayer]);
+    _settings = new("m8f_hn_FootstepSettings");
+    _settings.init(players[consolePlayer]);
   }
 
   override void WorldTick()
   {
-    maybeUpdateSettings();
-
     makeFootstepMarks();
   }
 
@@ -86,8 +101,8 @@ class m8f_hn_FootstepHandler : EventHandler
 
   private void makeFootstepMarks()
   {
-    if (_settings.markerType == _settings.MARKER_OFF) { return; }
-    if (level.time % _settings.footstepPeriod != 0)  { return; }
+    if (_settings.markerType() == _settings.MARKER_OFF) { return; }
+    if (level.time % _settings.footstepPeriod() != 0)  { return; }
 
     if (!_isFirstTick) { _isWorldLoaded = true; }
     _isFirstTick = false;
@@ -105,7 +120,7 @@ class m8f_hn_FootstepHandler : EventHandler
     _oldPos = pos;
 
     string markerClass;
-    switch (_settings.markerType)
+    switch (_settings.markerType())
       {
       case _settings.MARKER_FOOTSTEP:
         {
@@ -132,10 +147,10 @@ class m8f_hn_FootstepHandler : EventHandler
       }
 
     let marker = Actor.Spawn(markerClass, pos);
-    m8f_hn_FadingMarker(marker).init( _settings.markerLifetime
-                                    , _settings.markerAlpha
-                                    , _settings.markerForever
-                                    , _settings.markerScale
+    m8f_hn_FadingMarker(marker).init( _settings.markerLifetime()
+                                    , _settings.markerAlpha()
+                                    , _settings.markerForever()
+                                    , _settings.markerScale()
                                     );
   }
 
@@ -160,18 +175,6 @@ class m8f_hn_FootstepHandler : EventHandler
     angle += 45.0 / 4;
     angle %= 360.0;
     return letters[int(angle / 22.5)];
-  }
-
-  private void maybeUpdateSettings()
-  {
-    PlayerInfo player              = players[consolePlayer];
-    int        optionsUpdatePeriod = CVar.GetCVar("m8f_hn_update_period", player).GetInt();
-    if (optionsUpdatePeriod == 0) { _settings.read(player); }
-    else if (optionsUpdatePeriod != -1
-             && (level.time % optionsUpdatePeriod) == 0)
-    {
-      _settings.read(player);
-    }
   }
 
   // private attributes section ////////////////////////////////////////////////

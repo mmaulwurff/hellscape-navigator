@@ -3,17 +3,17 @@
  * This file is part of Hellscape Navigator.
  *
  * Hellscape Navigator is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * Hellscape Navigator is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * Hellscape Navigator is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 class m8f_hn_AutoSwitchEventHandler : EventHandler
@@ -33,7 +33,8 @@ class m8f_hn_AutoSwitchEventHandler : EventHandler
     PlayerInfo player = players[consolePlayer];
     PlayerPawn pawn   = player.mo;
 
-    _settings = new("m8f_hn_AutoSwitchSettings").init(player);
+    _settings = new("m8f_hn_AutoSwitchSettings");
+    _settings.init(player);
 
     FLineTraceData lineData;
     bool           isLineFound = LookLine(player, pawn, lineData);
@@ -44,16 +45,7 @@ class m8f_hn_AutoSwitchEventHandler : EventHandler
     PlayerInfo player = players[consolePlayer];
     if (player == null) { return; }
 
-    int optionsUpdatePeriod = CVar.GetCVar("m8f_hn_update_period", player).GetInt();
-
-    if (optionsUpdatePeriod == 0) { _settings.read(player); }
-    else if (optionsUpdatePeriod != -1
-             && (level.time % optionsUpdatePeriod) == 0)
-    {
-      _settings.read(player);
-    }
-
-    if (_settings.isEnabled)
+    if (_settings.isEnabled())
     {
       PlayerUseLine(player);
     }
@@ -88,7 +80,7 @@ class m8f_hn_AutoSwitchEventHandler : EventHandler
 
     bool useSuccess = lineData.hitLine.activate(pawn, lineData.lineside, 2);
 
-    if (_settings.isMarkEnabled && useSuccess)
+    if (_settings.isMarkEnabled() && useSuccess)
     {
         EventHandler.SendNetworkEvent("m8f_hn_use");
     }
@@ -103,22 +95,32 @@ class m8f_hn_AutoSwitchEventHandler : EventHandler
 
 } // class m8f_hn_AutoSwitchEventHandler
 
-class m8f_hn_AutoSwitchSettings
+class m8f_hn_AutoSwitchSettings : m8f_hn_SettingsPack
 {
 
-  bool isEnabled;
-  bool isMarkEnabled;
+  // public: ///////////////////////////////////////////////////////////////////
 
-  void read(PlayerInfo player)
+  bool isEnabled    () { checkInit(); return _isEnabled    .value(); }
+  bool isMarkEnabled() { checkInit(); return _isMarkEnabled.value(); }
+
+  // private: //////////////////////////////////////////////////////////////////
+
+  private
+  void checkInit()
   {
-    isEnabled     = CVar.GetCVar("m8f_hn_auto_switch_enabled" , player).GetInt();
-    isMarkEnabled = CVar.GetCVar("m8f_hn_auto_switch_mark"    , player).GetInt();
+    if (_isInitialized) { return; }
+
+    clear();
+
+    push(_isEnabled     = new("m8f_hn_BoolSetting").init("m8f_hn_auto_switch_enabled" , _player));
+    push(_isMarkEnabled = new("m8f_hn_BoolSetting").init("m8f_hn_auto_switch_mark"    , _player));
+
+    _isInitialized = true;
   }
 
-  m8f_hn_AutoSwitchSettings init(PlayerInfo player)
-  {
-    read(player);
-    return self;
-  }
+  // private: //////////////////////////////////////////////////////////////////
+
+  private m8f_hn_BoolSetting _isEnabled;
+  private m8f_hn_BoolSetting _isMarkEnabled;
 
 } // class m8f_hn_AutoSwitchSettings

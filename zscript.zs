@@ -36,3 +36,12 @@ version "3.2.0"
 
 #include "zscript/m8f_hn_StrafeRunAimEventHandler.zs"
 #include "zscript/m8f_hn_StrafeRunAimSettings.zs"
+
+// Settings ////////////////////////////////////////////////////////////////////
+
+#include "zscript/settings/m8f_hn_bool_setting.zs"
+#include "zscript/settings/m8f_hn_cvar_setting.zs"
+#include "zscript/settings/m8f_hn_double_setting.zs"
+#include "zscript/settings/m8f_hn_int_setting.zs"
+#include "zscript/settings/m8f_hn_settings_base.zs"
+#include "zscript/settings/m8f_hn_settings_pack.zs"

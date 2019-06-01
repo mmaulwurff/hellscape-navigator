@@ -1,3 +1,20 @@
+/* Copyright Alexander Kromm (mmaulwurff@gmail.com) 2018-2019
+ *
+ * This file is part of Hellscape Navigator.
+ *
+ * Hellscape Navigator is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * Hellscape Navigator is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
 class m8f_hn_BacktrackEventHandler : EventHandler
 {
@@ -23,7 +40,8 @@ class m8f_hn_BacktrackEventHandler : EventHandler
     clearRecords();
 
     _isRecording = true;
-    _settings    = new("m8f_hn_BacktrackSettings").init(players[playerNumber]);
+    _settings    = new("m8f_hn_BacktrackSettings");
+    _settings.init(players[playerNumber]);
   }
 
   override void NetworkProcess(ConsoleEvent event)
@@ -34,8 +52,6 @@ class m8f_hn_BacktrackEventHandler : EventHandler
 
   override void WorldTick()
   {
-    maybeRereadSettings();
-
     if (_isRecording)
     {
       record();
@@ -102,7 +118,7 @@ class m8f_hn_BacktrackEventHandler : EventHandler
 
   private void spawnBreadCrumb()
   {
-    if (!_settings.isCrumbsEnabled) { return; }
+    if (!_settings.isCrumbsEnabled()) { return; }
 
     PlayerInfo player = players[consolePlayer];
     if (player == null) { return; }
@@ -116,19 +132,6 @@ class m8f_hn_BacktrackEventHandler : EventHandler
     playerActor.A_SpawnParticle( _crumbColor, _crumbFlags, _crumbLifetime, _crumbSize, 0
                                , 0, 0, _crumbZOffset, 0, 0, 0, 0, 0, 0, 1.0
                                );
-  }
-
-  private void maybeRereadSettings()
-  {
-    PlayerInfo player = players[consolePlayer];
-    int optionsUpdatePeriod = CVar.GetCVar("m8f_hn_update_period", player).GetInt();
-
-    if (optionsUpdatePeriod == 0) { _settings.read(player); }
-    else if (optionsUpdatePeriod != -1
-             && (level.time % optionsUpdatePeriod) == 0)
-    {
-      _settings.read(player);
-    }
   }
 
 } // class m8f_hn_BacktrackEventHandler

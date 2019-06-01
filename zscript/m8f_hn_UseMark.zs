@@ -3,17 +3,17 @@
  * This file is part of Hellscape Navigator.
  *
  * Hellscape Navigator is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
  *
- * Hellscape Navigator is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * Hellscape Navigator is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 class m8f_hn_UseMarker : m8f_hn_FadingMarker
@@ -35,17 +35,13 @@ class m8f_hn_UseMarkerEventHandler : EventHandler
 
   override void WorldLoaded(WorldEvent e)
   {
-    _settings = new("m8f_hn_FootstepSettings").init(players[consolePlayer]);
+    _settings = new("m8f_hn_FootstepSettings");
+    _settings.init(players[consolePlayer]);
   }
 
   override void NetworkProcess(ConsoleEvent event)
   {
     if (event.name == "m8f_hn_use") { SetUseMarker(players[event.player]); }
-  }
-
-  override void WorldTick()
-  {
-    maybeUpdateSettings();
   }
 
   // private methods section ///////////////////////////////////////////////////
@@ -61,23 +57,11 @@ class m8f_hn_UseMarkerEventHandler : EventHandler
     Vector3 pos = lineData.HitLocation;
 
     let marker = Actor.Spawn("m8f_hn_UseMarker", pos);
-    m8f_hn_FadingMarker(marker).init( _settings.markerLifetime
-                                    , _settings.markerAlpha
-                                    , _settings.markerForever
-                                    , _settings.markerScale
+    m8f_hn_FadingMarker(marker).init( _settings.markerLifetime()
+                                    , _settings.markerAlpha()
+                                    , _settings.markerForever()
+                                    , _settings.markerScale()
                                     );
-  }
-
-  private void maybeUpdateSettings()
-  {
-    PlayerInfo player              = players[consolePlayer];
-    int        optionsUpdatePeriod = CVar.GetCVar("m8f_hn_update_period", player).GetInt();
-    if (optionsUpdatePeriod == 0) { _settings.read(player); }
-    else if (optionsUpdatePeriod != -1
-             && (level.time % optionsUpdatePeriod) == 0)
-    {
-      _settings.read(player);
-    }
   }
 
   // private attributes section ////////////////////////////////////////////////

@@ -1,6 +1,6 @@
-/* Copyright Alexander Kromm (mmaulwurff@gmail.com) 2018-2019
+/* Copyright Alexander 'm8f' Kromm (mmaulwurff@gmail.com) 2019
  *
- * This file is part of Hellscape Navigator.
+ * This file is a part of Hellscape Navigator.
  *
  * Hellscape Navigator is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by the Free
@@ -16,29 +16,21 @@
  * Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-class m8f_hn_BacktrackSettings : m8f_hn_SettingsPack
+/**
+ * This class provides the base functions for various settings classes.
+ */
+class m8f_hn_SettingsBase
 {
 
   // public: ///////////////////////////////////////////////////////////////////
 
-  bool isCrumbsEnabled() { checkInit(); return _isCrumbsEnabled.value(); }
-
-  // private: //////////////////////////////////////////////////////////////////
-
-  private
-  void checkInit()
+  /**
+   * Reset CVars to their default values.
+   */
+  virtual
+  void resetCvarsToDefaults()
   {
-    if (_isInitialized) { return; }
-
-    clear();
-
-    push(_isCrumbsEnabled = new("m8f_hn_BoolSetting").init("m8f_hn_crumbs_enabled", _player));
-
-    _isInitialized = true;
+    console.printf("%s: reset is not implemented!", GetClassName());
   }
 
-  // private: //////////////////////////////////////////////////////////////////
-
-  private m8f_hn_BoolSetting _isCrumbsEnabled;
-
-} // class m8f_hn_BacktrackSettings
+} // class m8f_hn_SettingsBase

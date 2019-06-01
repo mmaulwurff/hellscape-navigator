@@ -28,6 +28,7 @@ zip $name.pk3 \
     sprites/*.png    \
     graphics/*/*.png \
     zscript/*.zs     \
+    zscript/*/*.zs   \
     language.enu     \
 && \
 cp $name.pk3 $name-$lasttag.pk3 \
