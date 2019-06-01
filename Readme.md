@@ -68,7 +68,8 @@ complex maps.
 * ShockwaveS08 for bug reports and feature suggestions;
 * Clifford21 for feature suggestions;
 * Cyanide for feature suggestions;
-* Enjay for testing, bug reports, and feature suggestions.
+* Enjay for testing, bug reports, and feature suggestions;
+* mrtaterz for feature suggestions.
 
 ## Credits
 
