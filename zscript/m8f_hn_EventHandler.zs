@@ -961,7 +961,7 @@ class m8f_hn_EventHandler : EventHandler
       playerActor.GiveInventory("m8f_hn_SpaceTunnelingDevice", _settings.nTunnelingExp());
     }
 
-    if (_isMapRevealerOnMap && _settings.revealExploredMap())
+    if (!_isMapRevealerOnMap && _settings.revealExploredMap())
     {
       Console.Printf("Level is explored, map is revealed.");
 
