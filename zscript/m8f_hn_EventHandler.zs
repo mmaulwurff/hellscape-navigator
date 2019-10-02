@@ -447,14 +447,16 @@ class m8f_hn_EventHandler : EventHandler
       "hn_compass_ribbon_dark",
       "hn_compass_ribbon_transparent",
       "hn_compass_ribbon_blue",
-      "hn_compass_ribbon_doom"
+      "hn_compass_ribbon_doom",
+      "hn_compass_ribbon_pixel"
     };
     static const string borders[] =
     {
       "hn_compass_border_dark",
       "hn_compass_border_white",
       "hn_compass_border_blue",
-      "hn_compass_border_doom"
+      "hn_compass_border_doom",
+      "hn_compass_border_pixel"
     };
 
     int baseRibbonMargin   =  10;
