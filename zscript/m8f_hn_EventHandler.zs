@@ -473,10 +473,10 @@ class m8f_hn_EventHandler : EventHandler
 
     int virtualWidth  = int(scale * screenWidth);
     int virtualHeight = int(scale * screenHeight);
-    double virtualRibbonX = virtualWidth  * relativeX - baseRibbonWidth / 2;
-    double virtualRibbonY = virtualHeight * relativeY;
-    double virtualBorderX = virtualRibbonX;
-    double virtualBorderY = virtualRibbonY;
+    double virtualBorderX = virtualWidth  * relativeX - baseRibbonWidth / 2;
+    double virtualBorderY = virtualHeight * relativeY;
+    double virtualRibbonX = virtualBorderX + baseRibbonMargin / 2;
+    double virtualRibbonY = virtualBorderY + baseRibbonMargin / 2;
 
     double offsetByAngle  = (270.0 - angle) * 150.0 / 270.0 + 56.0; // ?
 
@@ -512,16 +512,16 @@ class m8f_hn_EventHandler : EventHandler
     // draw the ribbon (clipped)
     TextureID ribbon         = TexMan.CheckForTexture(ribbons[style], TexMan.Type_Any);
     Screen.DrawTexture( ribbon, false
-                      , virtualRibbonX - offsetByAngle + screenRibbonMargin / 4
-                      , virtualRibbonY + screenRibbonMargin / 4
+                      , virtualRibbonX - offsetByAngle
+                      , virtualRibbonY
                       , DTA_KeepRatio,     true
                       , DTA_VirtualWidth,  virtualWidth
                       , DTA_VirtualHeight, virtualHeight
                       );
 
     // draw Pointers (clipped)
-    drawPointers( virtualRibbonX + screenRibbonMargin / 4
-                , virtualRibbonY + screenRibbonMargin / 4
+    drawPointers( virtualRibbonX
+                , virtualRibbonY
                 , virtualWidth
                 , virtualHeight
                 , data
