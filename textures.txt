@@ -45,7 +45,7 @@ Sprite hnmsm0, 52, 31
 // Compass
 Graphic "hn_compass_ribbon_dark", 1248, 60
 {
-  Patch  hn_rdark, 0, 0
+  Patch  hn_rtran, 0, 0
   XScale 4.0
   YScale 4.0
 }
@@ -59,7 +59,7 @@ Texture "hn_compass_ribbon_transparent", 1248, 60
 
 Texture "hn_compass_ribbon_blue", 1248, 60
 {
-  Patch  hn_rblue, 0, 0
+  Patch  hn_rtran, 0, 0
   XScale 4.0
   YScale 4.0
 }

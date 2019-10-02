@@ -457,34 +457,47 @@ class m8f_hn_EventHandler : EventHandler
       "hn_compass_border_doom"
     };
 
+    int baseRibbonMargin   =  10;
+    int baseRibbonWidth    = 110;
+    int baseRibbonHeight   =  25;
+    int screenRibbonMargin = int(baseRibbonMargin / scale);
+    int screenRibbonWidth  = int(baseRibbonWidth  / scale);
+    int screenRibbonHeight = int(baseRibbonHeight / scale);
+
     int screenWidth   = Screen.GetWidth();
     int screenHeight  = Screen.GetHeight();
-    int screenMargin  = 10;
+    int screenRibbonX = int(screenWidth  * relativeX) - screenRibbonWidth / 2;
+    int screenRibbonY = round(screenHeight * relativeY);
 
     int virtualWidth  = int(scale * screenWidth);
     int virtualHeight = int(scale * screenHeight);
-    int virtualMargin = round(scale * screenMargin);
+    double virtualRibbonX = virtualWidth  * relativeX - baseRibbonWidth / 2;
+    double virtualRibbonY = virtualHeight * relativeY;
+    double virtualBorderX = virtualRibbonX;
+    double virtualBorderY = virtualRibbonY;
 
-    // set clipping rectangle for the ribbon
+    double offsetByAngle  = (270.0 - angle) * 150.0 / 270.0 + 56.0; // ?
 
-    int baseRibbonWidth    = 100;
-    int baseRibbonHeight   =  15;
-    int screenRibbonWidth  = int(baseRibbonWidth  / scale);
-    int screenRibbonHeight = int(baseRibbonHeight / scale);
-    int screenRibbonX      = int(screenWidth  * relativeX) - screenRibbonWidth / 2;
-    screenRibbonX = clampInt(screenRibbonX, screenMargin, screenWidth - screenMargin - screenRibbonWidth);
-    int screenRibbonY      = round(screenHeight * relativeY);
-    Screen.SetClipRect( screenRibbonX
-                      , screenRibbonY
-                      , screenRibbonWidth
-                      , screenRibbonHeight
+    // draw border (un-clipped)
+    TextureID border = TexMan.CheckForTexture(borders[style], TexMan.Type_Any);
+    Screen.DrawTexture( border, false
+                      , virtualBorderX
+                      , virtualBorderY
+                      , DTA_KeepRatio,     true
+                      , DTA_VirtualWidth,  virtualWidth
+                      , DTA_VirtualHeight, virtualHeight
                       );
 
-    // draw the black screen just to test clip rect
+    // set clipping rectangle for the ribbon
+    Screen.SetClipRect( screenRibbonX + screenRibbonMargin / 2
+                      , screenRibbonY + screenRibbonMargin / 2
+                      , screenRibbonWidth - screenRibbonMargin
+                      , screenRibbonHeight - screenRibbonMargin
+                      );
 
     /*
+    // draw the black screen just to test clip rect
     TextureID black = TexMan.CheckForTexture("hn_black", TexMan.Type_Any);
-
     Screen.DrawTexture( black, false
                       , 0.0
                       , 0.0
@@ -495,118 +508,24 @@ class m8f_hn_EventHandler : EventHandler
     ///*///
 
     // draw the ribbon (clipped)
-
     TextureID ribbon         = TexMan.CheckForTexture(ribbons[style], TexMan.Type_Any);
-    double    offsetByAngle  = (270.0 - angle) * 150.0 / 270.0 + 56.0; // ?
-    double    virtualRibbonX = virtualWidth  * relativeX - baseRibbonWidth / 2;
-    virtualRibbonX = clamp(virtualRibbonX, virtualMargin, virtualWidth - virtualMargin - baseRibbonWidth);
-    double    virtualRibbonY = virtualHeight * relativeY;
-
     Screen.DrawTexture( ribbon, false
-                      , virtualRibbonX - offsetByAngle
-                      , virtualRibbonY
+                      , virtualRibbonX - offsetByAngle + screenRibbonMargin / 4
+                      , virtualRibbonY + screenRibbonMargin / 4
                       , DTA_KeepRatio,     true
                       , DTA_VirtualWidth,  virtualWidth
                       , DTA_VirtualHeight, virtualHeight
                       );
 
-    // draw Pointers
-
-    drawPointers( virtualRibbonX
-                , virtualRibbonY
+    // draw Pointers (clipped)
+    drawPointers( virtualRibbonX + screenRibbonMargin / 4
+                , virtualRibbonY + screenRibbonMargin / 4
                 , virtualWidth
                 , virtualHeight
                 , data
                 , center
                 , angle
                 );
-
-    // Beware! The code below is horrible!
-    // Set 4 different clip rectangles and draw the whole border each time.
-
-    // set clipping rectangle for the top part of the border
-
-    int baseRectWidth = 2;
-    int rectWidth     = round(baseRectWidth / scale);
-
-    setClipRectAroundTop( screenRibbonX
-                        , screenRibbonY
-                        , screenRibbonWidth
-                        , screenRibbonHeight
-                        , rectWidth
-                        );
-
-    // draw border
-
-    TextureID border = TexMan.CheckForTexture(borders[style], TexMan.Type_Any);
-
-    double virtualBorderX = virtualRibbonX - 5.5;
-    double virtualBorderY = virtualRibbonY - 5.0;
-
-    Screen.DrawTexture( border, false
-                      , virtualBorderX
-                      , virtualBorderY
-                      , DTA_KeepRatio,     true
-                      , DTA_VirtualWidth,  virtualWidth
-                      , DTA_VirtualHeight, virtualHeight
-                      );
-
-    // set clipping rectangle for the bottom part of the border
-
-    setClipRectAroundBottom( screenRibbonX
-                           , screenRibbonY
-                           , screenRibbonWidth
-                           , screenRibbonHeight
-                           , rectWidth
-                           );
-
-    // draw border
-
-    Screen.DrawTexture( border, false
-                      , virtualBorderX
-                      , virtualBorderY
-                      , DTA_KeepRatio,     true
-                      , DTA_VirtualWidth,  virtualWidth
-                      , DTA_VirtualHeight, virtualHeight
-                      );
-
-    // set clipping rectangle for the left part of the border
-
-    setClipRectAroundLeft( screenRibbonX
-                         , screenRibbonY
-                         , screenRibbonWidth
-                         , screenRibbonHeight
-                         , rectWidth
-                         );
-
-    // draw border
-
-    Screen.DrawTexture( border, false
-                      , virtualBorderX
-                      , virtualBorderY
-                      , DTA_KeepRatio,     true
-                      , DTA_VirtualWidth,  virtualWidth
-                      , DTA_VirtualHeight, virtualHeight
-                      );
-
-    // set clipping rectangle for the right part of the border
-
-    setClipRectAroundRight( screenRibbonX
-                          , screenRibbonY
-                          , screenRibbonWidth
-                          , screenRibbonHeight
-                          , rectWidth
-                          );
-
-    // draw border
-
-    Screen.DrawTexture( border, false
-                      , virtualBorderX
-                      , virtualBorderY
-                      , DTA_KeepRatio,     true
-                      , DTA_VirtualWidth,  virtualWidth
-                      , DTA_VirtualHeight, virtualHeight
-                      );
 
     // clear clipping rectangle
     Screen.ClearClipRect();
