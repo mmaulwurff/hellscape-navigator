@@ -527,6 +527,7 @@ class m8f_hn_EventHandler : EventHandler
                 , data
                 , center
                 , angle
+                , style
                 );
 
     // clear clipping rectangle
@@ -544,16 +545,46 @@ class m8f_hn_EventHandler : EventHandler
                    , m8f_hn_Data data
                    , vector3     center
                    , double      playerAngle
+                   , int         style
                    )
   {
     static const string pointerTextures[] =
     {
+	  // dark
       "hn_compass_pointer_white" ,
       "hn_compass_pointer_blue"  ,
       "hn_compass_pointer_gold"  ,
       "hn_compass_pointer_green" ,
       "hn_compass_pointer_ice"   ,
-      "hn_compass_pointer_red"
+      "hn_compass_pointer_red"   ,
+      // minimalistic
+      "hn_compass_pointer_white" ,
+      "hn_compass_pointer_blue"  ,
+      "hn_compass_pointer_gold"  ,
+      "hn_compass_pointer_green" ,
+      "hn_compass_pointer_ice"   ,
+      "hn_compass_pointer_red"   ,
+      // blue
+      "hn_compass_pointer_white" ,
+      "hn_compass_pointer_blue"  ,
+      "hn_compass_pointer_gold"  ,
+      "hn_compass_pointer_green" ,
+      "hn_compass_pointer_ice"   ,
+      "hn_compass_pointer_red"   ,
+      // doom
+      "hn_compass_pointer_white" ,
+      "hn_compass_pointer_blue"  ,
+      "hn_compass_pointer_gold"  ,
+      "hn_compass_pointer_green" ,
+      "hn_compass_pointer_ice"   ,
+      "hn_compass_pointer_red"   ,
+      // pixel
+      "hn_compass_pointer_pixel_white" ,
+      "hn_compass_pointer_pixel_blue"  ,
+      "hn_compass_pointer_pixel_gold"  ,
+      "hn_compass_pointer_pixel_green" ,
+      "hn_compass_pointer_pixel_ice"   ,
+      "hn_compass_pointer_pixel_red"
     };
 
     int nPointers = data.pointers.size();
@@ -561,7 +592,7 @@ class m8f_hn_EventHandler : EventHandler
     {
       double    xPointer   = data.pointers[i].x();
       double    yPointer   = data.pointers[i].y();
-      int       type       = data.pointers[i].type();
+      int       type       = data.pointers[i].type() + style * 6;
       TextureID pointerTex = TexMan.CheckForTexture(pointerTextures[type], TexMan.Type_Any);
 
       drawPointer( x, y, width, height
@@ -579,7 +610,8 @@ class m8f_hn_EventHandler : EventHandler
 
       double    xPointer   = questPointer.pos.x;
       double    yPointer   = questPointer.pos.y;
-      TextureID pointerTex = TexMan.CheckForTexture( pointerTextures[m8f_hn_Pointer.POINTER_GOLD]
+      int       type       = m8f_hn_Pointer.POINTER_GOLD + style * 6;
+      TextureID pointerTex = TexMan.CheckForTexture( pointerTextures[type]
                                                    , TexMan.Type_Any
                                                    );
 
@@ -600,7 +632,8 @@ class m8f_hn_EventHandler : EventHandler
 
         double    xPointer   = (l.v1.p.x + l.v2.p.x) / 2;
         double    yPointer   = (l.v1.p.y + l.v2.p.y) / 2;
-        TextureID pointerTex = TexMan.CheckForTexture( pointerTextures[m8f_hn_Pointer.POINTER_ICE]
+        int       type       = m8f_hn_Pointer.POINTER_ICE + style * 6;
+        TextureID pointerTex = TexMan.CheckForTexture( pointerTextures[type]
                                                      , TexMan.Type_Any
                                                      );
 

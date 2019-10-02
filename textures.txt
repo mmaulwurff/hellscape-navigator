@@ -163,6 +163,54 @@ Texture "hn_compass_pointer_red", 20, 100
   Offset 6, 0
 }
 
+Texture "hn_compass_pointer_pixel_white", 20, 100
+{
+  Patch  hn_ppix, 0, 0
+  XScale 4.0
+  YScale 4.0
+  Offset 6, 0
+}
+
+Texture "hn_compass_pointer_pixel_blue", 20, 100
+{
+  Patch  hn_ppix, 0, 0 { Translation Blue }
+  XScale 4.0
+  YScale 4.0
+  Offset 6, 0
+}
+
+Texture "hn_compass_pointer_pixel_gold", 20, 100
+{
+  Patch  hn_ppix, 0, 0 { Translation Gold }
+  XScale 4.0
+  YScale 4.0
+  Offset 6, 0
+}
+
+Texture "hn_compass_pointer_pixel_green", 20, 100
+{
+  Patch  hn_ppix, 0, 0 { Translation Green }
+  XScale 4.0
+  YScale 4.0
+  Offset 6, 0
+}
+
+Texture "hn_compass_pointer_pixel_ice", 20, 100
+{
+  Patch  hn_ppix, 0, 0 { Translation Ice }
+  XScale 4.0
+  YScale 4.0
+  Offset 6, 0
+}
+
+Texture "hn_compass_pointer_pixel_red", 20, 100
+{
+  Patch  hn_ppix, 0, 0 { Translation Red }
+  XScale 4.0
+  YScale 4.0
+  Offset 6, 0
+}
+
 // End of compass pointers section ////////////////////////////////////////////
 
 // Quest marker
