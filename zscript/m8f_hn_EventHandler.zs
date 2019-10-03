@@ -438,8 +438,8 @@ class m8f_hn_EventHandler : EventHandler
                     , double      scale
                     , int         style
                     , m8f_hn_Data data
-                    , vector3     center
-                    , double      angle
+                    , vector3     playerPosition
+                    , double      playerAngle
                     )
   {
     static const string ribbons[] =
@@ -468,17 +468,23 @@ class m8f_hn_EventHandler : EventHandler
 
     int screenWidth   = Screen.GetWidth();
     int screenHeight  = Screen.GetHeight();
-    int screenRibbonX = int(screenWidth  * relativeX) - screenRibbonWidth / 2;
-    int screenRibbonY = round(screenHeight * relativeY);
+    int screenRibbonX = int(screenWidth * relativeX) - screenRibbonWidth / 2;
+    int screenRibbonY = int(screenHeight * relativeY);
 
     int virtualWidth  = int(scale * screenWidth);
     int virtualHeight = int(scale * screenHeight);
     double virtualBorderX = virtualWidth  * relativeX - baseRibbonWidth / 2;
     double virtualBorderY = virtualHeight * relativeY;
-    double virtualRibbonX = virtualBorderX + baseRibbonMargin / 2;
-    double virtualRibbonY = virtualBorderY + baseRibbonMargin / 2;
+    double virtualRibbonX = virtualBorderX;
+    double virtualRibbonY = virtualBorderY;
+    double virtualPointerX = virtualBorderX;
+    double virtualPointerY = virtualBorderY;
 
-    double offsetByAngle  = (270.0 - angle) * 150.0 / 270.0 + 56.0; // ?
+    // ribbon texture is 800px for 360° and scaled by 4
+    double pixelPerAngle = 800.0 / 4.0 / 360.0;
+
+    // ribbon texture offset
+    double offsetByAngle = pixelPerAngle * (360.0 - playerAngle);
 
     // draw border (un-clipped)
     TextureID border = TexMan.CheckForTexture(borders[style], TexMan.Type_Any);
@@ -510,23 +516,24 @@ class m8f_hn_EventHandler : EventHandler
     ///*///
 
     // draw the ribbon (clipped)
-    TextureID ribbon         = TexMan.CheckForTexture(ribbons[style], TexMan.Type_Any);
+    TextureID ribbon = TexMan.CheckForTexture(ribbons[style], TexMan.Type_Any);
     Screen.DrawTexture( ribbon, false
                       , virtualRibbonX - offsetByAngle
-                      , virtualRibbonY
+                      , virtualRibbonY + baseRibbonMargin / 2
                       , DTA_KeepRatio,     true
                       , DTA_VirtualWidth,  virtualWidth
                       , DTA_VirtualHeight, virtualHeight
                       );
 
     // draw Pointers (clipped)
-    drawPointers( virtualRibbonX
-                , virtualRibbonY
+    drawPointers( virtualPointerX
+                , virtualPointerY + baseRibbonMargin / 2
                 , virtualWidth
                 , virtualHeight
+				, baseRibbonWidth
                 , data
-                , center
-                , angle
+                , playerPosition
+                , playerAngle
                 , style
                 );
 
@@ -542,15 +549,16 @@ class m8f_hn_EventHandler : EventHandler
                    , double      y
                    , int         width
                    , int         height
+				   , int         ribbonWidth
                    , m8f_hn_Data data
-                   , vector3     center
+                   , vector3     playerPosition
                    , double      playerAngle
                    , int         style
                    )
   {
     static const string pointerTextures[] =
     {
-	  // dark
+      // dark
       "hn_compass_pointer_white" ,
       "hn_compass_pointer_blue"  ,
       "hn_compass_pointer_gold"  ,
@@ -595,8 +603,8 @@ class m8f_hn_EventHandler : EventHandler
       int       type       = data.pointers[i].type() + style * 6;
       TextureID pointerTex = TexMan.CheckForTexture(pointerTextures[type], TexMan.Type_Any);
 
-      drawPointer( x, y, width, height
-                 , center, playerAngle
+      drawPointer( x, y, width, height, ribbonWidth
+                 , playerPosition, playerAngle
                  , xPointer, yPointer, pointerTex
                  , false
                  );
@@ -615,8 +623,8 @@ class m8f_hn_EventHandler : EventHandler
                                                    , TexMan.Type_Any
                                                    );
 
-      drawPointer( x, y, width, height
-                 , center, playerAngle
+      drawPointer( x, y, width, height, ribbonWidth
+                 , playerPosition, playerAngle
                  , xPointer, yPointer, pointerTex
                  , false
                  );
@@ -637,8 +645,8 @@ class m8f_hn_EventHandler : EventHandler
                                                      , TexMan.Type_Any
                                                      );
 
-        drawPointer( x, y, width, height
-                   , center, playerAngle
+        drawPointer( x, y, width, height, ribbonWidth
+                   , playerPosition, playerAngle
                    , xPointer, yPointer, pointerTex
                    , true
                    );
@@ -840,7 +848,8 @@ class m8f_hn_EventHandler : EventHandler
                   , double    y
                   , int       width
                   , int       height
-                  , vector3   center
+                  , int       ribbonWidth
+                  , vector3   playerPosition
                   , double    playerAngle
                   , double    xPointer
                   , double    yPointer
@@ -848,8 +857,8 @@ class m8f_hn_EventHandler : EventHandler
                   , bool      closeFormula
                   )
   {
-    double xDiff = xPointer - center.x;
-    double yDiff = yPointer - center.y;
+    double xDiff = xPointer - playerPosition.x;
+    double yDiff = yPointer - playerPosition.y;
     double angle;
     if      (yDiff > 0.0) { angle = atan(xDiff / yDiff) +  90.0; }
     else if (yDiff < 0.0) { angle = atan(xDiff / yDiff) + 270.0; }
@@ -858,7 +867,7 @@ class m8f_hn_EventHandler : EventHandler
     else                  { angle =  90.0; }
 
     angle         = (angle + playerAngle - 90.0) % 360.0;
-    double xStart = angle * 150.0 / 270.0;
+    double xStart = angle * (ribbonWidth / 180.0);
 
     double yOffset;
     if (closeFormula)
