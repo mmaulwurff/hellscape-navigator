@@ -281,4 +281,5 @@ OptionValue "m8f_hn_style_options"
   1, "Minimalistic"
   2, "Blue"
   3, "Doom"
+  4, "Pixel"
 }
