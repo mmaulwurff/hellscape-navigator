@@ -33,6 +33,7 @@ class m8f_hn_Settings : m8f_hn_SettingsPack
   bool   showSwitches      () { checkInit(); return _showSwitches      .value(); }
 
   double compassScale      () { checkInit(); return _compassScale      .value(); }
+  double compassDegrees    () { checkInit(); return _compassDegrees    .value(); }
   int    compassStyle      () { checkInit(); return _compassStyle      .value(); }
   bool   textAboveCompass  () { checkInit(); return _textAboveCompass  .value(); }
 
@@ -80,6 +81,7 @@ class m8f_hn_Settings : m8f_hn_SettingsPack
     push(_showSwitches       = new("m8f_hn_BoolSetting"  ).init("m8f_hn_show_switches"          , _player));
 
     push(_compassScale       = new("m8f_hn_DoubleSetting").init("m8f_hn_compass_scale"          , _player));
+    push(_compassDegrees     = new("m8f_hn_DoubleSetting").init("m8f_hn_compass_degrees"        , _player));
     push(_compassStyle       = new("m8f_hn_IntSetting"   ).init("m8f_hn_compass_style"          , _player));
     push(_textAboveCompass   = new("m8f_hn_BoolSetting"  ).init("m8f_hn_compass_under"          , _player));
 
@@ -121,6 +123,7 @@ class m8f_hn_Settings : m8f_hn_SettingsPack
   private m8f_hn_BoolSetting   _showSwitches;
 
   private m8f_hn_DoubleSetting _compassScale;
+  private m8f_hn_DoubleSetting _compassDegrees;
   private m8f_hn_IntSetting    _compassStyle;
   private m8f_hn_BoolSetting   _textAboveCompass;
 
