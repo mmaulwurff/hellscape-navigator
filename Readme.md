@@ -2,7 +2,7 @@
 
 (singleplayer GZDoom mod)
 
-Version 0.14
+Version 0.14.2
 
 Hellscape Navigator is a collection of tools designed to help navigation in
 complex maps.
@@ -69,7 +69,8 @@ complex maps.
 * Clifford21 for feature suggestions;
 * Cyanide for feature suggestions;
 * Enjay for testing, bug reports, and feature suggestions;
-* mrtaterz for feature suggestions.
+* mrtaterz for feature suggestions;
+* ImJezze for 'Pixel' style for compass and code cleanup.
 
 ## Credits
 

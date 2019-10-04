@@ -2,7 +2,6 @@
 
 AddOptionMenu "OptionsMenu"
 {
-  StaticText  ""
   Submenu     "Hellscape Navigator Options", "m8f_hn_Options"
 }
 
@@ -61,8 +60,6 @@ OptionMenu "m8f_hn_FootstepMarkerOptions"
   StaticText "work when automap rotation is on, so", "Black"
   StaticText "disable automap rotation here:", "Black"
   Option "$AUTOMAPMNU_ROTATE" , "am_rotate" , "RotateTypes"
-
-  StaticText ""
 }
 
 OptionMenu "m8f_hn_SignOptions"
@@ -80,8 +77,6 @@ OptionMenu "m8f_hn_SignOptions"
 
   StaticText ""
   Slider "Automap Sign Marker Size" , "m8f_hn_sign_map_scale" , 0.5, 2.0, 0.1, 1
-
-  StaticText ""
 }
 
 OptionMenu "m8f_hn_CompassOptions"
@@ -119,8 +114,6 @@ OptionMenu "m8f_hn_CompassOptions"
   Option     "Map Info is separate", "m8f_hn_text_separate" , "OnOff"
   Slider     "Horizontal position" , "m8f_hn_text_x"        , 0.0, 1.0,  0.01, 2
   Slider     "Vertical position"   , "m8f_hn_text_y"        , 0.0, 0.95, 0.01, 2
-
-  StaticText ""
 }
 
 OptionMenu    "m8f_hn_DisplayOptions"
@@ -136,8 +129,6 @@ OptionMenu    "m8f_hn_DisplayOptions"
   Slider      "Speedometer Scale"      , "m8f_hn_speedometer_scale" , 0.5, 3.0,  0.1,  1
   Slider      "Horizontal position"    , "m8f_hn_speedometer_x"     , 0.0, 1.0,  0.01, 2
   Slider      "Vertical position"      , "m8f_hn_speedometer_y"     , 0.0, 1.0,  0.01, 2
-
-  StaticText  ""
 }
 
 OptionMenu    "m8f_hn_HelperOptions"
@@ -168,8 +159,6 @@ OptionMenu    "m8f_hn_HelperOptions"
   StaticText  ""
   Slider      "Entryway Translocator"   , "m8f_hn_n_translocator_explored" , 0, 10, 1, 0
   Slider      "Space Tunneling Device"  , "m8f_hn_n_tunneling_explored"    , 0, 10, 1, 0
-
-  StaticText  ""
 }
 
 OptionMenu    "m8f_hn_GameplayOptions"
@@ -204,8 +193,6 @@ OptionMenu    "m8f_hn_VisualOptions"
 
   StaticText  ""
   Option      "Strafe Run (SR40) Aim", "m8f_hn_sr40_aim_enabled", "OnOff"
-
-  StaticText  ""
 }
 
 OptionMenu    "m8f_hn_Controls"
@@ -231,8 +218,6 @@ OptionMenu    "m8f_hn_Controls"
 
   StaticText  ""
   Control     "Throw Sign"       , "m8f_hn_throw_sign"
-
-  StaticText  ""
 }
 
 OptionMenu    "m8f_hn_Options"
@@ -255,8 +240,6 @@ OptionMenu    "m8f_hn_Options"
   Submenu     "Map Helpers"      , "m8f_hn_HelperOptions"
   Submenu     "Gameplay"         , "m8f_hn_GameplayOptions"
   Submenu     "Visuals"          , "m8f_hn_VisualOptions"
-
-  StaticText  ""
 }
 
 // Option values ///////////////////////////////////////////////////////////////
