@@ -618,12 +618,12 @@ class m8f_hn_EventHandler : EventHandler
       "hn_compass_pointer_ice"   ,
       "hn_compass_pointer_red"   ,
       // doom
-      "hn_compass_pointer_white" ,
-      "hn_compass_pointer_blue"  ,
-      "hn_compass_pointer_gold"  ,
-      "hn_compass_pointer_green" ,
-      "hn_compass_pointer_ice"   ,
-      "hn_compass_pointer_red"   ,
+      "hn_compass_pointer_doom_white" ,
+      "hn_compass_pointer_doom_blue"  ,
+      "hn_compass_pointer_doom_gold"  ,
+      "hn_compass_pointer_doom_green" ,
+      "hn_compass_pointer_doom_ice"   ,
+      "hn_compass_pointer_doom_red"   ,
       // pixel
       "hn_compass_pointer_pixel_white" ,
       "hn_compass_pointer_pixel_blue"  ,
