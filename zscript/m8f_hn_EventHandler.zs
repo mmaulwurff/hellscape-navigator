@@ -510,6 +510,9 @@ class m8f_hn_EventHandler : EventHandler
                       , DTA_VirtualHeight, int(virtualHeight)
                       );
 
+    // offset to align end of center part with start of right part
+    double alignmentOffset = round(virtualBorderR - baseClamp) - (virtualBorderR - baseClamp);
+
     // center ribbon border
     Screen.DrawTexture( border, false
                       , round(virtualBorderX + baseClamp)
@@ -517,7 +520,7 @@ class m8f_hn_EventHandler : EventHandler
                       , DTA_KeepRatio,     true
                       , DTA_SRCX,          baseClamp
                       , DTA_SRCWIDTH,      baseWidth - baseClamp * 2
-                      , DTA_DESTWIDTH,     int(round(degreesWidth - baseClamp * 2.0))
+                      , DTA_DESTWIDTH,     int(round(degreesWidth - baseClamp * 2.0 + alignmentOffset))
                       , DTA_VirtualWidth,  int(virtualWidth)
                       , DTA_VirtualHeight, int(virtualHeight)
                       );
@@ -535,9 +538,9 @@ class m8f_hn_EventHandler : EventHandler
                       );
 
     // set clipping rectangle for the ribbon
-    Screen.SetClipRect( int(screenRibbonX + ribbonMargin / 2.0)
+    Screen.SetClipRect( int(round(screenRibbonX + ribbonMargin / 2.0))
                       , int(screenRibbonY + ribbonMargin / 2.0)
-                      , int(ribbonWidth - ribbonMargin)
+                      , int(round(ribbonWidth - ribbonMargin))
                       , int(ribbonHeight - ribbonMargin)
                       );
 
