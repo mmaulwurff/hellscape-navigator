@@ -489,11 +489,14 @@ class m8f_hn_EventHandler : EventHandler
 
     // ribbon texture offset
     double offsetByAngle = 0.0;
+    // offset depending on player angle
     offsetByAngle += pixelPerAngle * (360.0 - playerAngle);
     // offset depending on number of visible angles (0 at 180°)
     offsetByAngle += pixelPerAngle * ((baseDegrees - degrees) / 2);
-    // unknow offset, proberly cause by center offset of first letter N
-    offsetByAngle += pixelPerAngle * ((baseDegrees - degrees) / 22);
+    // offset depending on start of first letter N
+    offsetByAngle += (200.0 + baseMargin) / 4.0;
+    // unknown offset, probably depending on center of first letter N
+    offsetByAngle += pixelPerAngle * ((baseDegrees - degrees) / 20);
 
     // draw border (un-clipped)
     TextureID border = TexMan.CheckForTexture(borders[style], TexMan.Type_Any);
