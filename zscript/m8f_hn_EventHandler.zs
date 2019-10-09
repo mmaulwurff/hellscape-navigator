@@ -201,7 +201,7 @@ class m8f_hn_EventHandler : EventHandler
 
     if (_settings.showCompass())
     {
-      double offset = drawCompass(x, y, scale, _settings.compassStyle(), _data, pos, playerAngle);
+      double offset = drawCompass(x, y, scale, _settings.compassDegrees(), _settings.compassStyle(), _data, pos, playerAngle);
       if (!_settings.textAboveCompass())
       {
         y += offset;
@@ -436,10 +436,11 @@ class m8f_hn_EventHandler : EventHandler
   double drawCompass( double      relativeX
                     , double      relativeY
                     , double      scale
+                    , double      degrees
                     , int         style
                     , m8f_hn_Data data
-                    , vector3     center
-                    , double      angle
+                    , vector3     playerPosition
+                    , double      playerAngle
                     )
   {
     static const string ribbons[] =
@@ -459,42 +460,91 @@ class m8f_hn_EventHandler : EventHandler
       "hn_compass_border_pixel"
     };
 
-    int baseRibbonMargin   =  10;
-    int baseRibbonWidth    = 110;
-    int baseRibbonHeight   =  25;
-    int screenRibbonMargin = int(baseRibbonMargin / scale);
-    int screenRibbonWidth  = int(baseRibbonWidth  / scale);
-    int screenRibbonHeight = int(baseRibbonHeight / scale);
+    int baseClamp    =  25;
+    int baseDegrees  = 180;
+    int baseMargin   =  10;
+    int baseWidth    = 110;
+    int baseHeight   =  25;
 
-    int screenWidth   = Screen.GetWidth();
-    int screenHeight  = Screen.GetHeight();
-    int screenRibbonX = int(screenWidth  * relativeX) - screenRibbonWidth / 2;
-    int screenRibbonY = round(screenHeight * relativeY);
+    double degreesWidth = baseWidth * (degrees / baseDegrees);
 
-    int virtualWidth  = int(scale * screenWidth);
-    int virtualHeight = int(scale * screenHeight);
-    double virtualBorderX = virtualWidth  * relativeX - baseRibbonWidth / 2;
+    double ribbonMargin = baseMargin   / scale;
+    double ribbonWidth  = degreesWidth / scale;
+    double ribbonHeight = baseHeight   / scale;
+
+    double screenWidth   = Screen.GetWidth();
+    double screenHeight  = Screen.GetHeight();
+    double screenRibbonX = screenWidth  * relativeX - ribbonWidth / 2.0;
+    double screenRibbonY = screenHeight * relativeY;
+
+    double virtualWidth  = screenWidth  * scale;
+    double virtualHeight = screenHeight * scale;
+    double virtualBorderC = virtualWidth  * relativeX;
+    double virtualBorderX = virtualWidth  * relativeX - degreesWidth / 2.0;
+    double virtualBorderR = virtualWidth  * relativeX + degreesWidth / 2.0;
     double virtualBorderY = virtualHeight * relativeY;
-    double virtualRibbonX = virtualBorderX + baseRibbonMargin / 2;
-    double virtualRibbonY = virtualBorderY + baseRibbonMargin / 2;
 
-    double offsetByAngle  = (270.0 - angle) * 150.0 / 270.0 + 56.0; // ?
+    // ribbon texture is 800px for 360° and scaled by 4
+    double pixelPerAngle = 800.0 / 4.0 / 360.0;
+
+    // ribbon texture offset
+    double offsetByAngle = 0.0;
+    // offset depending on player angle
+    offsetByAngle += pixelPerAngle * (360.0 - playerAngle);
+    // offset depending on number of visible angles (0 at 180°)
+    offsetByAngle += pixelPerAngle * ((baseDegrees - degrees) / 2);
+    // offset depending on start of first letter N
+    offsetByAngle += (200.0 + baseMargin) / 4.0;
+    // unknown offset, probably depending on center of first letter N
+    offsetByAngle += pixelPerAngle * ((baseDegrees - degrees) / 20);
 
     // draw border (un-clipped)
     TextureID border = TexMan.CheckForTexture(borders[style], TexMan.Type_Any);
+
+    // left ribbon border
     Screen.DrawTexture( border, false
-                      , virtualBorderX
+                      , round(virtualBorderX)
                       , virtualBorderY
                       , DTA_KeepRatio,     true
-                      , DTA_VirtualWidth,  virtualWidth
-                      , DTA_VirtualHeight, virtualHeight
+                      , DTA_SRCX,          0
+                      , DTA_SRCWIDTH,      baseClamp
+                      , DTA_DESTWIDTH,     baseClamp
+                      , DTA_VirtualWidth,  int(virtualWidth)
+                      , DTA_VirtualHeight, int(virtualHeight)
+                      );
+
+    // offset to align end of center part with start of right part
+    double alignmentOffset = round(virtualBorderR - baseClamp) - (virtualBorderR - baseClamp);
+
+    // center ribbon border
+    Screen.DrawTexture( border, false
+                      , round(virtualBorderX + baseClamp)
+                      , virtualBorderY
+                      , DTA_KeepRatio,     true
+                      , DTA_SRCX,          baseClamp
+                      , DTA_SRCWIDTH,      baseWidth - baseClamp * 2
+                      , DTA_DESTWIDTH,     int(round(degreesWidth - baseClamp * 2.0 + alignmentOffset))
+                      , DTA_VirtualWidth,  int(virtualWidth)
+                      , DTA_VirtualHeight, int(virtualHeight)
+                      );
+
+    // right ribbon border
+    Screen.DrawTexture( border, false
+                      , round(virtualBorderR - baseClamp)
+                      , virtualBorderY
+                      , DTA_KeepRatio,     true
+                      , DTA_SRCX,          baseWidth - baseClamp
+                      , DTA_SRCWIDTH,      baseClamp
+                      , DTA_DESTWIDTH,     baseClamp
+                      , DTA_VirtualWidth,  int(virtualWidth)
+                      , DTA_VirtualHeight, int(virtualHeight)
                       );
 
     // set clipping rectangle for the ribbon
-    Screen.SetClipRect( screenRibbonX + screenRibbonMargin / 2
-                      , screenRibbonY + screenRibbonMargin / 2
-                      , screenRibbonWidth - screenRibbonMargin
-                      , screenRibbonHeight - screenRibbonMargin
+    Screen.SetClipRect( int(round(screenRibbonX + ribbonMargin / 2.0))
+                      , int(screenRibbonY + ribbonMargin / 2.0)
+                      , int(round(ribbonWidth - ribbonMargin))
+                      , int(ribbonHeight - ribbonMargin)
                       );
 
     /*
@@ -504,36 +554,37 @@ class m8f_hn_EventHandler : EventHandler
                       , 0.0
                       , 0.0
                       , DTA_KeepRatio,     true
-                      , DTA_VirtualWidth,  virtualWidth
-                      , DTA_VirtualHeight, virtualHeight
+                      , DTA_VirtualWidth,  int(virtualWidth)
+                      , DTA_VirtualHeight, int(virtualHeight)
                       );
     ///*///
 
     // draw the ribbon (clipped)
-    TextureID ribbon         = TexMan.CheckForTexture(ribbons[style], TexMan.Type_Any);
+    TextureID ribbon = TexMan.CheckForTexture(ribbons[style], TexMan.Type_Any);
     Screen.DrawTexture( ribbon, false
-                      , virtualRibbonX - offsetByAngle
-                      , virtualRibbonY
+                      , virtualBorderX - offsetByAngle
+                      , virtualBorderY + baseMargin / 2.0
                       , DTA_KeepRatio,     true
-                      , DTA_VirtualWidth,  virtualWidth
-                      , DTA_VirtualHeight, virtualHeight
+                      , DTA_VirtualWidth,  int(virtualWidth)
+                      , DTA_VirtualHeight, int(virtualHeight)
                       );
 
     // draw Pointers (clipped)
-    drawPointers( virtualRibbonX
-                , virtualRibbonY
-                , virtualWidth
-                , virtualHeight
+    drawPointers( virtualBorderX
+                , virtualBorderY + baseMargin / 2.0
+                , int(virtualWidth)
+                , int(virtualHeight)
+                , int(degreesWidth)
                 , data
-                , center
-                , angle
+                , playerPosition
+                , playerAngle
                 , style
                 );
 
     // clear clipping rectangle
     Screen.ClearClipRect();
 
-    double relativeCompassHeight = double(screenRibbonHeight) * 1.4 / screenHeight;
+    double relativeCompassHeight = double(ribbonHeight) * 1.4 / screenHeight;
     return relativeCompassHeight;
   }
 
@@ -542,15 +593,16 @@ class m8f_hn_EventHandler : EventHandler
                    , double      y
                    , int         width
                    , int         height
+                   , int         ribbonWidth
                    , m8f_hn_Data data
-                   , vector3     center
+                   , vector3     playerPosition
                    , double      playerAngle
                    , int         style
                    )
   {
     static const string pointerTextures[] =
     {
-	  // dark
+      // dark
       "hn_compass_pointer_white" ,
       "hn_compass_pointer_blue"  ,
       "hn_compass_pointer_gold"  ,
@@ -572,12 +624,12 @@ class m8f_hn_EventHandler : EventHandler
       "hn_compass_pointer_ice"   ,
       "hn_compass_pointer_red"   ,
       // doom
-      "hn_compass_pointer_white" ,
-      "hn_compass_pointer_blue"  ,
-      "hn_compass_pointer_gold"  ,
-      "hn_compass_pointer_green" ,
-      "hn_compass_pointer_ice"   ,
-      "hn_compass_pointer_red"   ,
+      "hn_compass_pointer_doom_white" ,
+      "hn_compass_pointer_doom_blue"  ,
+      "hn_compass_pointer_doom_gold"  ,
+      "hn_compass_pointer_doom_green" ,
+      "hn_compass_pointer_doom_ice"   ,
+      "hn_compass_pointer_doom_red"   ,
       // pixel
       "hn_compass_pointer_pixel_white" ,
       "hn_compass_pointer_pixel_blue"  ,
@@ -595,8 +647,8 @@ class m8f_hn_EventHandler : EventHandler
       int       type       = data.pointers[i].type() + style * 6;
       TextureID pointerTex = TexMan.CheckForTexture(pointerTextures[type], TexMan.Type_Any);
 
-      drawPointer( x, y, width, height
-                 , center, playerAngle
+      drawPointer( x, y, width, height, ribbonWidth
+                 , playerPosition, playerAngle
                  , xPointer, yPointer, pointerTex
                  , false
                  );
@@ -615,8 +667,8 @@ class m8f_hn_EventHandler : EventHandler
                                                    , TexMan.Type_Any
                                                    );
 
-      drawPointer( x, y, width, height
-                 , center, playerAngle
+      drawPointer( x, y, width, height, ribbonWidth
+                 , playerPosition, playerAngle
                  , xPointer, yPointer, pointerTex
                  , false
                  );
@@ -637,8 +689,8 @@ class m8f_hn_EventHandler : EventHandler
                                                      , TexMan.Type_Any
                                                      );
 
-        drawPointer( x, y, width, height
-                   , center, playerAngle
+        drawPointer( x, y, width, height, ribbonWidth
+                   , playerPosition, playerAngle
                    , xPointer, yPointer, pointerTex
                    , true
                    );
@@ -840,7 +892,8 @@ class m8f_hn_EventHandler : EventHandler
                   , double    y
                   , int       width
                   , int       height
-                  , vector3   center
+                  , int       ribbonWidth
+                  , vector3   playerPosition
                   , double    playerAngle
                   , double    xPointer
                   , double    yPointer
@@ -848,8 +901,8 @@ class m8f_hn_EventHandler : EventHandler
                   , bool      closeFormula
                   )
   {
-    double xDiff = xPointer - center.x;
-    double yDiff = yPointer - center.y;
+    double xDiff = xPointer - playerPosition.x;
+    double yDiff = yPointer - playerPosition.y;
     double angle;
     if      (yDiff > 0.0) { angle = atan(xDiff / yDiff) +  90.0; }
     else if (yDiff < 0.0) { angle = atan(xDiff / yDiff) + 270.0; }
@@ -858,7 +911,7 @@ class m8f_hn_EventHandler : EventHandler
     else                  { angle =  90.0; }
 
     angle         = (angle + playerAngle - 90.0) % 360.0;
-    double xStart = angle * 150.0 / 270.0;
+    double xStart = angle * (ribbonWidth / 180.0);
 
     double yOffset;
     if (closeFormula)

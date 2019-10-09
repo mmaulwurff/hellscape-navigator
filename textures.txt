@@ -43,35 +43,35 @@ Sprite hnmsm0, 52, 31
 // Compass section ////////////////////////////////////////////////////////////
 
 // Compass
-Graphic "hn_compass_ribbon_dark", 1248, 60
+Graphic "hn_compass_ribbon_dark", 1660, 60
 {
   Patch  hn_rtran, 0, 0
   XScale 4.0
   YScale 4.0
 }
 
-Texture "hn_compass_ribbon_transparent", 1248, 60
+Texture "hn_compass_ribbon_transparent", 1660, 60
 {
   Patch  hn_rtran, 0, 0
   XScale 4.0
   YScale 4.0
 }
 
-Texture "hn_compass_ribbon_blue", 1248, 60
+Texture "hn_compass_ribbon_blue", 1660, 60
 {
   Patch  hn_rtran, 0, 0
   XScale 4.0
   YScale 4.0
 }
 
-Texture "hn_compass_ribbon_doom", 1248, 60
+Texture "hn_compass_ribbon_doom", 1660, 60
 {
   Patch  hn_rdoom, 0, 0
   XScale 4.0
   YScale 4.0
 }
 
-Texture "hn_compass_ribbon_pixel", 1248, 60
+Texture "hn_compass_ribbon_pixel", 1660, 60
 {
   Patch hn_rpix, 0, 0
   XScale 4.0
@@ -163,6 +163,56 @@ Texture "hn_compass_pointer_red", 20, 100
   Offset 6, 0
 }
 
+// doom style
+Texture "hn_compass_pointer_doom_white", 20, 100
+{
+  Patch  hn_pdoom, 0, 0
+  XScale 4.0
+  YScale 4.0
+  Offset 6, 0
+}
+
+Texture "hn_compass_pointer_doom_blue", 20, 100
+{
+  Patch  hn_pdoom, 0, 0 { Translation Blue }
+  XScale 4.0
+  YScale 4.0
+  Offset 6, 0
+}
+
+Texture "hn_compass_pointer_doom_gold", 20, 100
+{
+  Patch  hn_pdoom, 0, 0 { Translation Gold }
+  XScale 4.0
+  YScale 4.0
+  Offset 6, 0
+}
+
+Texture "hn_compass_pointer_doom_green", 20, 100
+{
+  Patch  hn_pdoom, 0, 0 { Translation Green }
+  XScale 4.0
+  YScale 4.0
+  Offset 6, 0
+}
+
+Texture "hn_compass_pointer_doom_ice", 20, 100
+{
+  Patch  hn_pdoom, 0, 0 { Translation Ice }
+  XScale 4.0
+  YScale 4.0
+  Offset 6, 0
+}
+
+Texture "hn_compass_pointer_doom_red", 20, 100
+{
+  Patch  hn_pdoom, 0, 0 { Translation Red }
+  XScale 4.0
+  YScale 4.0
+  Offset 6, 0
+}
+
+// pixel style
 Texture "hn_compass_pointer_pixel_white", 20, 100
 {
   Patch  hn_ppix, 0, 0

@@ -103,11 +103,12 @@ OptionMenu "m8f_hn_CompassOptions"
   Option     "Show on Automap"     , "m8f_hn_compass_automap"    , "OnOff"
 
   StaticText ""
-  Slider     "Horizontal position" , "m8f_hn_compass_x"     , 0.0, 1.0,  0.01, 2
-  Slider     "Vertical position"   , "m8f_hn_compass_y"     , 0.0, 0.95, 0.01, 2
-  Slider     "Compass size"        , "m8f_hn_compass_scale" , 0.5, 3.0,  0.1,  1
-  Option     "Compass style"       , "m8f_hn_compass_style" , "m8f_hn_style_options"
-  Option     "Text above compass"  , "m8f_hn_compass_under" , "OnOff"
+  Slider     "Horizontal position"     , "m8f_hn_compass_x"       , 0.0, 1.0,  0.01, 2
+  Slider     "Vertical position"       , "m8f_hn_compass_y"       , 0.0, 0.95, 0.01, 2
+  Slider     "Compass size"            , "m8f_hn_compass_scale"   , 0.5, 3.0,  0.1,  1
+  Slider     "Compass visible degrees" , "m8f_hn_compass_degrees" , 90.0, 360.0, 15.0, 0
+  Option     "Compass style"           , "m8f_hn_compass_style"   , "m8f_hn_style_options"
+  Option     "Text above compass"      , "m8f_hn_compass_under"   , "OnOff"
 
   StaticText ""
   Option     "Map Info is separate", "m8f_hn_text_separate" , "OnOff"
