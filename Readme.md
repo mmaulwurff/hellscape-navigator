@@ -2,7 +2,7 @@
 
 (singleplayer GZDoom mod)
 
-Version 0.14.2
+Version 0.15
 
 Hellscape Navigator is a collection of tools designed to help navigation in
 complex maps.
@@ -27,7 +27,7 @@ complex maps.
 * Compass
   * Shows view direction
   * Can show pointers for switches (only if close)
-  * Different styles
+  * Different styles, sizes, and width
 
 * Area Names
   * Entrance/Exit/Outdoors/Secrets
@@ -62,21 +62,22 @@ complex maps.
 
 ## Thanks
 
-* all GZDoom developers for GZDoom;
-* Doom community for thousands of maps to play;
-* ramon.dexter for testing and feature suggestions;
-* ShockwaveS08 for bug reports and feature suggestions;
-* Clifford21 for feature suggestions;
-* Cyanide for feature suggestions;
-* Enjay for testing, bug reports, and feature suggestions;
-* mrtaterz for feature suggestions;
-* ImJezze for 'Pixel' style for compass and code cleanup.
+* all GZDoom developers for GZDoom.
+* Doom community for thousands of maps to play.
+* ramon.dexter for testing and feature suggestions.
+* ShockwaveS08 for bug reports and feature suggestions.
+* Clifford21 for feature suggestions.
+* Cyanide for feature suggestions.
+* Enjay for testing, bug reports, and feature suggestions.
+* mrtaterz for feature suggestions.
+* ImJezze for new features (see below) and code cleanup.
 
 ## Credits
 
 * Entryway Translocator and Space Tunneling Device graphics: [Freedoom](https://freedoom.github.io/)
   Copyright © 2001-2017 Contributors to the Freedoom project. All rights reserved.
 * "Doom" style for compass grahpics: id Software.
+* ImJezze: 'Pixel' style for compass and wide mode.
 
 ## Links and Contacts
 
