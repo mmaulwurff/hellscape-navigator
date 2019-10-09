@@ -77,7 +77,7 @@ complex maps.
 * Entryway Translocator and Space Tunneling Device graphics: [Freedoom](https://freedoom.github.io/)
   Copyright © 2001-2017 Contributors to the Freedoom project. All rights reserved.
 * "Doom" style for compass grahpics: id Software.
-* ImJezze: 'Pixel' style for compass and wide mode.
+* ImJezze: 'Pixel' style for compass, 'Doom' compass pointer style, and wide mode.
 
 ## Links and Contacts
 
