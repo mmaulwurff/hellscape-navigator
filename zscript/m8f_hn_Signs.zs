@@ -31,6 +31,7 @@ class m8f_hn_Sign : Actor
     +NOBLOOD
     +NOTONAUTOMAP
     +DONTTHRUST
+    +WALLSPRITE
   }
 
   // public: ///////////////////////////////////////////////////////////////////
@@ -75,6 +76,8 @@ class m8f_hn_Sign : Actor
     marker = null;
 
     id = 0;
+
+    A_SetAngle(players[consolePlayer].mo.angle);
   }
 
   override
@@ -136,12 +139,44 @@ class m8f_hn_WoodenSign : m8f_hn_Sign
 
 class m8f_hn_TransparentSign : m8f_hn_Sign
 {
+  Default
+  {
+    FloatBobStrength 0.3;
+
+    +NOGRAVITY
+    +FLOAT
+    +FLOATBOB
+  }
 
   States
   {
     Spawn:
-      HNTS B -1;
-      Stop;
+      HNTS B 15
+      {
+        A_SpawnParticle( "88BBFF"
+                       , SPF_FULLBRIGHT | SPF_RELATIVE
+                       , 30
+                       ,  8
+                       ,  0
+                       ,  0
+                       , 13
+                       , 21 + GetBobOffset()
+                       , velz    : -0.5
+                       , sizestep: -0.05
+                       );
+        A_SpawnParticle( "88BBFF"
+                       , SPF_FULLBRIGHT | SPF_RELATIVE
+                       ,  30
+                       ,   8
+                       ,   0
+                       ,   0
+                       , -13
+                       , 21 + GetBobOffset()
+                       , velz    : -0.5
+                       , sizestep: -0.05
+                       );
+      }
+      Loop;
   }
 
   override

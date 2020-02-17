@@ -55,11 +55,6 @@ complex maps.
   * Auto use (doors, switches)
   * Backtrack key
 
-## Todo
-
-* show if a map contains secret exits
-* ?
-
 ## Thanks
 
 * all GZDoom developers for GZDoom.
@@ -71,6 +66,7 @@ complex maps.
 * Enjay for testing, bug reports, and feature suggestions.
 * mrtaterz for feature suggestions.
 * ImJezze for new features (see below) and code cleanup.
+* Accensus for new sign design and sprites.
 
 ## Credits
 
@@ -78,6 +74,9 @@ complex maps.
   Copyright © 2001-2017 Contributors to the Freedoom project. All rights reserved.
 * "Doom" style for compass grahpics: id Software.
 * ImJezze: 'Pixel' style for compass, 'Doom' compass pointer style, and wide mode.
+* Accensus for all the frankenspriting.
+* cc4-tex for the textures used as base for signs.
+* Russian Overkill for the hover sign's thrusters. Taken from the shield sprites.
 
 ## Links and Contacts
 

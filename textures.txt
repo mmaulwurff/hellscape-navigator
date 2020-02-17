@@ -13,10 +13,10 @@ Sprite hnwsm0, 52, 31
 }
 
 // Transparent Sign with Offset
-Sprite hntsb0, 52, 61
+Sprite hntsb0, 52, 31
 {
   Patch  hntsa0, 0, 0
-  Offset 26, 61
+  Offset 26, 51
 }
 
 // Transparent Sign map marker with Offset
