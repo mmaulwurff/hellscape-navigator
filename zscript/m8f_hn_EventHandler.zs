@@ -707,14 +707,20 @@ class m8f_hn_EventHandler : EventHandler
   }
 
   private static
-  void RemoveSigns()
+  void removeSigns()
   {
-    let   iterator = ThinkerIterator.Create("m8f_hn_Sign");
-    Actor sign;
-    while (sign = Actor(iterator.Next()))
-      {
-        sign.Destroy();
-      }
+    removeAll("m8f_hn_Sign");
+  }
+
+  private static
+  void removeAll(String className)
+  {
+    let   iterator = ThinkerIterator.Create(className);
+    Actor a;
+    while (a = Actor(iterator.Next()))
+    {
+      a.A_Die();
+    }
   }
 
   private static
