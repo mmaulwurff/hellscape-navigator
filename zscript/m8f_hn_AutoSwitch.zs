@@ -33,6 +33,9 @@ class m8f_hn_AutoSwitchEventHandler : EventHandler
     PlayerInfo player = players[consolePlayer];
     PlayerPawn pawn   = player.mo;
 
+    // cases when a map has no Player 1 start.
+    if (pawn == NULL) { return; }
+
     _settings = new("m8f_hn_AutoSwitchSettings");
     _settings.init(player);
 

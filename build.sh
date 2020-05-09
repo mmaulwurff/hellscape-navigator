@@ -23,4 +23,4 @@ zip -R "$name" \
     "*.txt" \
     "*.zs"
 
-gzdoom -file "$name.pk3" "$@"
+gzdoom -file "$name" "$@"
