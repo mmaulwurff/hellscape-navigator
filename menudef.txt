@@ -181,7 +181,7 @@ OptionMenu hn_GameplayOptions
   StaticText  "These two options may break intended map flow.", Black
 }
 
-OptionMenu m8f_hn_VisualOptions
+OptionMenu hn_VisualOptions
 {
   Title       "Visual Options"
 
@@ -222,7 +222,7 @@ OptionMenu hn_Options
 {
   Title       "Hellscape Navigator Options"
 
-  Submenu     "Controls"         , hn_Control
+  Submenu     "Controls"         , hn_Controls
 
   StaticText  ""
   StaticText  "Commands"         , 1
