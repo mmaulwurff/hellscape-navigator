@@ -9,6 +9,5 @@ gameinfo
                    , "m8f_hn_AutoSwitchEventHandler"
                    , "m8f_hn_MapTunerEventHandler"
                    , "m8f_hn_BacktrackEventHandler"
-                   , "m8f_hn_StrafeRunAimEventHandler"
 
 }

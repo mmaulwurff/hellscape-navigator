@@ -190,9 +190,6 @@ OptionMenu    "m8f_hn_VisualOptions"
 
   StaticText  ""
   Option      "Breadcrumbs Enabled", "m8f_hn_crumbs_enabled", "OnOff"
-
-  StaticText  ""
-  Option      "Strafe Run (SR40) Aim", "m8f_hn_sr40_aim_enabled", "OnOff"
 }
 
 OptionMenu    "m8f_hn_Controls"
