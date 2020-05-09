@@ -2,9 +2,8 @@
 *
 !**/
 
-# Don't ignore the following files: ############################################
+# Except the following file types:
 
-# This file
 !.gitignore
 !.gitattributes
 
@@ -22,9 +21,6 @@
 
 # PNG images
 !**.png
-
-# GZDoom language lumps
-!**.enu
 
 # ZScript source code
 !**.zs
