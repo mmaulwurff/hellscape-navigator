@@ -272,6 +272,15 @@ Sprite hnqub0, 200, 200
   YScale 4.0
 }
 
+// Starting point marker
+Sprite hnspa0, 200, 200
+{
+  Patch  hnqua0, 0, 0 { Translation Desaturate, 31 }
+  Offset 100, 100
+  XScale 4.0
+  YScale 4.0
+}
+
 // Entryway Translocator
 Sprite hneyb0, 32, 28
 {

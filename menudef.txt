@@ -49,6 +49,7 @@ OptionMenu hn_FootstepMarkerOptions
   Slider "Marker Spawn Period (tics)" , "m8f_hn_marker_spawn_period", 1, 50, 1, 0
   Slider "Marker Lifetime (s)"        , "m8f_hn_marker_lifetime", 10, 900, 10, 0
   Option "Markers Stay Forever"       , "m8f_hn_marker_forever" , OnOff
+  Option "Mark Start"                 , m8f_hn_mark_start, OnOff
 
   StaticText ""
   Slider "Initial Opacity" , "m8f_hn_marker_alpha" , 0.1, 1.0, 0.1, 1

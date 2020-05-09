@@ -97,6 +97,19 @@ class m8f_hn_FootstepHandler : EventHandler
     if (event.name == "m8f_hn_remove_footsteps") { removeFootsteps(); }
   }
 
+  override void PlayerEntered(PlayerEvent event)
+  {
+    PlayerInfo player = players[event.playerNumber];
+    Actor playerActor = player.mo;
+
+    if (playerActor == NULL) { return; }
+
+    if (CVar.GetCvar("m8f_hn_mark_start", player).getBool())
+    {
+      Actor.Spawn("hn_StartMarker", playerActor.pos);
+    }
+  }
+
   // private methods section ///////////////////////////////////////////////////
 
   private void makeFootstepMarks()
@@ -281,3 +294,23 @@ class m8f_hn_FadingArrowF : m8f_hn_FadingMarker {States{ Spawn: HNAF A -1; Stop;
 class m8f_hn_FadingArrowG : m8f_hn_FadingMarker {States{ Spawn: HNAG A -1; Stop; }}
 
 class m8f_hn_FadingCircle : m8f_hn_FadingMarker {States{ Spawn: HNCR A -1; Stop; }}
+
+class hn_StartMarker : MapMarker
+{
+
+  override void BeginPlay()
+  {
+    double mapScale = CVar.GetCVar("m8f_hn_marker_scale", players[consolePlayer]).GetFloat();
+    scale.x = mapScale * 0.1;
+    scale.y = mapScale * 0.1;
+    super.BeginPlay();
+  }
+
+  States
+    {
+    Spawn:
+      HNSP A -1;
+      Stop;
+    }
+
+} // class m8f_hn_QuestPointer_Example

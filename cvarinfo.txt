@@ -8,6 +8,7 @@ user int    m8f_hn_marker_lifetime     = 300; // seconds
 user float  m8f_hn_marker_alpha        = 1.0;
 user bool   m8f_hn_marker_forever      = false;
 user float  m8f_hn_marker_scale        = 1.0;
+user bool   m8f_hn_mark_start          = true;
 
 server float  m8f_hn_quest_marker_scale  = 0.5;
 
