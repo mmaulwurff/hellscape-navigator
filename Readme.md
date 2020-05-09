@@ -67,7 +67,7 @@ complex maps.
 * Enjay for testing, bug reports, and feature suggestions.
 * mrtaterz for feature suggestions.
 * ImJezze for new features (see below) and code cleanup.
-* Accensus for new sign design and sprites.
+* Accensus for new sign design and sprites and bug reports.
 
 ## Credits
 
