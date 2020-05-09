@@ -2,10 +2,12 @@
 
 (singleplayer GZDoom mod)
 
-Version 0.15
-
 Hellscape Navigator is a collection of tools designed to help navigation in
 complex maps.
+
+<a href="https://github.com/mmaulwurff/hellscape-navigator/releases" alt="Downloads">
+  <img src="https://img.shields.io/github/downloads/mmaulwurff/hellscape-navigator/total" />
+</a>
 
 ## Features
 
@@ -49,7 +51,6 @@ complex maps.
   * Displaying map name on level start
   * Moving speed
   * Breadcrumbs
-  * SR40 aim helper
 
 * Miscellaneous
   * Auto use (doors, switches)
@@ -80,7 +81,7 @@ complex maps.
 
 ## Links and Contacts
 
-[Git Repository](https://github.com/mmaulwurff/hellscape-navigator)
+[Source](https://github.com/mmaulwurff/hellscape-navigator)
 
 [Screenshots](https://imgur.com/a/pZ10Hss)
 

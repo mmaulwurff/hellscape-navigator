@@ -17,8 +17,6 @@ git log --date=short --pretty=format:"-%d %ad %s%n" | \
     sed "s/- (tag: \(v\?[0-9.]*\))/\n\1\n-/" \
     > changelog.txt
 
-sed -i 's/Version.*/Version '$lasttag'/' Readme.md
-
 zip -R "$name" \
     "*.md"  \
     "*.png" \
