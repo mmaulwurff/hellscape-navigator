@@ -21,31 +21,11 @@ class m8f_hn_EventHandler : EventHandler
   // public: // override section ///////////////////////////////////////////////
 
   override
-  void OnRegister()
-  {
-    _areaNameSources.push(new("m8f_hn_SignAreaNameSource"   ));
-    _areaNameSources.push(new("m8f_hn_PlayerStartNameSource"));
-    _areaNameSources.push(new("m8f_hn_ItemAreaNameSource"   ));
-    _areaNameSources.push(new("m8f_hn_SectorAreaNameSource" ));
-    _areaNameSources.push(new("m8f_hn_BaseAreaNameSource"   ));
-
-    _renderUpdatePeriod = 20;
-    _renderCounter      =  0;
-    _areaName           = "";
-
-    _isWorldLoaded      = false;
-
-    _currentLockAlphaPercent = 0;
-    _targetLockAlphaPercent  = 0;
-
-    _isMapRevealerOnMap = false;
-    _mapNameAlpha       = 1.5;
-  }
-
-  override
   void PlayerEntered(PlayerEvent event)
   {
     if (event.playerNumber != consolePlayer) { return; }
+
+    init();
 
     Actor playerActor = players[event.playerNumber].mo;
     if (playerActor == null) { return; }
@@ -274,6 +254,28 @@ class m8f_hn_EventHandler : EventHandler
   }
 
   // private: //////////////////////////////////////////////////////////////////
+
+  private
+  void init()
+  {
+    _areaNameSources.push(new("m8f_hn_SignAreaNameSource"   ));
+    _areaNameSources.push(new("m8f_hn_PlayerStartNameSource"));
+    _areaNameSources.push(new("m8f_hn_ItemAreaNameSource"   ));
+    _areaNameSources.push(new("m8f_hn_SectorAreaNameSource" ));
+    _areaNameSources.push(new("m8f_hn_BaseAreaNameSource"   ));
+
+    _renderUpdatePeriod = 20;
+    _renderCounter      =  0;
+    _areaName           = "";
+
+    _isWorldLoaded      = false;
+
+    _currentLockAlphaPercent = 0;
+    _targetLockAlphaPercent  = 0;
+
+    _isMapRevealerOnMap = false;
+    _mapNameAlpha       = 1.5;
+  }
 
   private ui
   void MaybeDrawMapName()
