@@ -50,7 +50,7 @@ class m8f_hn_UseMarkerEventHandler : EventHandler
   {
     double         useRange = player.mo.useRange;
     FLineTraceData lineData;
-    bool           success  = _utils.getPlayerViewLine(player, useRange, lineData);
+    bool           success  = _level.getPlayerViewLine(player, useRange, lineData);
 
     if (!success) { return; }
 
@@ -66,7 +66,7 @@ class m8f_hn_UseMarkerEventHandler : EventHandler
 
   // private attributes section ////////////////////////////////////////////////
 
-  m8f_hn_Utils            _utils;
+  hn_Level _level;
   m8f_hn_FootstepSettings _settings;
 
 } // class m8f_hn_UseMarkerEventHandler

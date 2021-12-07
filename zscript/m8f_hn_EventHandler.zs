@@ -1,4 +1,4 @@
-/* Copyright Alexander Kromm (mmaulwurff@gmail.com) 2018-2019
+/* Copyright Alexander Kromm (mmaulwurff@gmail.com) 2018-2021
  *
  * This file is part of Hellscape Navigator.
  *
@@ -16,7 +16,7 @@
  * Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-class m8f_hn_EventHandler : EventHandler
+class m8f_hn_EventHandler : hn_InitializedEventHandler
 {
   // public: // override section ///////////////////////////////////////////////
 
@@ -30,8 +30,8 @@ class m8f_hn_EventHandler : EventHandler
     Actor playerActor = players[event.playerNumber].mo;
     if (playerActor == null) { return; }
 
-    _data       = new("m8f_hn_Data").init();
-    _isTitlemap = CheckTitlemap();
+    _data       = hn_CompassData.from();
+    _isTitlemap = hn_Level.isTitlemap();
     _settings   = new("m8f_hn_Settings");
     _settings.init(players[event.playerNumber]);
 
@@ -181,7 +181,17 @@ class m8f_hn_EventHandler : EventHandler
 
     if (_settings.showCompass())
     {
-      double offset = drawCompass(x, y, scale, _settings.compassDegrees(), _settings.compassStyle(), _data, pos, playerAngle);
+      double offset = hn_CompassEventHandler.drawCompass( x
+                                 , y
+                                 , scale
+                                 , _settings.compassDegrees()
+                                 , _settings.compassStyle()
+                                 , _data
+                                 , pos
+                                 , playerAngle
+                                 , _settings.showSwitches()
+                                 );
+
       if (!_settings.textAboveCompass())
       {
         y += offset;
@@ -229,40 +239,16 @@ class m8f_hn_EventHandler : EventHandler
     MaybeDrawSpeed(player);
   }
 
-  // public: ///////////////////////////////////////////////////////////////////
-
-  // returns unique pointer id
-  int AddPointer(double x, double y, int type)
-  {
-    ++_data.pointerId;
-    _data.pointers.push(new("m8f_hn_Pointer").init(x, y, type, _data.pointerId));
-
-    return _data.pointerId;
-  }
-
-  void RemovePointer(int id)
-  {
-    int nPointers = _data.pointers.size();
-    for (int i = 0; i < nPointers; ++i)
-    {
-      if (_data.pointers[i].id() == id)
-      {
-        _data.pointers.delete(i);
-        break;
-      }
-    }
-  }
-
   // private: //////////////////////////////////////////////////////////////////
 
   private
   void init()
   {
-    _areaNameSources.push(new("m8f_hn_SignAreaNameSource"   ));
-    _areaNameSources.push(new("m8f_hn_PlayerStartNameSource"));
-    _areaNameSources.push(new("m8f_hn_ItemAreaNameSource"   ));
-    _areaNameSources.push(new("m8f_hn_SectorAreaNameSource" ));
-    _areaNameSources.push(new("m8f_hn_BaseAreaNameSource"   ));
+    _areaNameSources.push(new("hn_SignCompassAreaNameSource"       ));
+    _areaNameSources.push(new("hn_PlayerStartCompassAreaNameSource"));
+    _areaNameSources.push(new("hn_ItemCompassAreaNameSource"       ));
+    _areaNameSources.push(new("hn_SectorCompassAreaNameSource"     ));
+    _areaNameSources.push(new("hn_BaseCompassAreaNameSource"       ));
 
     _renderUpdatePeriod = 20;
     _renderCounter      =  0;
@@ -275,6 +261,8 @@ class m8f_hn_EventHandler : EventHandler
 
     _isMapRevealerOnMap = false;
     _mapNameAlpha       = 1.5;
+
+    _compassSettings = hn_CompassSettings.from();
   }
 
   private ui
@@ -305,15 +293,15 @@ class m8f_hn_EventHandler : EventHandler
   {
     double         distance = 500;
     FLineTraceData lineData;
-    bool           success = _utils.getPlayerViewLine(player, distance, lineData);
+    bool           success = _level.getPlayerViewLine(player, distance, lineData);
 
     if (!success) { return 0; }
 
     Line l = lineData.HitLine;
     if (l == null) { return 0; }
 
-    if (!isSwitch(l)) { return 0; }
-    if (!hasLock(l))  { return 0; }
+    if (!hn_Level.isSwitch(l)) { return 0; }
+    if (!hn_Level.hasLock(l))  { return 0; }
 
     int locknum = l.args[3];
 
@@ -403,7 +391,7 @@ class m8f_hn_EventHandler : EventHandler
   }
 
   private ui
-  string GetAreaName(m8f_hn_Data data) const
+  string GetAreaName(hn_CompassData data) const
   {
     string areaName = "no area name sources found";
     int    size     = _areaNameSources.size();
@@ -433,273 +421,6 @@ class m8f_hn_EventHandler : EventHandler
     _areaName = name;
   }
 
-  // What a mess.
-  private ui
-  double drawCompass( double      relativeX
-                    , double      relativeY
-                    , double      scale
-                    , double      degrees
-                    , int         style
-                    , m8f_hn_Data data
-                    , vector3     playerPosition
-                    , double      playerAngle
-                    )
-  {
-    static const string ribbons[] =
-    {
-      "hn_compass_ribbon_dark",
-      "hn_compass_ribbon_transparent",
-      "hn_compass_ribbon_blue",
-      "hn_compass_ribbon_doom",
-      "hn_compass_ribbon_pixel"
-    };
-    static const string borders[] =
-    {
-      "hn_compass_border_dark",
-      "hn_compass_border_white",
-      "hn_compass_border_blue",
-      "hn_compass_border_doom",
-      "hn_compass_border_pixel"
-    };
-
-    int baseClamp    =  25;
-    int baseDegrees  = 180;
-    int baseMargin   =  10;
-    int baseWidth    = 110;
-    int baseHeight   =  25;
-
-    double degreesWidth = baseWidth * (degrees / baseDegrees);
-
-    double ribbonMargin = baseMargin   / scale;
-    double ribbonWidth  = degreesWidth / scale;
-    double ribbonHeight = baseHeight   / scale;
-
-    double screenWidth   = Screen.GetWidth();
-    double screenHeight  = Screen.GetHeight();
-    double screenRibbonX = screenWidth  * relativeX - ribbonWidth / 2.0;
-    double screenRibbonY = screenHeight * relativeY;
-
-    double virtualWidth  = screenWidth  * scale;
-    double virtualHeight = screenHeight * scale;
-    double virtualBorderC = virtualWidth  * relativeX;
-    double virtualBorderX = virtualWidth  * relativeX - degreesWidth / 2.0;
-    double virtualBorderR = virtualWidth  * relativeX + degreesWidth / 2.0;
-    double virtualBorderY = virtualHeight * relativeY;
-
-    // ribbon texture is 800px for 360° and scaled by 4
-    double pixelPerAngle = 800.0 / 4.0 / 360.0;
-
-    // ribbon texture offset
-    double offsetByAngle = 0.0;
-    // offset depending on player angle
-    offsetByAngle += pixelPerAngle * (360.0 - playerAngle);
-    // offset depending on number of visible angles (0 at 180°)
-    offsetByAngle += pixelPerAngle * ((baseDegrees - degrees) / 2);
-    // offset depending on start of first letter N
-    offsetByAngle += (200.0 + baseMargin) / 4.0;
-    // unknown offset, probably depending on center of first letter N
-    offsetByAngle += pixelPerAngle * ((baseDegrees - degrees) / 20);
-
-    // draw border (un-clipped)
-    TextureID border = TexMan.CheckForTexture(borders[style], TexMan.Type_Any);
-
-    // left ribbon border
-    Screen.DrawTexture( border, false
-                      , round(virtualBorderX)
-                      , virtualBorderY
-                      , DTA_KeepRatio,     true
-                      , DTA_SRCX,          0
-                      , DTA_SRCWIDTH,      baseClamp
-                      , DTA_DESTWIDTH,     baseClamp
-                      , DTA_VirtualWidth,  int(virtualWidth)
-                      , DTA_VirtualHeight, int(virtualHeight)
-                      );
-
-    // offset to align end of center part with start of right part
-    double alignmentOffset = round(virtualBorderR - baseClamp) - (virtualBorderR - baseClamp);
-
-    // center ribbon border
-    Screen.DrawTexture( border, false
-                      , round(virtualBorderX + baseClamp)
-                      , virtualBorderY
-                      , DTA_KeepRatio,     true
-                      , DTA_SRCX,          baseClamp
-                      , DTA_SRCWIDTH,      baseWidth - baseClamp * 2
-                      , DTA_DESTWIDTH,     int(round(degreesWidth - baseClamp * 2.0 + alignmentOffset))
-                      , DTA_VirtualWidth,  int(virtualWidth)
-                      , DTA_VirtualHeight, int(virtualHeight)
-                      );
-
-    // right ribbon border
-    Screen.DrawTexture( border, false
-                      , round(virtualBorderR - baseClamp)
-                      , virtualBorderY
-                      , DTA_KeepRatio,     true
-                      , DTA_SRCX,          baseWidth - baseClamp
-                      , DTA_SRCWIDTH,      baseClamp
-                      , DTA_DESTWIDTH,     baseClamp
-                      , DTA_VirtualWidth,  int(virtualWidth)
-                      , DTA_VirtualHeight, int(virtualHeight)
-                      );
-
-    // set clipping rectangle for the ribbon
-    Screen.SetClipRect( int(round(screenRibbonX + ribbonMargin / 2.0))
-                      , int(screenRibbonY + ribbonMargin / 2.0)
-                      , int(round(ribbonWidth - ribbonMargin))
-                      , int(ribbonHeight - ribbonMargin)
-                      );
-
-    /*
-    // draw the black screen just to test clip rect
-    TextureID black = TexMan.CheckForTexture("hn_black", TexMan.Type_Any);
-    Screen.DrawTexture( black, false
-                      , 0.0
-                      , 0.0
-                      , DTA_KeepRatio,     true
-                      , DTA_VirtualWidth,  int(virtualWidth)
-                      , DTA_VirtualHeight, int(virtualHeight)
-                      );
-    ///*///
-
-    // draw the ribbon (clipped)
-    TextureID ribbon = TexMan.CheckForTexture(ribbons[style], TexMan.Type_Any);
-    Screen.DrawTexture( ribbon, false
-                      , virtualBorderX - offsetByAngle
-                      , virtualBorderY + baseMargin / 2.0
-                      , DTA_KeepRatio,     true
-                      , DTA_VirtualWidth,  int(virtualWidth)
-                      , DTA_VirtualHeight, int(virtualHeight)
-                      );
-
-    // draw Pointers (clipped)
-    drawPointers( virtualBorderX
-                , virtualBorderY + baseMargin / 2.0
-                , int(virtualWidth)
-                , int(virtualHeight)
-                , int(degreesWidth)
-                , data
-                , playerPosition
-                , playerAngle
-                , style
-                );
-
-    // clear clipping rectangle
-    Screen.ClearClipRect();
-
-    double relativeCompassHeight = double(ribbonHeight) * 1.4 / screenHeight;
-    return relativeCompassHeight;
-  }
-
-  private ui
-  void drawPointers( double      x
-                   , double      y
-                   , int         width
-                   , int         height
-                   , int         ribbonWidth
-                   , m8f_hn_Data data
-                   , vector3     playerPosition
-                   , double      playerAngle
-                   , int         style
-                   )
-  {
-    static const string pointerTextures[] =
-    {
-      // dark
-      "hn_compass_pointer_white" ,
-      "hn_compass_pointer_blue"  ,
-      "hn_compass_pointer_gold"  ,
-      "hn_compass_pointer_green" ,
-      "hn_compass_pointer_ice"   ,
-      "hn_compass_pointer_red"   ,
-      // minimalistic
-      "hn_compass_pointer_white" ,
-      "hn_compass_pointer_blue"  ,
-      "hn_compass_pointer_gold"  ,
-      "hn_compass_pointer_green" ,
-      "hn_compass_pointer_ice"   ,
-      "hn_compass_pointer_red"   ,
-      // blue
-      "hn_compass_pointer_white" ,
-      "hn_compass_pointer_blue"  ,
-      "hn_compass_pointer_gold"  ,
-      "hn_compass_pointer_green" ,
-      "hn_compass_pointer_ice"   ,
-      "hn_compass_pointer_red"   ,
-      // doom
-      "hn_compass_pointer_doom_white" ,
-      "hn_compass_pointer_doom_blue"  ,
-      "hn_compass_pointer_doom_gold"  ,
-      "hn_compass_pointer_doom_green" ,
-      "hn_compass_pointer_doom_ice"   ,
-      "hn_compass_pointer_doom_red"   ,
-      // pixel
-      "hn_compass_pointer_pixel_white" ,
-      "hn_compass_pointer_pixel_blue"  ,
-      "hn_compass_pointer_pixel_gold"  ,
-      "hn_compass_pointer_pixel_green" ,
-      "hn_compass_pointer_pixel_ice"   ,
-      "hn_compass_pointer_pixel_red"
-    };
-
-    int nPointers = data.pointers.size();
-    for (int i = 0; i < nPointers; ++i)
-    {
-      double    xPointer   = data.pointers[i].x();
-      double    yPointer   = data.pointers[i].y();
-      int       type       = data.pointers[i].type() + style * 6;
-      TextureID pointerTex = TexMan.CheckForTexture(pointerTextures[type], TexMan.Type_Any);
-
-      drawPointer( x, y, width, height, ribbonWidth
-                 , playerPosition, playerAngle
-                 , xPointer, yPointer, pointerTex
-                 , false
-                 );
-    }
-
-    int nQuestPointers = data.questPointers.size();
-    for (int i = 0; i < nQuestPointers; ++i)
-    {
-      let questPointer = data.questPointers[i];
-      if (questPointer == null) { continue; }
-
-      double    xPointer   = questPointer.pos.x;
-      double    yPointer   = questPointer.pos.y;
-      int       type       = m8f_hn_Pointer.POINTER_GOLD + style * 6;
-      TextureID pointerTex = TexMan.CheckForTexture( pointerTextures[type]
-                                                   , TexMan.Type_Any
-                                                   );
-
-      drawPointer( x, y, width, height, ribbonWidth
-                 , playerPosition, playerAngle
-                 , xPointer, yPointer, pointerTex
-                 , false
-                 );
-    }
-
-    if (_settings.showSwitches())
-    {
-      int nLines = level.lines.size();
-      for (int i = 0; i < nLines; ++i)
-      {
-        Line l = level.lines[i];
-        if (!isSwitch(l)) { continue; }
-
-        double    xPointer   = (l.v1.p.x + l.v2.p.x) / 2;
-        double    yPointer   = (l.v1.p.y + l.v2.p.y) / 2;
-        int       type       = m8f_hn_Pointer.POINTER_ICE + style * 6;
-        TextureID pointerTex = TexMan.CheckForTexture( pointerTextures[type]
-                                                     , TexMan.Type_Any
-                                                     );
-
-        drawPointer( x, y, width, height, ribbonWidth
-                   , playerPosition, playerAngle
-                   , xPointer, yPointer, pointerTex
-                   , true
-                   );
-      }
-    }
-  }
-
   // private: // static section ////////////////////////////////////////////////
 
   private static
@@ -723,86 +444,6 @@ class m8f_hn_EventHandler : EventHandler
     {
       a.A_Die();
     }
-  }
-
-  private static
-  bool CheckTitlemap()
-  {
-    bool isTitlemap = (level.mapname == "TITLEMAP");
-    return isTitlemap;
-  }
-
-  private ui static
-  int round(double value)
-  {
-    int rounded = int(value + 0.5);
-    return rounded;
-  }
-
-  private ui static
-  double clamp(double value, double min, double max)
-  {
-    if      (value < min) { return min;   }
-    else if (value > max) { return max;   }
-    else                  { return value; }
-  }
-
-  private ui static
-  int clampInt(int value, int min, int max)
-  {
-    if      (value < min) { return min;   }
-    else if (value > max) { return max;   }
-    else                  { return value; }
-  }
-
-  // +--------------+
-  // |      1       |
-  // +--------------+
-  // +-++--------++-+
-  // |3||original||4|
-  // +-++--------++-+
-  // +--------------+
-  // |      2       |
-  // +--------------+
-
-  private ui static
-  void SetClipRectAroundTop(int x, int y, int width, int height, int border)
-  {
-    Screen.SetClipRect( x - border
-                      , y - border
-                      , width + border * 2
-                      , border
-                      );
-  }
-
-  private ui static
-  void SetClipRectAroundBottom(int x, int y, int width, int height, int border)
-  {
-    Screen.SetClipRect( x - border
-                      , y + height
-                      , width + border * 2
-                      , border
-                      );
-  }
-
-  private ui static
-  void SetClipRectAroundLeft(int x, int y, int width, int height, int border)
-  {
-    Screen.SetClipRect( x - border
-                      , y
-                      , border
-                      , height
-                      );
-  }
-
-  private ui static
-  void SetClipRectAroundRight(int x, int y, int width, int height, int border)
-  {
-    Screen.SetClipRect( x + width
-                      , y
-                      , border
-                      , height
-                      );
   }
 
   private ui static
@@ -872,76 +513,6 @@ class m8f_hn_EventHandler : EventHandler
                    );
 
     return (font.GetHeight() / scale) / Screen.GetHeight();
-  }
-
-  private ui static
-  bool isSwitch(Line l)
-  {
-    bool activation = (l.activation & ( SPAC_Use
-                                      | SPAC_Impact
-                                      | SPAC_Push
-                                      | SPAC_UseThrough
-                                      | SPAC_UseBack
-                                      ));
-    return (activation);
-  }
-
-  private ui static
-  bool hasLock(Line l)
-  {
-    int  special     = l.special;
-    bool lineHasLock = (special == 13 || special == 83 || special == 85);
-
-    return lineHasLock;
-  }
-
-  private ui static
-  void drawPointer( double    x
-                  , double    y
-                  , int       width
-                  , int       height
-                  , int       ribbonWidth
-                  , vector3   playerPosition
-                  , double    playerAngle
-                  , double    xPointer
-                  , double    yPointer
-                  , TextureID pointerTex
-                  , bool      closeFormula
-                  )
-  {
-    double xDiff = xPointer - playerPosition.x;
-    double yDiff = yPointer - playerPosition.y;
-    double angle;
-    if      (yDiff > 0.0) { angle = atan(xDiff / yDiff) +  90.0; }
-    else if (yDiff < 0.0) { angle = atan(xDiff / yDiff) + 270.0; }
-    else if (xDiff < 0.0) { angle =   0.0; }
-    else if (xDiff > 0.0) { angle = 180.0; }
-    else                  { angle =  90.0; }
-
-    angle         = (angle + playerAngle - 90.0) % 360.0;
-    double xStart = angle * (ribbonWidth / 180.0);
-
-    double yOffset;
-    if (closeFormula)
-    {
-      double distance = sqrt(xDiff * xDiff + yDiff * yDiff);
-      yOffset         = log(distance * 0.05) * 5 - 5;
-
-    }
-    else
-    {
-      double distance = xDiff * xDiff + yDiff * yDiff;
-      double step     = 500000.0;
-      double steps    = distance / step;
-      yOffset         = steps;
-      if (yOffset > 11) { yOffset = 11; } // 11 - maximum
-    }
-
-    Screen.DrawTexture( pointerTex, false, x + xStart, y + yOffset
-                      , DTA_KeepRatio,     true
-                      , DTA_VirtualWidth,  width
-                      , DTA_VirtualHeight, height
-                      );
   }
 
   private static
@@ -1041,10 +612,11 @@ class m8f_hn_EventHandler : EventHandler
 
   // private: //////////////////////////////////////////////////////////////////
 
-  private Array<m8f_hn_BaseAreaNameSource> _areaNameSources;
-  private m8f_hn_Data     _data;
+  private Array<hn_BaseCompassAreaNameSource> _areaNameSources;
+  private hn_CompassData     _data;
   private m8f_hn_Settings _settings;
-  private m8f_hn_Utils    _utils;
+  private hn_CompassSettings _compassSettings;
+  private hn_Level _level;
 
   private int     _renderUpdatePeriod;
   private int     _renderCounter;

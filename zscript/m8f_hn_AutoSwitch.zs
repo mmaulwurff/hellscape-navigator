@@ -59,7 +59,7 @@ class m8f_hn_AutoSwitchEventHandler : EventHandler
   private bool LookLine(PlayerInfo player, PlayerPawn pawn, out FLineTraceData lineData)
   {
     double useRange = pawn.useRange;
-    bool   success  = _utils.getPlayerViewLine(player, useRange, lineData);
+    bool   success  = _level.getPlayerViewLine(player, useRange, lineData);
 
     if (!success || lineData.hitLine == null) { return false; }
 
@@ -91,8 +91,8 @@ class m8f_hn_AutoSwitchEventHandler : EventHandler
 
   // private attributes section ////////////////////////////////////////////////
 
-  m8f_hn_Utils _utils;
-  int          _lastLineIndex;
+  hn_Level _level;
+  int      _lastLineIndex;
 
   m8f_hn_AutoSwitchSettings _settings;
 

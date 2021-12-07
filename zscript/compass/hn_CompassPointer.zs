@@ -1,4 +1,4 @@
-/* Copyright Alexander Kromm (mmaulwurff@gmail.com) 2018-2019
+/* Copyright Alexander Kromm (mmaulwurff@gmail.com) 2018-2021
  *
  * This file is part of Hellscape Navigator.
  *
@@ -16,7 +16,7 @@
  * along with Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-class m8f_hn_Pointer
+class hn_CompassPointer
 {
 
   enum PointerTypes
@@ -30,14 +30,17 @@ class m8f_hn_Pointer
     POINTER_SKIP
   };
 
-  m8f_hn_Pointer init(double x, double y, int type, int id)
+  static
+  hn_CompassPointer from(double x, double y, int type, int id)
   {
-    _position.x = x;
-    _position.y = y;
-    _type       = type;
-    _id         = id;
+    let result = new("hn_CompassPointer");
 
-    return self;
+    result._position.x = x;
+    result._position.y = y;
+    result._type       = type;
+    result._id         = id;
+
+    return result;
   }
 
   double x()    { return _position.x; }
@@ -49,4 +52,4 @@ class m8f_hn_Pointer
   private int     _type;
   private int     _id;
 
-} // m8f_hn_Pointer
+} // hn_CompassPointer

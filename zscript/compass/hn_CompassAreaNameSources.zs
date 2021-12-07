@@ -1,4 +1,4 @@
-/* Copyright Alexander Kromm (mmaulwurff@gmail.com) 2018-2019
+/* Copyright Alexander Kromm (mmaulwurff@gmail.com) 2018-2021
  *
  * This file is part of Hellscape Navigator.
  *
@@ -16,7 +16,7 @@
  * along with Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-class m8f_hn_BaseAreaNameSource
+class hn_BaseCompassAreaNameSource
 {
 
   play virtual bool IsAutomatic() const
@@ -24,17 +24,17 @@ class m8f_hn_BaseAreaNameSource
     return true;
   }
 
-  play virtual string GetAreaName(m8f_hn_Data data) const
+  play virtual string GetAreaName(hn_CompassData data) const
   {
     return "";
   }
 
-} // m8f_hn_BaseAreaNameSource
+} // hn_BaseCompassAreaNameSource
 
-class m8f_hn_PlayerStartNameSource : m8f_hn_BaseAreaNameSource
+class hn_PlayerStartCompassAreaNameSource : hn_BaseCompassAreaNameSource
 {
 
-  override string GetAreaName(m8f_hn_Data data)
+  override string GetAreaName(hn_CompassData data)
   {
     vector3    playerStart;
     int        angle;
@@ -49,9 +49,9 @@ class m8f_hn_PlayerStartNameSource : m8f_hn_BaseAreaNameSource
     return isCloseToStart ? "Entrance" : "";
   }
 
-} // m8f_hn_PlayerStartNameSource
+} // hn_PlayerStartCompassAreaNameSource
 
-class m8f_hn_SignAreaNameSource : m8f_hn_BaseAreaNameSource
+class hn_SignCompassAreaNameSource : hn_BaseCompassAreaNameSource
 {
 
   override bool IsAutomatic() const
@@ -59,7 +59,7 @@ class m8f_hn_SignAreaNameSource : m8f_hn_BaseAreaNameSource
     return false;
   }
 
-  override string GetAreaName(m8f_hn_Data data)
+  override string GetAreaName(hn_CompassData data)
   {
     vector3     playerPos   = players[consolePlayer].mo.pos;
     let         iterator    = ThinkerIterator.Create("m8f_hn_Sign");
@@ -73,10 +73,10 @@ class m8f_hn_SignAreaNameSource : m8f_hn_BaseAreaNameSource
 
       double distance;
       bool   isInRadius;
-      [distance, isInRadius] = m8f_hn_Lib.calculateDistance( sign.pos
-                                                           , playerPos
-                                                           , sign.areaRadiusSq
-                                                           );
+      [distance, isInRadius] = hn_DistanceCalculator.calculateDistance( sign.pos
+                                                                      , playerPos
+                                                                      , sign.areaRadiusSq
+                                                                      );
 
       if (isInRadius && (distance < minDistance || minDistance < 0.0))
       {
@@ -97,10 +97,10 @@ class m8f_hn_SignAreaNameSource : m8f_hn_BaseAreaNameSource
       double  areaRadiusSq   = areaRadius * areaRadius;
       double  distance;
       bool    isInRadius;
-      [distance, isInRadius] = m8f_hn_Lib.calculateDistance( pos
-                                                           , playerPos
-                                                           , areaRadiusSq
-                                                           );
+      [distance, isInRadius] = hn_DistanceCalculator.calculateDistance( pos
+                                                                      , playerPos
+                                                                      , areaRadiusSq
+                                                                      );
 
       if (isInRadius && (distance < minDistance || minDistance < 0.0))
       {
@@ -120,32 +120,7 @@ class m8f_hn_SignAreaNameSource : m8f_hn_BaseAreaNameSource
     return "";
   }
 
-} // m8f_hn_SignAreaNameSource
-
-class m8f_hn_Lib
-{
-
-  // returns:
-  // double distance
-  // bool   true if distance is less then radius, false otherwise.
-  //
-  // if second return values is false, distance is undefined.
-  //
-  static double, bool calculateDistance( vector3 pos1
-                                       , vector3 pos2
-                                       , double  radiusSq
-                                       )
-  {
-    double dx         = pos1.x - pos2.x;
-    double dy         = pos1.y - pos2.y;
-    double dz         = pos1.z - pos2.z;
-    double distance   = dx * dx + dy * dy + dz * dz;
-    bool   isInRadius = distance < radiusSq;
-
-    return distance, isInRadius;
-  }
-
-} // m8f_hn_Lib
+} // hn_SignCompassAreaNameSource
 
 class m8f_hn_CalculateDistanceBenchmark : Actor
 {
@@ -166,7 +141,7 @@ class m8f_hn_CalculateDistanceBenchmark : Actor
       {
         double distance;
         bool   isInRadius;
-        [distance, isInRadius] = m8f_hn_Lib.calculateDistance(pos1, pos2, radiusSq);
+        [distance, isInRadius] = hn_DistanceCalculator.calculateDistance(pos1, pos2, radiusSq);
       }
     }
 
@@ -178,7 +153,7 @@ class m8f_hn_CalculateDistanceBenchmark : Actor
       {
         double distance;
         bool   isInRadius;
-        [distance, isInRadius] = m8f_hn_Lib.calculateDistance(pos1, pos2, radiusSq);
+        [distance, isInRadius] = hn_DistanceCalculator.calculateDistance(pos1, pos2, radiusSq);
       }
     }
 
@@ -190,7 +165,7 @@ class m8f_hn_CalculateDistanceBenchmark : Actor
       {
         double distance;
         bool   isInRadius;
-        [distance, isInRadius] = m8f_hn_Lib.calculateDistance(pos1, pos2, radiusSq);
+        [distance, isInRadius] = hn_DistanceCalculator.calculateDistance(pos1, pos2, radiusSq);
       }
     }
 
@@ -202,10 +177,7 @@ class m8f_hn_CalculateDistanceBenchmark : Actor
         {
           double distance;
           bool   isInRadius;
-          [distance, isInRadius] = m8f_hn_Lib.calculateDistance( pos1
-                                                               , pos2
-                                                               , radiusSq
-                                                               );
+          [distance, isInRadius] = hn_DistanceCalculator.calculateDistance(pos1, pos2, radiusSq);
         }
     }
 
@@ -221,10 +193,10 @@ class m8f_hn_CalculateDistanceBenchmark : Actor
     }
 }
 
-class m8f_hn_ItemAreaNameSource : m8f_hn_BaseAreaNameSource
+class hn_ItemCompassAreaNameSource : hn_BaseCompassAreaNameSource
 {
 
-  override string GetAreaName(m8f_hn_Data data)
+  override string GetAreaName(hn_CompassData data)
   {
     vector3 playerPos      = players[consolePlayer].mo.pos;
     double  minDistance    = -1;
@@ -299,11 +271,11 @@ class m8f_hn_ItemAreaNameSource : m8f_hn_BaseAreaNameSource
     return (65 <= code && code <= 90);
   }
 
-} // m8f_hn_ItemAreaNameSource
+} // hn_ItemCompassAreaNameSource
 
-class m8f_hn_SectorAreaNameSource : m8f_hn_BaseAreaNameSource
+class hn_SectorCompassAreaNameSource : hn_BaseCompassAreaNameSource
 {
-  override string GetAreaName(m8f_hn_Data data)
+  override string GetAreaName(hn_CompassData data)
   {
     PlayerInfo player = players[consolePlayer];
     if (player == null) { return ""; }
@@ -329,9 +301,10 @@ class m8f_hn_SectorAreaNameSource : m8f_hn_BaseAreaNameSource
     bool isSky = (currentSector.GetTexture(1) == skyflatnum);
     if (isSky) { return "Outdoors"; }
 
-    bool isExit = m8f_hn_Utils.isExit(currentSector);
+    bool isExit = hn_Level.isExit(currentSector);
     if (isExit) { return "Exit"; }
 
     return "";
   }
-} // m8f_hn_SectorAreaNameSource
+
+} // hn_SectorCompassAreaNameSource

@@ -65,7 +65,7 @@ class m8f_hn_MapTunerEventHandler : EventHandler
     for (int i = 0; i < nSectors; ++i)
     {
       Sector s      = level.sectors[i];
-      bool   isExit = m8f_hn_Utils.isExit(s);
+      bool   isExit = hn_Level.isExit(s);
 
       if (isExit)
       {

@@ -103,8 +103,7 @@ class m8f_hn_Sign : Actor
 
     if (id != 0)
     {
-      let eventHandler = m8f_hn_EventHandler(EventHandler.Find("m8f_hn_EventHandler"));
-      eventHandler.RemovePointer(id);
+      hn_CompassEventHandler.removePointer(id);
     }
   }
 
@@ -130,8 +129,7 @@ class m8f_hn_WoodenSign : m8f_hn_Sign
     bool addToCompass = CVar.GetCVar("m8f_hn_sign_with_pointer").GetInt();
     if (addToCompass)
     {
-      let eventHandler = m8f_hn_EventHandler(EventHandler.Find("m8f_hn_EventHandler"));
-      id = eventHandler.AddPointer(pos.x, pos.y, m8f_hn_Pointer.POINTER_RED);
+      hn_CompassEventHandler.addPointer(pos.x, pos.y, hn_CompassPointer.POINTER_RED);
     }
   }
 
@@ -189,8 +187,7 @@ class m8f_hn_TransparentSign : m8f_hn_Sign
     bool addToCompass = CVar.GetCVar("m8f_hn_sign_with_pointer").GetInt();
     if (addToCompass)
     {
-      let eventHandler = m8f_hn_EventHandler(EventHandler.Find("m8f_hn_EventHandler"));
-      id = eventHandler.AddPointer(pos.x, pos.y, m8f_hn_Pointer.POINTER_WHITE);
+      hn_CompassEventHandler.addPointer(pos.x, pos.y, hn_CompassPointer.POINTER_WHITE);
     }
   }
 
@@ -216,8 +213,7 @@ class m8f_hn_MetalSign : m8f_hn_Sign
     bool addToCompass = CVar.GetCVar("m8f_hn_sign_with_pointer").GetInt();
     if (addToCompass)
     {
-      let eventHandler = m8f_hn_EventHandler(EventHandler.Find("m8f_hn_EventHandler"));
-      id = eventHandler.AddPointer(pos.x, pos.y, m8f_hn_Pointer.POINTER_BLUE);
+      hn_CompassEventHandler.addPointer(pos.x, pos.y, hn_CompassPointer.POINTER_BLUE);
     }
   }
 

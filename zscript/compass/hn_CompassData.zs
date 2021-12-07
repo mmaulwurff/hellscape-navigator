@@ -1,4 +1,4 @@
-/* Copyright Alexander Kromm (mmaulwurff@gmail.com) 2018-2019
+/* Copyright Alexander Kromm (mmaulwurff@gmail.com) 2018-2021
  *
  * This file is part of Hellscape Navigator.
  *
@@ -16,8 +16,16 @@
  * along with Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-class m8f_hn_Data
+class hn_CompassData
 {
+
+  static
+  hn_CompassData from()
+  {
+    let result = new("hn_CompassData");
+    result.init();
+    return result;
+  }
 
   Array<Sector>  secretSectors;
   Array<int>     itemAreaPosX;
@@ -28,10 +36,13 @@ class m8f_hn_Data
   Array<Actor>   areaNameMarkers;
   Array<Actor>   questPointers;
 
-  Array<m8f_hn_Pointer> pointers;
+  Array<hn_CompassPointer> pointers;
   int pointerId;
 
-  m8f_hn_Data init()
+// private: ////////////////////////////////////////////////////////////////////////////////////////
+
+  private
+  void init()
   {
     int nSectors = level.sectors.size();
     for (int i = 0; i < nSectors; ++i)
@@ -72,8 +83,6 @@ class m8f_hn_Data
     areaItems.push("Big_Coin_pickup"); // other
 
     pointerId = 0;
-
-    return self;
   }
 
-} // class m8f_hn_Data
+} // class hn_CompassData

@@ -4,6 +4,7 @@ gameinfo
   MapArrow         = "marrow", "ddtmarr"
 
   AddEventHandlers = "m8f_hn_EventHandler"
+                   , "hn_CompassEventHandler"
                    , "m8f_hn_FootstepHandler"
                    , "m8f_hn_UseMarkerEventHandler"
                    , "m8f_hn_AutoSwitchEventHandler"
