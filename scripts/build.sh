@@ -1,12 +1,10 @@
 #!/bin/bash
 
-set -e
-
 #./make-sprites.sh
 
-name=hellscape-navigator-$(git describe --abbrev=0 --tags).pk3
+mkdir -p build
 
-rm -f $name.pk3
+filename=build/hellscape-navigator-$(git describe --abbrev=0 --tags).pk3
 
 git log --date=short --pretty=format:"-%d %ad %s%n" | \
     grep -v "^$" | \
@@ -17,10 +15,6 @@ git log --date=short --pretty=format:"-%d %ad %s%n" | \
     sed "s/- (tag: \(v\?[0-9.]*\))/\n\1\n-/" \
     > changelog.txt
 
-zip -R "$name" \
-    "*.md"  \
-    "*.png" \
-    "*.txt" \
-    "*.zs"
-
-gzdoom -file "$name" "$@"
+rm   -f "$filename"
+zip -R0 "$filename" "*.md" "*.txt" "*.zs" "*.png" > /dev/null
+gzdoom  "$filename" "$@" > output.log 2>&1; cat output
