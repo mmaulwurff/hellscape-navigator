@@ -1,4 +1,4 @@
-/* Copyright Alexander Kromm (mmaulwurff@gmail.com) 2018-2019
+/* Copyright Alexander Kromm (mmaulwurff@gmail.com) 2018-2021
  *
  * This file is part of Hellscape Navigator.
  *
@@ -16,138 +16,134 @@
  * Hellscape Navigator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-class m8f_hn_Settings : m8f_hn_SettingsPack
+class m8f_hn_Settings
 {
 
-  // public: ///////////////////////////////////////////////////////////////////
-
-  double xStart            () { checkInit(); return _xStart            .value(); }
-  double yStart            () { checkInit(); return _yStart            .value(); }
-  bool   showCompass       () { checkInit(); return _showCompass       .value(); }
-  bool   levelName         () { checkInit(); return _levelName         .value(); }
-  bool   showGridCoords    () { checkInit(); return _showGridCoords    .value(); }
-  bool   showOnAutomap     () { checkInit(); return _showOnAutomap     .value(); }
-  bool   showAreaName      () { checkInit(); return _showAreaName      .value(); }
-  bool   hideAutoAreaNames () { checkInit(); return _hideAutoAreaNames .value(); }
-  bool   showExplored      () { checkInit(); return _showExplored      .value(); }
-  bool   showSwitches      () { checkInit(); return _showSwitches      .value(); }
-
-  double compassScale      () { checkInit(); return _compassScale      .value(); }
-  double compassDegrees    () { checkInit(); return _compassDegrees    .value(); }
-  int    compassStyle      () { checkInit(); return _compassStyle      .value(); }
-  bool   textAboveCompass  () { checkInit(); return _textAboveCompass  .value(); }
-
-  bool   showLockAccess    () { checkInit(); return _showLockAccess    .value(); }
-  bool   showIntroLevelName() { checkInit(); return _showIntroLevelName.value(); }
-
-  bool   isTextSeparate    () { checkInit(); return _isTextSeparate    .value(); }
-  double textX             () { checkInit(); return _textX             .value(); }
-  double textY             () { checkInit(); return _textY             .value(); }
-
-  bool   revealExploredMap () { checkInit(); return _revealExploredMap .value(); }
-  bool   scannerExploredMap() { checkInit(); return _scannerExploredMap.value(); }
-  bool   revealOnStart     () { checkInit(); return _revealOnStart     .value(); }
-  bool   scannerOnStart    () { checkInit(); return _scannerOnStart    .value(); }
-
-  int    nTranslocator     () { checkInit(); return _nTranslocator     .value(); }
-  int    nTranslocatorExp  () { checkInit(); return _nTranslocatorExp  .value(); }
-
-  int    nTunneling        () { checkInit(); return _nTunneling        .value(); }
-  int    nTunnelingExp     () { checkInit(); return _nTunnelingExp     .value(); }
-
-  bool   showSpeed         () { checkInit(); return _showSpeed         .value(); }
-  double speedometerScale  () { checkInit(); return _speedometerScale  .value(); }
-  double speedometerX      () { checkInit(); return _speedometerX      .value(); }
-  double speedometerY      () { checkInit(); return _speedometerY      .value(); }
-
-  // private: //////////////////////////////////////////////////////////////////
-
-  private
-  void checkInit()
+  static
+  m8f_hn_Settings from()
   {
-    if (_isInitialized) { return; }
-    clear();
-    _isInitialized = true;
+    let result = new("m8f_hn_Settings");
 
-    push(_xStart             = new("m8f_hn_DoubleSetting").init("m8f_hn_compass_x"              , _player));
-    push(_yStart             = new("m8f_hn_DoubleSetting").init("m8f_hn_compass_y"              , _player));
-    push(_showCompass        = new("m8f_hn_BoolSetting"  ).init("m8f_hn_compass_show"           , _player));
-    push(_levelName          = new("m8f_hn_BoolSetting"  ).init("m8f_hn_compass_level_name"     , _player));
-    push(_showGridCoords     = new("m8f_hn_BoolSetting"  ).init("m8f_hn_show_grid_coords"       , _player));
-    push(_showOnAutomap      = new("m8f_hn_BoolSetting"  ).init("m8f_hn_compass_automap"        , _player));
-    push(_showAreaName       = new("m8f_hn_BoolSetting"  ).init("m8f_hn_show_area"              , _player));
-    push(_hideAutoAreaNames  = new("m8f_hn_BoolSetting"  ).init("m8f_hn_hide_auto_names"        , _player));
-    push(_showExplored       = new("m8f_hn_BoolSetting"  ).init("m8f_hn_show_explored"          , _player));
-    push(_showSwitches       = new("m8f_hn_BoolSetting"  ).init("m8f_hn_show_switches"          , _player));
+    result._xStart             = hn_Cvar.from("m8f_hn_compass_x");
+    result._yStart             = hn_Cvar.from("m8f_hn_compass_y");
+    result._showCompass        = hn_Cvar.from("m8f_hn_compass_show");
+    result._levelName          = hn_Cvar.from("m8f_hn_compass_level_name");
+    result._showGridCoords     = hn_Cvar.from("m8f_hn_show_grid_coords");
+    result._showOnAutomap      = hn_Cvar.from("m8f_hn_compass_automap");
+    result._showAreaName       = hn_Cvar.from("m8f_hn_show_area");
+    result._hideAutoAreaNames  = hn_Cvar.from("m8f_hn_hide_auto_names");
+    result._showExplored       = hn_Cvar.from("m8f_hn_show_explored");
+    result._showSwitches       = hn_Cvar.from("m8f_hn_show_switches");
 
-    push(_compassScale       = new("m8f_hn_DoubleSetting").init("m8f_hn_compass_scale"          , _player));
-    push(_compassDegrees     = new("m8f_hn_DoubleSetting").init("m8f_hn_compass_degrees"        , _player));
-    push(_compassStyle       = new("m8f_hn_IntSetting"   ).init("m8f_hn_compass_style"          , _player));
-    push(_textAboveCompass   = new("m8f_hn_BoolSetting"  ).init("m8f_hn_compass_under"          , _player));
+    result._compassScale       = hn_Cvar.from("m8f_hn_compass_scale");
+    result._compassDegrees     = hn_Cvar.from("m8f_hn_compass_degrees");
+    result._compassStyle       = hn_Cvar.from("m8f_hn_compass_style");
+    result._textAboveCompass   = hn_Cvar.from("m8f_hn_compass_under");
 
-    push(_showLockAccess     = new("m8f_hn_BoolSetting"  ).init("m8f_hn_show_access"            , _player));
-    push(_showIntroLevelName = new("m8f_hn_BoolSetting"  ).init("m8f_hn_show_level_name"        , _player));
+    result._showLockAccess     = hn_Cvar.from("m8f_hn_show_access");
+    result._showIntroLevelName = hn_Cvar.from("m8f_hn_show_level_name");
 
-    push(_isTextSeparate     = new("m8f_hn_BoolSetting"  ).init("m8f_hn_text_separate"          , _player));
-    push(_textX              = new("m8f_hn_DoubleSetting").init("m8f_hn_text_x"                 , _player));
-    push(_textY              = new("m8f_hn_DoubleSetting").init("m8f_hn_text_y"                 , _player));
+    result._isTextSeparate     = hn_Cvar.from("m8f_hn_text_separate");
+    result._textX              = hn_Cvar.from("m8f_hn_text_x");
+    result._textY              = hn_Cvar.from("m8f_hn_text_y");
 
-    push(_revealExploredMap  = new("m8f_hn_BoolSetting"  ).init("m8f_hn_reveal_when_explored"   , _player));
-    push(_scannerExploredMap = new("m8f_hn_BoolSetting"  ).init("m8f_hn_reveal_scanner"         , _player));
-    push(_revealOnStart      = new("m8f_hn_BoolSetting"  ).init("m8f_hn_reveal_on_start"        , _player));
-    push(_scannerOnStart     = new("m8f_hn_BoolSetting"  ).init("m8f_hn_scanner_start"          , _player));
+    result._revealExploredMap  = hn_Cvar.from("m8f_hn_reveal_when_explored");
+    result._scannerExploredMap = hn_Cvar.from("m8f_hn_reveal_scanner");
+    result._revealOnStart      = hn_Cvar.from("m8f_hn_reveal_on_start");
+    result._scannerOnStart     = hn_Cvar.from("m8f_hn_scanner_start");
 
-    push(_nTranslocator      = new("m8f_hn_IntSetting"   ).init("m8f_hn_n_translocator"         , _player));
-    push(_nTranslocatorExp   = new("m8f_hn_IntSetting"   ).init("m8f_hn_n_translocator_explored", _player));
+    result._nTranslocator      = hn_Cvar.from("m8f_hn_n_translocator");
+    result._nTranslocatorExp   = hn_Cvar.from("m8f_hn_n_translocator_explored");
 
-    push(_nTunneling         = new("m8f_hn_IntSetting"   ).init("m8f_hn_n_tunneling"            , _player));
-    push(_nTunnelingExp      = new("m8f_hn_IntSetting"   ).init("m8f_hn_n_tunneling_explored"   , _player));
+    result._nTunneling         = hn_Cvar.from("m8f_hn_n_tunneling");
+    result._nTunnelingExp      = hn_Cvar.from("m8f_hn_n_tunneling_explored");
 
-    push(_showSpeed          = new("m8f_hn_BoolSetting"  ).init("m8f_hn_show_speed"             , _player));
-    push(_speedometerScale   = new("m8f_hn_DoubleSetting").init("m8f_hn_speedometer_scale"      , _player));
-    push(_speedometerX       = new("m8f_hn_DoubleSetting").init("m8f_hn_speedometer_x"          , _player));
-    push(_speedometerY       = new("m8f_hn_DoubleSetting").init("m8f_hn_speedometer_y"          , _player));
+    result._showSpeed          = hn_Cvar.from("m8f_hn_show_speed");
+    result._speedometerScale   = hn_Cvar.from("m8f_hn_speedometer_scale");
+    result._speedometerX       = hn_Cvar.from("m8f_hn_speedometer_x");
+    result._speedometerY       = hn_Cvar.from("m8f_hn_speedometer_y");
+
+    return result;
   }
 
-  // private: //////////////////////////////////////////////////////////////////
+  double xStart            () { return _xStart.getDouble(); }
+  double yStart            () { return _yStart.getDouble(); }
+  bool   showCompass       () { return _showCompass.getBool(); }
+  bool   levelName         () { return _levelName.getBool(); }
+  bool   showGridCoords    () { return _showGridCoords.getBool(); }
+  bool   showOnAutomap     () { return _showOnAutomap.getBool(); }
+  bool   showAreaName      () { return _showAreaName.getBool(); }
+  bool   hideAutoAreaNames () { return _hideAutoAreaNames.getBool(); }
+  bool   showExplored      () { return _showExplored.getBool(); }
+  bool   showSwitches      () { return _showSwitches.getBool(); }
 
-  private m8f_hn_DoubleSetting _xStart;
-  private m8f_hn_DoubleSetting _yStart;
-  private m8f_hn_BoolSetting   _showCompass;
-  private m8f_hn_BoolSetting   _levelName;
-  private m8f_hn_BoolSetting   _showGridCoords;
-  private m8f_hn_BoolSetting   _showOnAutomap;
-  private m8f_hn_BoolSetting   _showAreaName;
-  private m8f_hn_BoolSetting   _hideAutoAreaNames;
-  private m8f_hn_BoolSetting   _showExplored;
-  private m8f_hn_BoolSetting   _showSwitches;
+  double compassScale      () { return _compassScale.getDouble(); }
+  double compassDegrees    () { return _compassDegrees.getDouble(); }
+  int    compassStyle      () { return _compassStyle.getInt(); }
+  bool   textAboveCompass  () { return _textAboveCompass.getBool(); }
 
-  private m8f_hn_DoubleSetting _compassScale;
-  private m8f_hn_DoubleSetting _compassDegrees;
-  private m8f_hn_IntSetting    _compassStyle;
-  private m8f_hn_BoolSetting   _textAboveCompass;
+  bool   showLockAccess    () { return _showLockAccess.getBool(); }
+  bool   showIntroLevelName() { return _showIntroLevelName.getBool(); }
 
-  private m8f_hn_BoolSetting   _showLockAccess;
-  private m8f_hn_BoolSetting   _showIntroLevelName;
+  bool   isTextSeparate    () { return _isTextSeparate.getBool(); }
+  double textX             () { return _textX.getDouble(); }
+  double textY             () { return _textY.getDouble(); }
 
-  private m8f_hn_BoolSetting   _isTextSeparate;
-  private m8f_hn_DoubleSetting _textX;
-  private m8f_hn_DoubleSetting _textY;
+  bool   revealExploredMap () { return _revealExploredMap.getBool(); }
+  bool   scannerExploredMap() { return _scannerExploredMap.getBool(); }
+  bool   revealOnStart     () { return _revealOnStart.getBool(); }
+  bool   scannerOnStart    () { return _scannerOnStart.getBool(); }
 
-  private m8f_hn_BoolSetting   _revealExploredMap;
-  private m8f_hn_BoolSetting   _scannerExploredMap;
-  private m8f_hn_BoolSetting   _revealOnStart;
-  private m8f_hn_BoolSetting   _scannerOnStart;
+  int    nTranslocator     () { return _nTranslocator.getInt(); }
+  int    nTranslocatorExp  () { return _nTranslocatorExp.getInt(); }
 
-  private m8f_hn_IntSetting    _nTranslocator;
-  private m8f_hn_IntSetting    _nTranslocatorExp;
+  int    nTunneling        () { return _nTunneling.getInt(); }
+  int    nTunnelingExp     () { return _nTunnelingExp.getInt(); }
 
-  private m8f_hn_IntSetting    _nTunneling;
-  private m8f_hn_IntSetting    _nTunnelingExp;
+  bool   showSpeed         () { return _showSpeed.getBool(); }
+  double speedometerScale  () { return _speedometerScale.getDouble(); }
+  double speedometerX      () { return _speedometerX.getDouble(); }
+  double speedometerY      () { return _speedometerY.getDouble(); }
 
-  private m8f_hn_BoolSetting   _showSpeed;
-  private m8f_hn_DoubleSetting _speedometerScale;
-  private m8f_hn_DoubleSetting _speedometerX;
-  private m8f_hn_DoubleSetting _speedometerY;
+// private: ////////////////////////////////////////////////////////////////////////////////////////
+
+  private hn_Cvar _xStart;
+  private hn_Cvar _yStart;
+  private hn_Cvar _showCompass;
+  private hn_Cvar _levelName;
+  private hn_Cvar _showGridCoords;
+  private hn_Cvar _showOnAutomap;
+  private hn_Cvar _showAreaName;
+  private hn_Cvar _hideAutoAreaNames;
+  private hn_Cvar _showExplored;
+  private hn_Cvar _showSwitches;
+
+  private hn_Cvar _compassScale;
+  private hn_Cvar _compassDegrees;
+  private hn_Cvar _compassStyle;
+  private hn_Cvar _textAboveCompass;
+
+  private hn_Cvar _showLockAccess;
+  private hn_Cvar _showIntroLevelName;
+
+  private hn_Cvar _isTextSeparate;
+  private hn_Cvar _textX;
+  private hn_Cvar _textY;
+
+  private hn_Cvar _revealExploredMap;
+  private hn_Cvar _scannerExploredMap;
+  private hn_Cvar _revealOnStart;
+  private hn_Cvar _scannerOnStart;
+
+  private hn_Cvar _nTranslocator;
+  private hn_Cvar _nTranslocatorExp;
+
+  private hn_Cvar _nTunneling;
+  private hn_Cvar _nTunnelingExp;
+
+  private hn_Cvar _showSpeed;
+  private hn_Cvar _speedometerScale;
+  private hn_Cvar _speedometerX;
+  private hn_Cvar _speedometerY;
 
 } // class m8f_hn_Settings

@@ -32,8 +32,7 @@ class m8f_hn_EventHandler : hn_InitializedEventHandler
 
     _data       = hn_CompassData.from();
     _isTitlemap = hn_Level.isTitlemap();
-    _settings   = new("m8f_hn_Settings");
-    _settings.init(players[event.playerNumber]);
+    _settings   = m8f_hn_Settings.from();
 
     _progress    = 0;
     _oldProgress = 0;
