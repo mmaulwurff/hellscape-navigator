@@ -30,9 +30,10 @@ class m8f_hn_EventHandler : hn_InitializedEventHandler
     Actor playerActor = players[event.playerNumber].mo;
     if (playerActor == null) { return; }
 
-    _data       = hn_CompassData.from();
+    if (_data == null) _data = hn_CompassData.from();
+    if (_settings == null) _settings = m8f_hn_Settings.from();
+
     _isTitlemap = hn_Level.isTitlemap();
-    _settings   = m8f_hn_Settings.from();
 
     _progress    = 0;
     _oldProgress = 0;
